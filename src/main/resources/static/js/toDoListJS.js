@@ -1,5 +1,6 @@
 
 document.getElementById('addTaskButton').addEventListener('click', function() {
+    console.log('Button clicked');
     const toDoList = document.getElementById('toDoItems');
     const taskText = prompt("Enter new task: ");
 
