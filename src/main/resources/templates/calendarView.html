@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Calendar</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/toggleStyle.css">
+  <link rel="stylesheet" href="/css/calendarHeaderOptionsStyle.css">
+  <link rel="stylesheet" href="/css/calendarStyle.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <meta name="description" content="">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="/images/favicon.ico" sizes="any">
+  <link rel="icon" href="/images/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/images/icon.png">
+  <script defer src="/js/logInJS.js"></script>
+  <script defer src="/js/calendarJS.js"></script>
+</head>
+
+
+<body>
+<header id="header">
+  <div id="calendarViewTitleContainer">
+    <h3 id="calendarViewTitle">Self-Calendar</h3>
+  </div>
+  <div id="calendarViewButtonContainer">
+    <div id="theme-container">
+      <label id="moonIcon" for="toggle">
+        <i class="fa-solid fa-moon"></i>
+      </label>
+      <div id="toggle-container">
+        <input type="checkbox" id="toggle">
+        <label id="toggleLabel" for="toggle">Toggle</label>
+      </div>
+      <label id="sunIcon" for="toggle">
+        <i class="fa-solid fa-sun"></i>
+      </label>
+    </div>
+    <div id="settingsContainer">
+      <button id="settingsBtn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="calendarContainer">
+  <div class="calendar">
+    <div class="calendar-header">
+      <button class="navButton" id="prev-month" type="button"><</button>
+      <h3 id="month-year"></h3>
+      <button class="navButton" id="next-month" type="button">></button>
+    </div>
+    <div class="calendar-days">
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+      <div>Sun</div>
+    </div>
+    <div class="calendar-dates" id="calendar-dates">
+    </div>
+  </div>
+  <div class ="events" id="eventHolder">
+    <div id="addEvent">
+      <button id="addEventBtn" type="button">+</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

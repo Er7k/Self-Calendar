@@ -1,0 +1,138 @@
+body{
+  margin:0;
+  height: 100vh;
+  background: linear-gradient(320deg, rgb(23, 33, 61), rgb(36, 44, 51));
+  font-family: "Nunito", sans-serif;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+#calendarContainer{
+  display:flex;
+  align-items: center;
+}
+
+#calendarViewTitle {
+  user-select: none;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  width: 1300px;
+  height: 720px;
+  border-radius: 40px;
+  padding: 2%;
+  margin: 1.5% 0 0 3%;
+  background-color: rgba(40, 57, 80, 0.54);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1% 5% 0 5%;
+  padding: 0;
+  max-height: 60px;
+  user-select: none;
+}
+
+.calendar-days, .calendar-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 5%;
+  user-select: none;
+}
+
+.calendar-days div {
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+  font-size: 18px;
+}
+
+.calendar-dates div {
+  display: flex;
+  flex-direction: column;     /* Stack children vertically */
+  align-items: center;    /* Align to top-left corner */
+  justify-content: flex-start;/* Push content to top */
+  padding-top: 12px;             /* Some spacing inside the cell */
+  border-radius: 12px;
+  margin: 0;
+  cursor: pointer;
+  min-height: 0;           /* Makes cells tall enough to hold content */
+  flex: 1;
+  font-size: 12px;
+  transition: background-color 0.3s ease-out;
+}
+
+.calendar-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+  grid-auto-rows: 1fr; /* Makes rows grow/shrink equally */
+  flex: 1;
+  gap: 4px; /* Optional: space between cells */
+
+}
+
+.calendar-dates div:hover {
+  background-color: rgba(172, 159, 196, 0.27);
+}
+
+.navButton {
+  width: 100px;
+  height: 60px;
+  display: flex;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0);
+  border: none; border-radius: 10px;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Nunito", sans-serif;
+  font-size: 28px;
+
+  transition: background-color 0.3s ease-out;
+}
+
+.navButton:hover{
+  background-color: rgba(172, 159, 196, 0.27);
+}
+
+.calendar-dates .grey {
+  color: #7a7a7a;
+  opacity: 0.6;
+}
+
+#eventHolder{
+  border: none;
+  width: 15%;
+  height: 720px;
+  padding: 2%;
+  margin: 1.5% 0 0 3%;
+  background-color: rgba(40, 57, 80, 0.54);
+  border-radius: 40px;
+}
+
+#addEventBtn {
+  background: rgba(128, 153, 183, 0.58);
+  border: none;
+  border-radius: 30px;
+  font-size: 30px;
+  height: 100px;
+  width: 100%;
+  color: white;
+  transition: background-color 0.3s ease-out;
+  cursor: pointer;
+  user-select: none;
+}
+
+#addEventBtn:hover {
+  background: rgba(179, 212, 252, 0.73);
+}
+
+
