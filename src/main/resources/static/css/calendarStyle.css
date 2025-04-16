@@ -8,8 +8,55 @@ body{
 }
 
 #calendarContainer{
-  display:flex;
-  align-items: center;
+  display: flex;
+  margin: 20px;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: stretch;
+
+}
+
+#toDoList {
+  width: 20%;
+  background-color: rgba(40, 57, 80, 0.54);
+  padding: 20px;
+  border-radius: 20px;
+  color: white;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+
+
+}
+
+#toDoList h4 {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#toDoItems li {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+#addTaskButton {
+  background: rgba(128, 153, 183, 0.58);
+  color: white;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 100%;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 50px;
+  font-size: 20px;
+  transition: background-color 0.3s ease-out;
+}
+
+
+#addTaskButton:hover {
+  background-color: #6f7388;
 }
 
 #calendarViewTitle {
@@ -17,13 +64,12 @@ body{
 }
 
 .calendar {
-  display: flex;
+  width: 70%;
+  padding: 20px;
   flex-direction: column;
-  width: 1300px;
-  height: 720px;
-  border-radius: 40px;
-  padding: 2%;
-  margin: 1.5% 0 0 3%;
+
+  border-radius: 20px;
+  color: white;
   background-color: rgba(40, 57, 80, 0.54);
 }
 
@@ -62,7 +108,7 @@ body{
   cursor: pointer;
   min-height: 0;           /* Makes cells tall enough to hold content */
   flex: 1;
-  font-size: 12px;
+  font-size: 15px;
   transition: background-color 0.3s ease-out;
 }
 
@@ -111,17 +157,17 @@ body{
 #eventHolder{
   border: none;
   width: 15%;
-  height: 720px;
   padding: 2%;
-  margin: 1.5% 0 0 3%;
+  margin-left: 20px;
   background-color: rgba(40, 57, 80, 0.54);
-  border-radius: 40px;
+  border-radius: 20px;
+
 }
 
 #addEventBtn {
   background: rgba(128, 153, 183, 0.58);
   border: none;
-  border-radius: 30px;
+  border-radius: 20px;
   font-size: 30px;
   height: 100px;
   width: 100%;
