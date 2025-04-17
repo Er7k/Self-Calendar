@@ -11,6 +11,11 @@ document.getElementById('addTaskButton').addEventListener('click', function() {
         addTask.appendChild(checkbox);
         addTask.appendChild(document.createTextNode(' ' + taskText));
 
+        const nothingMessage = document.getElementById('nothingMessage');
+        if (nothingMessage) {
+            nothingMessage.remove();
+        }
+
         toDoList.appendChild(addTask);
     } else {
         alert("Task cannot be empty!");
