@@ -56,18 +56,30 @@
     </div>
   </div>
 </header>
+
+
 <div id="calendarContainer">
   <!--Left side: To-do-list -->
-  <div id="toDoList">
-    <h4>To-Do List</h4>
-    <ul id="toDoItems">
-      <li id="nothingMessage">Nothing To Do!</li>
-    </ul>
-    <button id="addTaskButton">Add Task</button>
-  </div>
-  <script src="/js/toDoListJS.js"> </script>
 
-<!-- Right side: Calendar -->
+  <div class="toDoListContainer">
+    <div class="toDoList">
+      <h4>To-Do List</h4>
+      <div class="toDoListRow">
+        <input type="text" id="inputBox" placeholder="Add your task">
+        <button id="addTask">Add</button>
+      </div>
+      <ul id="listContainer">
+        <!--<li class="checked">Task 1</li>
+        <li>Task 2</li>
+        <li>Task 3</li>-->
+      </ul>
+
+  </div>
+    <script src="/js/toDoListJS.js"> </script>
+  </div>
+
+
+<!-- Middle: Calendar -->
   <div class="calendar">
     <div class="calendar-header">
       <button class="navButton" id="prev-month" type="button"><</button>
@@ -86,18 +98,24 @@
     <div class="calendar-dates" id="calendar-dates">
     </div>
   </div>
-
-  <div class ="events" id="eventHolder">
-    <div id="addEvent">
-    <button id="addEventBtn" type="button">+</button>
-      <div id="viewButtonsContainer">
+<!--Far right: Eventbutton and calendar-view buttons -->
+<div id="buttonsContainer">
+  <div id="viewButtonsContainer">
+    <div class="viewButtonRow">
       <button class="viewButton" id="dayView">Day</button>
       <button class="viewButton" id="weekView">Week</button>
+    </div>
+    <div class="viewButtonRow">
       <button class="viewButton" id="monthView">Month</button>
       <button class="viewButton" id="yearView">Year</button>
     </div>
+
   </div>
-  </div>
+  <!--EventButton -->
+  <button id="addEventBtn" type="button">+</button>
+</div>
+
+
 </div>
 
 </body>
