@@ -7,14 +7,93 @@ body{
   color: #ffffff;
 }
 
+/*--------CALENDAR--------*/
+/*----AUTHOR: ERIK----*/
+
 #calendarContainer{
   display: flex;
   margin: 20px;
   gap: 30px;
   justify-content: space-between;
   align-items: stretch;
-
 }
+
+#calendarViewTitle {
+  user-select: none;
+  }
+
+  .calendar {
+    position: relative;
+    width: 70%;
+    padding: 20px;
+    flex-direction: column;
+    height: 500px;
+    border-radius: 20px;
+    color: white;
+    background-color: rgba(40, 57, 80, 0.54);
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1% 5% 0 5%;
+    padding: 0;
+    max-height: 60px;
+    user-select: none;
+  }
+
+  .calendar-days, .calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-top: 5%;
+    user-select: none;
+  }
+
+  .calendar-days div {
+    font-weight: bold;
+    text-align: center;
+    user-select: none;
+    font-size: 18px;
+  }
+
+  .calendar-dates div {
+    display: flex;
+    flex-direction: column;     /* Stack children vertically */
+    align-items: center;    /* Align to top-left corner */
+    justify-content: flex-start;/* Push content to top */
+    padding-top: 12px;             /* Some spacing inside the cell */
+    border-radius: 12px;
+    margin: 0;
+    cursor: pointer;
+    min-height: 0;           /* Makes cells tall enough to hold content */
+    flex: 1;
+    font-size: 15px;
+    transition: background-color 0.3s ease-out;
+  }
+
+  .calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+    grid-auto-rows: 1fr; /* Makes rows grow/shrink equally */
+    flex: 1;
+    gap: 4px; /* Optional: space between cells */
+
+  }
+
+  .calendar-dates div:hover {
+    background-color: rgba(172, 159, 196, 0.27);
+  }
+
+  .calendar-dates .grey {
+    color: #7a7a7a;
+    opacity: 0.6;
+  }
+
+
+
+/*--------CHANGE-VIEW-BUTTONS--------*/
+/*----AUTHOR: LOVISA----*/
 
 #buttonsContainer {
   display: flex;
@@ -50,6 +129,9 @@ body{
 .viewButton:hover {
   background-color: #6f7388;
 }
+
+/*--------TO DO LIST--------*/
+/*----AUTHOR: LOVISA----*/
 
 #toDoListContainer {
   display: flex;
@@ -162,7 +244,6 @@ ul li span:hover{
   font-size: 16px;
 }
 
-
 #toDoItems li.completed {
   text-decoration: line-through;
   color: #bbb;
@@ -173,91 +254,72 @@ ul#listContainer {
 }
 
 
+/*--------DAY VIEW--------*/
+/*----AUTHOR: LOVISA----*/
 
-
-#addTaskButton {
-  background: rgba(128, 153, 183, 0.58);
-  color: white;
-  padding: 10px 20px;
-  width: 100%;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  height: 50px;
-  font-size: 20px;
-  transition: background-color 0.3s ease-out;
-}
-
-
-#addTaskButton:hover {
-  background-color: #6f7388;
-}
-
-#calendarViewTitle {
-  user-select: none;
-}
-
-.calendar {
-  width: 70%;
+#day-view {
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: 20px;
-  flex-direction: column;
-  height: 500px;
+  background-color: rgba(40, 57, 80);
+  z-index: 10;
   border-radius: 20px;
-  color: white;
-  background-color: rgba(40, 57, 80, 0.54);
+  width: 100%;
+  height: 100%;
+  display: none;
+  box-sizing: border-box;
 }
 
-.calendar-header {
+#day-title {
+  padding-left: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}
+
+.activityRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1% 5% 0 5%;
+  border-radius: 20px;
+  background: #edeef0;
+  padding-left: 10px;
+  margin-bottom: 25px;
+  margin-right: 475px;
+}
+input {
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 20px;
+  background: transparent;
+}
+
+#activity-list {
+  margin-top: 20px;
+  list-style-type: none;
   padding: 0;
-  max-height: 60px;
-  user-select: none;
 }
 
-.calendar-days, .calendar-dates {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-top: 5%;
-  user-select: none;
+#activity-list li {
+  background-color: #fff;
+  color: #000;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 20px;
 }
 
-.calendar-days div {
-  font-weight: bold;
-  text-align: center;
-  user-select: none;
-  font-size: 18px;
+#new-activity {
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
 }
 
-.calendar-dates div {
-  display: flex;
-  flex-direction: column;     /* Stack children vertically */
-  align-items: center;    /* Align to top-left corner */
-  justify-content: flex-start;/* Push content to top */
-  padding-top: 12px;             /* Some spacing inside the cell */
-  border-radius: 12px;
-  margin: 0;
-  cursor: pointer;
-  min-height: 0;           /* Makes cells tall enough to hold content */
-  flex: 1;
-  font-size: 15px;
-  transition: background-color 0.3s ease-out;
-}
 
-.calendar-dates {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
-  grid-auto-rows: 1fr; /* Makes rows grow/shrink equally */
-  flex: 1;
-  gap: 4px; /* Optional: space between cells */
+/*--------NAV-BUTTONS--------*/
+/*----AUTHOR: ERIK----*/
 
-}
-
-.calendar-dates div:hover {
-  background-color: rgba(172, 159, 196, 0.27);
-}
 
 .navButton {
   width: 100px;
@@ -283,22 +345,9 @@ ul#listContainer {
   background-color: rgba(172, 159, 196, 0.27);
 }
 
-.calendar-dates .grey {
-  color: #7a7a7a;
-  opacity: 0.6;
-}
 
-/*EVENT-HOLDER*/
-#eventHolder{
-  border: none;
-  width: 15%;
-  padding: 2%;
-  margin-left: 20px;
-  background-color: rgba(40, 57, 80, 0.54);
-  border-radius: 20px;
-  flex-direction: column;
-  height: 105px;
-}
+/*--------ADD EVENT BUTTON--------*/
+/*----AUTHOR: ERIK----*/
 
 #addEventBtn {
   background: rgba(128, 153, 183, 0.58);
@@ -315,6 +364,111 @@ ul#listContainer {
 
 #addEventBtn:hover {
   background: rgba(179, 212, 252, 0.73);
+}
+
+
+/*--------ADD EVENT FORM--------*/
+/*----AUTHOR: LOVISA----*/
+
+#addEventForm {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(128, 153, 183);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  z-index: 100;
+}
+
+#addEventForm input {
+  width: 80%;
+  padding: 8px;
+  border-radius: 20px;
+  border: none;
+
+}
+#event-title {
+  color: #6f7388;
+  font-style: italic;
+  background: #edeef0;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+
+#addEventForm button {
+  padding: 10px;
+  margin: 10px;
+  background-color: rgba(128, 153, 183, 0.58);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#addEventForm h3 {
+  font-weight: bold;
+  margin-top: 0;
+  margin-left: 0;
+  margin-bottom: 10px;
+
+}
+
+.label[for="event-title"]  {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#addEventForm button:hover {
+  background-color: #6f7388;
+}
+
+.event-marker {
+  background-color: #edeb64;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+#eventViewPopup {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(40, 57, 80, 0.9);
+  color: white;
+  padding: 20px;
+  width: 300px;
+  z-index: 100;
+  display: none;
+}
+
+#eventViewPopup h3 {
+  margin-bottom: 10px;
+}
+
+#eventViewPopup p {
+  margin: 5px 0;
+}
+
+#eventViewPopup button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgba(128, 153, 183, 0.58);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#eventViewPopup button:hover {
+  background-color: #6f7388;
 }
 
 
