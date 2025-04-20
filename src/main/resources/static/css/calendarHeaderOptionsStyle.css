@@ -80,27 +80,3 @@
 #settingsBtn:hover {
   background-color: rgba(172, 159, 196, 0.27);
 }
-
-#viewButtonsContainer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-
-}
-
-.viewButton {
-  background-color: #4b4e57;
-  align-content: center;
-  align-items: center;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 0;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.viewButton:hover {
-  background-color: #6f7388;
-}

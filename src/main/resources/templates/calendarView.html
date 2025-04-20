@@ -36,12 +36,6 @@
   <div id="calendarViewTitleContainer">
     <h3 id="calendarViewTitle">Self-Calendar</h3>
   </div>
-  <div id="viewButtonsContainer">
-    <button class="viewButton" id="dayView">Day</button>
-    <button class="viewButton" id="weekView">Week</button>
-    <button class="viewButton" id="monthView">Month</button>
-    <button class="viewButton" id="yearView">Year</button>
-  </div>
   <div id="calendarViewButtonContainer">
     <div id="theme-container">
       <label id="moonIcon" for="toggle">
@@ -62,40 +56,27 @@
     </div>
   </div>
 </header>
+
+
 <div id="calendarContainer">
-  <!--Left side: To-do-list -->
-  <div id="toDoList">
-    <h4>To-Do List</h4>
-    <ul id="toDoItems">
-      <li>
-        <label for="task1">
-          <input type="checkbox" id="task1"> Task 1
-      </label>
-      </li>
+  <!-- LEFT SIDE: TO DO LIST -->
 
-      <li>
-        <label for="task2">
-          <input type="checkbox" id="task2"> Task 2
-        </label>
-      </li>
+  <div class="toDoListContainer">
+    <div class="toDoList">
+      <h4>To-Do List</h4>
+      <div class="toDoListRow">
+        <input type="text" id="inputBox" placeholder="Add your task">
+        <button id="addTask">Add</button>
+      </div>
+      <ul id="listContainer"></ul>
 
-      <li>
-        <label for="task3">
-          <input type="checkbox" id="task3"> Task 3
-        </label>
-      </li>
-
-      <li>
-        <label for="task4">
-          <input type="checkbox" id="task4">Task 4
-        </label>
-        </li>
-    </ul>
-    <button id="addTaskButton">Add Task</button>
   </div>
-  <script src="/js/toDoListJS.js"> </script>
+    <script src="/js/toDoListJS.js"> </script>
+  </div>
 
-<!-- Right side: Calendar -->
+
+<!-- MIDDLE: CALENDAR -->
+
   <div class="calendar">
     <div class="calendar-header">
       <button class="navButton" id="prev-month" type="button"><</button>
@@ -111,14 +92,92 @@
       <div>Sat</div>
       <div>Sun</div>
     </div>
-    <div class="calendar-dates" id="calendar-dates">
+    <div class="calendar-dates" id="calendar-dates"></div>
+
+    <!--DAY-VIEW-SECTION, DISPLAYED WHEN 'DAY' IS CLICKED. -->
+    <div class="day-view" id="day-view" style="display: none;">
+    <h3 id="day-title"></h3>
+      <div class="activityRow">
+        <input type="text" id="new-activity" placeholder="Add new activity for today">
+        <button id="add-activity">Add</button>
+      </div>
+      <div id="day-activities">
+        <ul id="activity-list"></ul>
+
+      </div>
     </div>
   </div>
-  <div class ="events" id="eventHolder">
-    <div id="addEvent">
-      <button id="addEventBtn" type="button">+</button>
+
+
+<!--RIGHT SIDE: ADD EVENT-BUTTON AND CHANGE VIEW-BUTTONS -->
+
+<div id="buttonsContainer">
+  <div id="viewButtonsContainer">
+    <div class="viewButtonRow">
+      <button class="viewButton" id="dayView">Day</button>
+      <button class="viewButton" id="weekView">Week</button>
     </div>
+    <div class="viewButtonRow">
+      <button class="viewButton" id="monthView">Month</button>
+      <button class="viewButton" id="yearView">Year</button>
+    </div>
+
   </div>
+
+
+  <!-- ADD EVENT -->
+
+  <div id="addEventForm" style="display: none;">
+  <h3>Add Event</h3>
+
+    <label for="event-title">Title of event: </label>
+    <input type="text" id="event-title" name="event-title" placeholder="Enter event title" required>
+
+    <label for="event-date">Date of event: </label>
+    <input type="date" id="event-date" name="event-date" required>
+
+    <label for="start-time">Start time:</label>
+    <input type="time" id="start-time" name="start-time" required>
+
+    <label for="end-time">End time: </label>
+    <input type="time" id="end-time" name="end-time" required>
+
+    <label for="event-description">Description</label>
+    <textarea id="event-description" name="event-description" placeholder="Enter event description" rows="3"></textarea>
+
+    <label for="event-color">Event Color:</label>
+    <input type="color" id="event-color" value="#ff0000">
+
+    <button id="saveEventBtn">Save</button>
+    <button id="cancelEventBtn">Cancel</button>
+
+    <script src="/js/addEventJS.js"></script>
+  </div>
+
+
+  <!--EVENT VIEW POPUP -->
+
+  <div id="eventViewPopup" style="display: none;">
+    <h3 id="popup-event-title"></h3>
+    <p id="popup-event-date"></p>
+    <p id="popup-event-description"></p>
+    <p id="popup-event-time"></p>
+    <div id="popup-event-color" style="height: 20px; width: 20px; border-radius: 50%;"></div>
+
+    <button id="editEventBtn">Edit Event</button>
+    <button id="deleteEventBtn">Delete Event</button>
+    <button id="closeEventPopupBtn">Close</button>
+
+  </div>
+
+
+
+  <!--EVENT-BUTTON -->
+  <button id="addEventBtn" type="button">+</button>
+  <script src="/js/calendarViewJS.js"></script>
+</div>
+
+
 </div>
 
 </body>
