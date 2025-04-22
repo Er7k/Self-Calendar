@@ -141,7 +141,7 @@ body{
   width: 100%;
 }
 .toDoList {
-  width: 75%;
+  width: 100%;
   background-color: rgba(40, 57, 80, 0.54);
   padding: 20px;
   border-radius: 20px;
@@ -370,6 +370,10 @@ input {
 /*--------ADD EVENT FORM--------*/
 /*----AUTHOR: LOVISA----*/
 
+* {
+  box-sizing: border-box;
+}
+
 #addEventForm {
   position: absolute;
   top: 10%;
@@ -378,48 +382,113 @@ input {
   background: rgba(128, 153, 183);
   color: white;
   padding: 20px;
-  border-radius: 10px;
-  width: 300px;
+  border-radius: 20px;
+  width: 500px;
+  max-width: 90%;
   z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
 
 #addEventForm input {
-  width: 80%;
+  width: 100%;
   padding: 8px;
+  margin-bottom: 15px;
   border-radius: 20px;
-  border: none;
+  border: 2px solid #ccc;
+}
+
+#addEventForm input:focus {
+  border-color: rgba(34, 47, 64, 0.9);
+  outline: none;
+}
+
+#addEventForm h3 {
+  font-weight: bold;
+  margin: 0 0 15px 0;
+}
+
+label[for="event-title"],
+label[for="event-date"],
+label[for="start-time"],
+label[for="end-time"],
+label[for="event-description"],
+label[for="event-color"]{
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 
 }
+
 #event-title {
-  color: #6f7388;
-  font-style: italic;
+  color: rgba(32, 30, 30, 0.6);
   background: #edeef0;
   padding: 3px;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
 }
 
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  color: rgba(32, 30, 30, 0.6);
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  background: #edeef0;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  transition: border-color 0.3s ease;
+  resize: vertical;
+}
+
+textarea:focus {
+  border-color: rgba(34, 47, 64, 0.9);
+  outline: none;
+  background-color: #eaeaea;
+}
+
+input[type="color"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+input[type="color"]:focus {
+  border-color: rgba(34, 47, 64, 0.9);
+  outline: none;
+  background-color: #eaeaea;
+}
 
 #addEventForm button {
-  padding: 10px;
-  margin: 10px;
+  padding: 12px 20px;
+  margin: 10px 0;
   background-color: rgba(128, 153, 183, 0.58);
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-}
-
-#addEventForm h3 {
-  font-weight: bold;
-  margin-top: 0;
-  margin-left: 0;
-  margin-bottom: 10px;
-
-}
-
-.label[for="event-title"]  {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 #addEventForm button:hover {
@@ -429,11 +498,12 @@ input {
 .event-marker {
   background-color: #edeb64;
   color: white;
-  padding: 2px 5px;
-  border-radius: 3px;
+  padding: 5px 10px;
+  border-radius: 20px;
   font-size: 12px;
   margin-top: 5px;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 #eventViewPopup {
@@ -443,32 +513,47 @@ input {
   transform: translateX(-50%);
   background-color: rgba(40, 57, 80, 0.9);
   color: white;
-  padding: 20px;
-  width: 300px;
+  padding: 30px;
+  width: 320px;
   z-index: 100;
   display: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 #eventViewPopup h3 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
 }
 
 #eventViewPopup p {
-  margin: 5px 0;
+  margin: 15px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: bold;
 }
 
 #eventViewPopup button {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: rgba(128, 153, 183, 0.58);
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: rgba(128, 153, 183, 0.8);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 #eventViewPopup button:hover {
   background-color: #6f7388;
+  transform: translateY(-3px);
 }
 
 
