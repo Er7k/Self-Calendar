@@ -1,13 +1,12 @@
-package com.g25.selfcalendar.model;
+package com.g25.selfcalendar.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "to_do_list")
 public class ToDo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public void setId(Long id) {

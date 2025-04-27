@@ -1,9 +1,6 @@
-package com.g25.selfcalendar.model;
+package com.g25.selfcalendar.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
@@ -26,6 +23,7 @@ public class RecurringActivity {
     private String title;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

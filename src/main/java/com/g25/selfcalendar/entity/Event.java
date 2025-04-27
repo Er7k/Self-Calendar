@@ -1,4 +1,4 @@
-package com.g25.selfcalendar.model;
+package com.g25.selfcalendar.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +16,7 @@ import java.sql.Time;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 

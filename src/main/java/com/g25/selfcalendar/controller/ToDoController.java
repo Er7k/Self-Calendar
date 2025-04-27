@@ -1,7 +1,8 @@
-package com.g25.selfcalendar.Controller;
+package com.g25.selfcalendar.controller;
+
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class ToDoController {
 }

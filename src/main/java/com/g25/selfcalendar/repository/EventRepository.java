@@ -1,9 +1,9 @@
-package com.g25.selfcalendar.model;
+package com.g25.selfcalendar.repository;
 
+import com.g25.selfcalendar.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {

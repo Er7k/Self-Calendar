@@ -67,7 +67,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-    databas-frida
+<!--    databas-frida-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -76,9 +76,10 @@
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-data-jdbc</artifactId>-->
 <!--        </dependency>-->
-        <!-- Kommentera tillbaka när vi har kopplat databas och för att Java
-        Klasserna ska fungera -->
-
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

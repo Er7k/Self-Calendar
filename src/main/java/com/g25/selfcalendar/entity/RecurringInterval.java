@@ -1,10 +1,8 @@
-package com.g25.selfcalendar.model;
+package com.g25.selfcalendar.entity;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Getter // slippa skriva alla metoder
 @Setter // slippa skriva alla metoder
@@ -17,6 +15,7 @@ public class RecurringInterval {
 
     @Column(name = "id")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
