@@ -35,3 +35,5 @@ build/
 node_modules
 dist
 .cache
+
+src/main/resources/application.properties
