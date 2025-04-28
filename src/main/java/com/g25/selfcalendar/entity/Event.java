@@ -44,6 +44,10 @@ public class Event {
     @JoinColumn(name = "user_id")
     private User user; // foregin key user
 
+    // många event till en recurring interval
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rec_id")
+    private RecurringInterval recurringInterval;
 
 
 }
