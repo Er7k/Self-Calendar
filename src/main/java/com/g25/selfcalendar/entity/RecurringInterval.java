@@ -18,6 +18,11 @@ public class RecurringInterval {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recurring_interval")
+    private RecurringType type;
+
+
 
 
 
