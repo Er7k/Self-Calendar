@@ -4,20 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const loginUsername = document.getElementById("username").value;
-    const loginPassword = document.getElementById("password").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
     const response = await fetch('api/users/login', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({loginUsername, loginPassword})
+      body: JSON.stringify({username, password})
     });
 
     if (response.ok) {
       displayWelcomeMessage();
-      alert('Logged in as ' + loginUsername)
+      alert('Logged in as ' + username)
     } else {
       alert('Incorrect username or password');
     }
