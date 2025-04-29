@@ -9,7 +9,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // optional wrapper class can contain either a value or null, to avoid nullpointerexception
     Optional<User> findByEmail(String email);
     Optional<User> findByUsername(String username);
+    Optional<User> findByUsernameAndPassword(String username, String password);
 
 
     User findFirstById(Long id);
+
 }

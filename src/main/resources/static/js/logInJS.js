@@ -1,11 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("title");
   const innerContainer = document.getElementById("inner-container");
-  document.getElementById("login-form").addEventListener("submit", (e) => {
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    displayWelcomeMessage();
 
-  })
+    const loginUsername = document.getElementById("username").value;
+    const loginPassword = document.getElementById("password").value;
+
+    const response = await fetch('api/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({loginUsername, loginPassword})
+    });
+
+    if (response.ok) {
+      displayWelcomeMessage();
+      alert('Logged in as ' + loginUsername)
+    } else {
+      alert('Incorrect username or password');
+    }
+  });
 
   function displayWelcomeMessage() {
 

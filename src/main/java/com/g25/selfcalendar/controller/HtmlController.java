@@ -1,13 +1,14 @@
-package com.g25.selfcalendar;
+package com.g25.selfcalendar.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 @Controller
 public class HtmlController {
 
-    @GetMapping("/")
-    public String home() {
+    @GetMapping("/index")
+    public String loginPage() {
         return "index";
     }
 

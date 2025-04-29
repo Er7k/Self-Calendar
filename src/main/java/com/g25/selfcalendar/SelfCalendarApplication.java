@@ -10,6 +10,4 @@ public class SelfCalendarApplication {
     public static void main(String[] args) {
         SpringApplication.run(SelfCalendarApplication.class, args);
     }
-
-    HtmlController htmlController = new HtmlController();
 }
