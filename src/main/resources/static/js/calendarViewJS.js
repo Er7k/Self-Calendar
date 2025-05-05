@@ -1,34 +1,83 @@
 
 
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     const calendarDates = document.getElementById('calendar-dates');
-    const calendarHeader = document.querySelector('.calendar-header');
-    const calendarDays = document.querySelector('.calendar-days');
     const monthYear = document.getElementById('month-year');
     const prevBtn = document.getElementById('prev-month');
     const nextBtn = document.getElementById('next-month');
-    const dayViewBtn = document.getElementById('dayView');
-    const dayViewSection = document.getElementById('day-view');
-    const dayTitle = document.getElementById('day-title');
-    const activityList = document.getElementById('activity-list');
-    const newActivityInput = document.getElementById('new-activity');
-    const addActivityBtn = document.getElementById('add-activity');
-    const weekViewBtn = document.getElementById('weekView');
-    const monthViewBtn = document.getElementById('monthView');
-    const yearViewBtn = document.getElementById('yearView');
+    const weekViewBtn = document.getElementById('week-view');
+    const monthViewBtn = document.getElementById('month-view');
 
     let currentDate = new Date();
     let currentView = 'month';
-    let activities = {};
 
-    function renderCalender(date) {
+
+    function renderMonthView(date) {
         const year = date.getFullYear();
-        const month = date.getMonth();
+        const month = date.getMonth;
 
         const monthNames = ["January", "February",
             "March", "April", "May", "June", "July", "August",
             "September", "October", "November", "December"];
         monthYear.textContent = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        calendarDates.innerHTML = "";
+
+        for (let i = startOffset; i > 0; i--) {
+            const day = prevMonthLastDate - i + 1;
+            calendarDates.innerHTML += `<div class="grey">${day}</div>`;
+        }
+
+        for (let day = 1; day <= lastDate; day++) {
+            calendarDates.innerHTML += `<div class="dayInMonth">${day}</div>`;
+        }
+
+        const totalCells = startOffset + lastDate;
+        const nextDays = 42 - totalCells;
+
+        for (let i = 1; i <= nextDays; i++) {
+            calendarDates.innerHTML += `<div class="grey">${i}</div>`;
+        }
+    }
+
+    function renderWeekView() {
+        const today = new Date();
+        const currentDay = today.getDay();
+        const diffToMonday = currentDay === 0 ? 6 : currentDay - 1;
+        const monday = new Date(today);
+        monday.setDate(today.getDate() - diffToMonday);
+
+        const weekDates = [];
+        for (let i = 0; i < 7; i++) {
+            const currentDay = new Date(monday);
+            currentDay.setDate(monday.getDate() + i);
+            weekDates.push(currentDay);
+        }
+
+        calendarDates.innerHTML = '';
+
+        weekDates.forEach(date => {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('calendar-day-cell');
+            dayCell.innerText = `${date.getDate()}`;
+            calendarDates.appendChild(dayCell);
+        });
+    }
+
+    function toggleCalendarFlip() {
+        const calendarContainer = document.querySelector('.calendar-container');
+
+    }
+
+
+    function renderCalender(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+
 
         calendarDates.innerHTML = "";
 
@@ -40,13 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             dayViewSection.style.display = 'block';
 
-            const todayActivities = activities[today.toDateString()] || [];
-            activityList.innerHTML = "";
-            todayActivities.forEach((activity, index) => {
-                const li = document.createElement('li');
-                li.textContent = activity;
-                activityList.appendChild(li);
-            });
 
 
 
@@ -117,19 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCalender(currentDate);
     });
 
-    addActivityBtn.addEventListener('click', () => {
-        const newActivity = newActivityInput.value.trim();
-        if (newActivity) {
-            const todayString = currentDate.toDateString();
-            if (!activities[todayString]) {
-                activities[todayString] = [];
-            }
-            activities[todayString].push(newActivity);
-            renderCalender(currentDate);
-            newActivityInput.value = "";
 
-        }
-    });
 
     renderCalender(currentDate);
-});
+}); */

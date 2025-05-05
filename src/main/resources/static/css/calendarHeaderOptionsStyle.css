@@ -1,10 +1,4 @@
-#header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 8%;
-  margin: 10px 10px 10px 60px;
-}
+
 
 #calendarViewTitleContainer {
   display: flex;
@@ -16,6 +10,29 @@
 
 .calendarViewTitle {
   align-content: center;
+}
+
+#changeViewButtonsContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.viewButton {
+  border-radius: 10px;
+  gap: 0;
+  width: 85px;
+  padding: 14px;
+  color: white;
+  background-color: rgba(40, 57, 80, 0.54);
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: none;
+}
+
+.viewButton:hover {
+  background-color: #6f7388;
+  transform: translateY(-3px);
 }
 
 #theme-container {

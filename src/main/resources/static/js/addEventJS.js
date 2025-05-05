@@ -1,152 +1,128 @@
-
-/*--------AUTHOR: LOVISA--------*/
-
-
 document.addEventListener('DOMContentLoaded', function() {
-    const addEventBtn = document.getElementById('addEventBtn');
-    const addEventForm = document.getElementById('addEventForm');
-    const saveEventBtn = document.getElementById('saveEventBtn');
-    const cancelEventBtn = document.getElementById('cancelEventBtn');
+    const addEventButton = document.getElementById('add-event-button');
+    const sidebarContainer = document.querySelector('.sidebar-container');
+    const addEventForm = document.getElementById('event-form');
+    const saveEventBtn = addEventForm.querySelector('button[type="submit"]');
     const eventDateInput = document.getElementById('event-date');
     const eventTitleInput = document.getElementById('event-title');
-    const startTimeInput = document.getElementById('start-time');
-    const endTimeInput = document.getElementById('end-time');
-    const eventDescriptionInput = document.getElementById('event-description');
-    const eventColorInput = document.getElementById('event-color');
 
-    const eventViewPopup = document.getElementById('eventViewPopup');
-    const eventTitlePopup = document.getElementById('popup-event-title');
-    const eventDatePopup = document.getElementById('popup-event-date');
-    const eventDescriptionPopup = document.getElementById('popup-event-description');
-    const eventTimePopup = document.getElementById('popup-event-time');
-    const eventColorPopup = document.getElementById('popup-event-color');
-    const editEventBtn = document.getElementById('editEventBtn');
-    const deleteEventBtn = document.getElementById('deleteEventBtn');
-    const closeEventPopupBtn = document.getElementById('closeEventPopupBtn');
-
+    const eventContainer = document.querySelector('.calendar-dates');
     let events = {};
 
-    addEventBtn.addEventListener('click', () => {
-        addEventForm.style.display = 'block';
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    function generateCalendar(month, year) {
+        eventContainer.innerHTML = '';
+
+        const firstDay = new Date(year, month, 1);
+        const firstDayIndex = firstDay.getDay();
+
+        const totalDaysInMonth = new Date(year, month, + 1, 0).getDate();
+
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July',
+            'August', 'September', 'October', 'November', 'December'
+        ];
+        document.getElementById('month-year').textContent = `${monthNames[month]} ${year}`;
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptyCell = document.createElement('div');
+            eventContainer.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= totalDaysInMonth; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.textContent = day;
+
+            const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            dayDiv.dataset.date = fullDate;
+
+            if (events[fullDate]) {
+                events[fullDate].forEach(event=> {
+                    const eventMarker = document.createElement('i');
+                    eventMarker.classList.add('div');
+                    eventMarker.style.fontSize = '1.2rem';
+                    eventMarker.style.color = event.color;
+                    dayDiv.appendChild(eventMarker);
+                });
+            }
+            eventContainer.appendChild(dayDiv);
+        }
+    }
+
+    generateCalendar(currentMonth, currentYear);
+
+    document.getElementById('prev-month').addEventListener('click', function() {
+        if (currentMonth === 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else {
+            currentMonth--;
+        }
+        generateCalendar(currentMonth, currentYear);
     });
 
-    cancelEventBtn.addEventListener('click', () => {
-        addEventForm.style.display = 'none';
+    document.getElementById('next-month').addEventListener('click', function() {
+        if (currentMonth === 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else {
+            currentMonth++;
+        } generateCalendar(currentMonth, currentYear);
     });
 
-    saveEventBtn.addEventListener('click', () => {
+    addEventButton.addEventListener('click', () => {
+        sidebarContainer.classList.toggle('sidebar-flip');
+        addEventButton.classList.toggle('clicked');
+    });
+
+    addEventForm.addEventListener('submit', (e) => {
+        e.preventDefault();
         const eventDate = eventDateInput.value;
         const eventTitle = eventTitleInput.value.trim();
-        const startTime = startTimeInput.value;
-        const endTime = endTimeInput.value;
-        const eventDescription = eventDescriptionInput.value.trim();
-        const eventColor = eventColorInput.value;
+        const eventColor = document.getElementById('event-color').value;
 
         if (eventDate && eventTitle) {
             if (!events[eventDate]) {
                 events[eventDate] = [];
             }
 
-        const eventDetails = {
+            const eventDetails = {
                 title: eventTitle,
-                startTime: startTime,
-                endTime: endTime,
-                description: eventDescription,
-                color: eventColor
-        };
+                color: eventColor  // Default color for the dot
+            };
 
-         events[eventDate].push(eventDetails);
+            events[eventDate].push(eventDetails);
+            displayEventOnCalendar(eventDate, eventDetails);
 
-         displayEventOnCalendar(eventDate, eventDetails);
+            eventDateInput.value = '';
+            eventTitleInput.value = '';
+            document.getElementById('event-color').value = '#3f72af';
 
-         eventDateInput.value = '';
-         eventTitleInput.value = '';
-         startTimeInput.value = '';
-         endTimeInput.value = '';
-         eventDescriptionInput.value = '';
-         eventColorInput.value = '#ff0000';
-         addEventForm.style.display = 'none';
-
+            sidebarContainer.classList.remove('sidebar-flip');
         } else {
             alert("Please fill in both the date and the event title!");
         }
     });
 
     function displayEventOnCalendar(date, eventDetails) {
-        const dayElements = document.querySelectorAll('.dayInMonth');
+        const dayElements = document.querySelectorAll('.calendar-dates div');
         dayElements.forEach((day) => {
-            if (day.textContent === new Date(date).getDate().toString()) {
-                const eventMarker = document.createElement('div');
+
+            const calendarDate = day.dataset.date;
+
+            if (calendarDate === date) {
+                // Create the icon element for the event
+                const eventMarker = document.createElement('div');  // Corrected this line
                 eventMarker.classList.add('event-marker');
-                eventMarker.textContent = eventDetails.title;
+                eventMarker.textContent = eventDetails.title;  // Set the color of the icon (default color)
 
                 eventMarker.style.backgroundColor = eventDetails.color;
-
-                eventMarker.addEventListener('click', () => showEventPopup(date, eventDetails));
-
+                // Append the icon to the day cell
                 day.appendChild(eventMarker);
             }
         });
     }
-
-    function showEventPopup(date, eventDetails) {
-        eventTitlePopup.textContent = eventDetails.title;
-        eventDatePopup.textContent = new Date(date).toDateString();
-        eventDescriptionPopup.textContent = eventDetails.description || "No description provided.";
-        eventTimePopup.textContent = `Time: ${eventDetails.startTime} - ${eventDetails.endTime}`;
-        eventColorPopup.style.backgroundColor = eventDetails.color;
-
-        eventViewPopup.style.display = 'block';
-        eventViewPopup.dataset.eventDate = date;
-        eventViewPopup.dataset.eventTitle = eventDetails.title;
-        eventViewPopup.dataset.eventDetails = JSON.stringify(eventDetails);
-    }
-
-    closeEventPopupBtn.addEventListener('click', () => {
-        eventViewPopup.style.display = 'none';
-    });
-
-    deleteEventBtn.addEventListener('click', () => {
-        const eventDate = eventViewPopup.dataset.eventDate;
-        const eventTitle = eventViewPopup.dataset.eventTitle;
-
-        if (events[eventDate]) {
-            events[eventDate] = events[eventDate].filter(event => event !== eventTitle);
-
-            if (events[eventDate].length === 0) {
-                delete events[eventDate];
-            }
-        }
-
-        const dayElements = document.querySelectorAll('.dayInMonth');
-        dayElements.forEach((day) => {
-            if (day.textContent === new Date(eventDate).getDate().toString()) {
-                const eventMarkers = day.querySelectorAll('.event-marker');
-                eventMarkers.forEach(marker => {
-                    if (marker.textContent === eventTitle) {
-                        marker.remove();
-                    }
-                });
-            }
-        });
-
-        eventViewPopup.style.display = 'none';
-
-    });
-
-    editEventBtn.addEventListener('click', () => {
-        const eventDate = eventViewPopup.dataset.eventDate;
-        const eventDetails = JSON.parse(eventViewPopup.dataset.eventDetails);
-
-        eventDateInput.value = eventDate;
-        eventTitleInput.value = eventDetails.title;
-        startTimeInput.value = eventDetails.startTime;
-        endTimeInput.value = eventDetails.endTime;
-        eventDescriptionInput.value = eventDetails.description;
-        eventColorInput.value = eventDetails.color;
-
-        addEventForm.style.display = 'block';
-        eventViewPopup.style.display = 'none';
-    });
-
 });
