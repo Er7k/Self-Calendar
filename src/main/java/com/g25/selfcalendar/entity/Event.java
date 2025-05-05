@@ -6,6 +6,12 @@ import lombok.*;
 import java.sql.Date;
 import java.sql.Time;
 
+/**
+This class is used to connect the database to the code. The tables
+in the database match the columns here.
+@author Frida Larsson
+ */
+
 @Getter // slippa skriva alla metoder
 @Setter // slippa skriva alla metoder
 @NoArgsConstructor // slippa skriva constructor
@@ -38,16 +44,19 @@ public class Event {
     @Column(name = "all_day")
     private boolean allDay;
 
+    @Column(name = "description")
+    private String description;
+
     // många till en relationship många event till en user
     @ManyToOne(fetch = FetchType.LAZY) // lazy = User object will be loaded lazily (only when needed)
     // kan bytas till .EAGER = load the User immediately when the Event is loaded
     @JoinColumn(name = "user_id")
     private User user; // foregin key user
 
-    // många event till en recurring interval
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rec_id")
+    @JoinColumn(name = "rec_id") // matchar kolumnen i din databas
     private RecurringInterval recurringInterval;
+
 
 
 }

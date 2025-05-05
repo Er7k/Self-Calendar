@@ -9,6 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+This class is used to create endpoints to the user and connect the backend and
+frontend code.
+@author Simon Ljung
+ */
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -43,6 +49,10 @@ public class UserController {
 
     }
 
+    /**
+    @GetMapping("/{id}") is used to get the user by their id.
+    This method gets the id of the requested user.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         UserDto userDto = userService.getUserDtoById(id);

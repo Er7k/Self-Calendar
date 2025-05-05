@@ -9,6 +9,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
+/**
+ This class is used to only send specific user information to the frontend from the backend
+ @author Simon Ljung
+ */
+
+
 
 @Builder
 public class UserDto {
