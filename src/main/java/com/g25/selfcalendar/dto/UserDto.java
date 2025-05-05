@@ -7,12 +7,18 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * Data Transfer Object for user information
+ * This class is used to send limited and relevant information
+ * from the backend to the frontend, hiding important
+ * information like passwords.
+ *
+ * @author Simon Ljung
+ */
+
 @Getter
 @Setter
-/**
- This class is used to only send specific user information to the frontend from the backend
- @author Simon Ljung
- */
 
 
 

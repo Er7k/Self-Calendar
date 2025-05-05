@@ -8,7 +8,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * Entity representing the user in the calendar.
+ * Maps to the "users" table in the database
+ */
 @Getter
 @Setter
 

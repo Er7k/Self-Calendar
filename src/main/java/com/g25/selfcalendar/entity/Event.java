@@ -7,9 +7,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 /**
-This class is used to connect the database to the code. The tables
-in the database match the columns here.
-@author Frida Larsson
+ * This class is used to connect the database to the code. The tables
+ * in the database match the columns here.
+ * Mapped to the "events" table in the database
+ * @author Frida Larsson
  */
 
 @Getter // slippa skriva alla metoder

@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
-This class is used to create endpoints to the user and connect the backend and
-frontend code.
-@author Simon Ljung
+ * REST controller for managing user-related operations such as
+ * login, register and retrieval.
+ *
+ * This controller acts as a bridge between the backend and frontend logic
+ * @author Simon Ljung
  */
 
 @RestController
@@ -25,6 +27,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Register a new user with the provided information
+     *
+     * @param user containing the id, username, email and password.
+     * @return the registered user as a {@link UserDto}
+     *
+     * @author Simon Ljung
+     */
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody User user){
         userService.registerUser(user);
@@ -33,6 +43,15 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    /**
+     * Logs in a user using the provided login credentials
+     *
+     * @param loginRequest an object containing the username and password
+     * @return the authenticated user's {@link UserDto} or 401 Unauthorized
+     * if login fails
+     *
+     * @author Simon Ljung
+     */
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody LoginDto loginRequest) {
         User user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
@@ -50,8 +69,12 @@ public class UserController {
     }
 
     /**
-    @GetMapping("/{id}") is used to get the user by their id.
-    This method gets the id of the requested user.
+     * @GetMapping("/{id}") is used to get the user by their id.
+     * This method gets the id of the requested user.
+     * @param id the ID of the user to retrieve
+     * @return the user's {@link UserDto} if found
+     *
+     * @author Simon Ljung
      */
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id){

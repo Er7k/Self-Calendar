@@ -11,9 +11,12 @@ import java.sql.Date;
 import java.util.List;
 
 /**
-This class is used for creating endpoints to connect the backend and
-frontend code.
-@author Simon Ljung
+ * REST controller for managing calendar events.
+ * This class has endpoints for creating, retrieving, updating and deleting.
+ *
+ * These endpoints are used to connect backend and frontend
+ *
+ * @author Simon Ljung
  */
 
 @RestController
@@ -27,11 +30,12 @@ public class EventController {
     }
 
     /**
-    @GetMapping("/by-date") is used for finding events by the date
-    This is useful when a user clicks on a specific date like 2025-04-04,
-    it will show all the events for that date.
-    @author Simon Ljung
-     @return a list of events
+     * @GetMapping("/by-date") is used for finding events by the date
+     * This is useful when a user clicks on a specific date like 2025-04-04,
+     * it will show all the events for that date.
+     *
+     * @param date the date in format (yyyy-mm-dd)
+     * @return a list of events {@link EventDto} objects
      */
     @GetMapping("/by-date")
     public List<EventDto> getEventByDate(@RequestParam String date){
@@ -40,9 +44,11 @@ public class EventController {
 
 
     /**
-    @PostMapping is used for sending data
-    This method creates an event
-    @author Simon Ljung
+     * @PostMapping is used for sending data.
+     * This method creates an event
+     * @return the created event with its ID and saved properties
+     *
+     * @author Simon Ljung
      */
     @PostMapping
     public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto){
@@ -56,9 +62,11 @@ public class EventController {
     }
 
     /**
-    @DeleteMapping("/{id}") is used to delete an event using the event id
-    The method is used for deleting specific events by their id.
-    @author Simon Ljung
+     * @DeleteMapping("/{id}") is used to delete an event using the event id
+     * The method is used for deleting specific events by their id.
+     * @param id of the event to delete
+     * @return HTTP 204 No content if deleted, or 404 Not Found if the id isn't found
+     * @author Simon Ljung
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
@@ -71,9 +79,12 @@ public class EventController {
     }
 
     /**
-    @PatchMapping("/{id}") is used for updating certain parts of an event using the id.
-    In this method certain parts of the event can be updated when editing an event.
-    @author Simon Ljung
+     * @PatchMapping("/{id}") is used for updating certain parts of an event using the id.
+     * In this method certain parts of the event can be updated when editing an event.
+     * @param id of the event to update
+     * @param eventDto the updated eventDTO
+     * @return the updated {@link EventDto} or 404 if the event is not found
+     * @author Simon Ljung
      */
     @PatchMapping("/{id}")
     public ResponseEntity<EventDto> partialUpdateEvent(@PathVariable Long id, @RequestBody EventDto eventDto){
