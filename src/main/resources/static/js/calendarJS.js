@@ -31,19 +31,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let dayCounter = 1;
     for (let i = 0; i < 42; i++) {
-      let dayNumber, className;
+      let dayNumber, className, cellDate;
       if (i < startOffset) {
         dayNumber = prevMonthLastDate - startOffset + i + 1;
+        cellDate = new Date(year, month - 1, dayNumber);
         className = "grey";
       } else if (i >= (startOffset + lastDate)) {
         dayNumber = i - startOffset - lastDate + 1;
+        cellDate = new Date(year, month + 1, dayNumber);
         className = "grey";
       } else {
         dayNumber = dayCounter++;
+        cellDate = new Date(year, month, dayNumber);
         className = "dayInMonth";
       }
 
-      const isToday = new Date().toDateString() === new Date(year, month, dayNumber).toDateString();
+      const isToday = new Date().toDateString() === cellDate.toDateString();
       const extraClass = isToday ? "today" : "";
       const week = Math.floor(i / 7);
 
@@ -79,6 +82,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const week = parseInt(day.dataset.week);
       const isHighlight = week === weekNumber;
       day.classList.toggle("highlight-week", isHighlight);
+
+      if (isHighlight && day.classList.contains("grey")) {
+        day.classList.remove("grey");
+        day.classList.add("dayInMonth"); // optional: for consistent styling
+      }
     });
 
     weekRangeDisplay.textContent = formatWeekRange(weekStartDate);
@@ -184,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
         day.classList.add('selected-day');
         document.querySelector('.calendar-dates').classList.add('day-view-active');
 
-        // You could also set a variable like `currentDayViewDate = new Date(...)`
       });
     });
   }
