@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByDate(Date date);
+    List<Event> findByDateAndUserId(Date date, Long userId);
     List<Event> findByTitle(String title);
 
 }

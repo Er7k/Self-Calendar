@@ -38,8 +38,8 @@ public class EventController {
      * @return a list of events {@link EventDto} objects
      */
     @GetMapping("/by-date")
-    public List<EventDto> getEventByDate(@RequestParam String date){
-        return eventService.getEventsByDate(Date.valueOf(date));
+    public List<EventDto> getEventByDate(@RequestParam String date, @RequestParam Long userId){
+        return eventService.getEventsByDate(Date.valueOf(date), userId);
     }
 
 

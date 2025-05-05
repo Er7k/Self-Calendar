@@ -49,12 +49,14 @@ public class EventService {
      * Retrieves all events from a specific date
      *
      * @param date the date to find events by
+     * @param userId the id from the specific user
      * @return a list of EventDto objects matching the date
      *
      * @author Simon Ljung
      */
-    public List<EventDto> getEventsByDate(Date date){
-        List<Event> events = eventRepository.findByDate(date);
+    public List<EventDto> getEventsByDate(Date date, Long userId){
+        List<Event> events = eventRepository.findByDateAndUserId(date, userId);
+        //List<Event> events = eventRepository.findByDate(date);
         List<EventDto> dtoList = new ArrayList<>();
 
         for (int i = 0; i < events.size(); i++){
