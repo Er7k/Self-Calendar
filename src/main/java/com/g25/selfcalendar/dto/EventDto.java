@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 /**
-This class is used to tell the backend what to send to the frontend
-@author Simon Ljung
+ * Data Transfer Objects for transferring data between
+ * frontend and backend. This class encapsulates only the necessary
+ * fields for the client interactions.
  */
 
 

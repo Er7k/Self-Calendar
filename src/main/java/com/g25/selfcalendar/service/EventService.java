@@ -16,20 +16,47 @@ import java.util.List;
 import java.util.Optional;
 import java.sql.Date;
 
+/**
+ * Service class for handling business logic related to
+ * calendar events. Provides methods to create, retrieve and
+ * delete events.
+ *
+ * @author Simon Ljung
+ */
+
 @Service
 public class EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final RecurringIntervalRepository recurringIntervalRepository;
 
+    /**
+     * Constructs an eventservice with required repositories
+     *
+     * @param eventRepository repository for events
+     * @param userRepository repository for users
+     * @param recurringIntervalRepository repository for recurring intervals
+     *
+     * @author Simon Ljung
+     */
     public EventService(EventRepository eventRepository, UserRepository userRepository, RecurringIntervalRepository recurringIntervalRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.recurringIntervalRepository = recurringIntervalRepository;
     }
 
-    public List<EventDto> getEventsByDate(Date date){
-        List<Event> events = eventRepository.findByDate(date);
+    /**
+     * Retrieves all events from a specific date
+     *
+     * @param date the date to find events by
+     * @param userId the id from the specific user
+     * @return a list of EventDto objects matching the date
+     *
+     * @author Simon Ljung
+     */
+    public List<EventDto> getEventsByDate(Date date, Long userId){
+        List<Event> events = eventRepository.findByDateAndUserId(date, userId);
+        //List<Event> events = eventRepository.findByDate(date);
         List<EventDto> dtoList = new ArrayList<>();
 
         for (int i = 0; i < events.size(); i++){
@@ -40,12 +67,28 @@ public class EventService {
         return dtoList;
     }
 
+    /**
+     * Creates a new event from a DTO
+     *
+     * @param dto the event data to create
+     * @return the created event data
+     *
+     * @author Simon Ljung
+     */
     public EventDto createEvent (EventDto dto){
         Event event = fromDto(dto);
         Event saved = eventRepository.save(event);
         return toDto(saved);
     }
 
+    /**
+     * Converts an entity to an EventDto.
+     *
+     * @param event the entity to convert
+     * @return the correct DTO
+     *
+     * @author Simon Ljung
+     */
     public EventDto toDto(Event event){
         EventDto dto = new EventDto();
         dto.setId(event.getId());
@@ -72,6 +115,14 @@ public class EventService {
         return dto;
     }
 
+    /**
+     * Converts an EventDTO to an event entity
+     *
+     * @param dto the DTO to convert
+     * @return the corresponding entity
+     *
+     * @author Simon Ljung
+     */
     public Event fromDto(EventDto dto){
         Event event = new Event();
         event.setId(dto.getId() != null ? dto.getId() : 0);
@@ -100,8 +151,12 @@ public class EventService {
     }
 
     /**
-    This method is used to delete events using their id
-    @author Simon Ljung
+     * Deletes an event by its ID
+     *
+     * @param id of the event to delete
+     * @throws IllegalArgumentException if the event doesnt exist
+     *
+     * @author Simon Ljung
      */
     public void deleteEvent(Long id) {
         if (!eventRepository.existsById(id)){
@@ -112,10 +167,17 @@ public class EventService {
 
 
     /**
-    This method is used when updating events. If a request to change specific
-    information about an event is made, it will update using this method.
-    @return updated event
-    @author Simon Ljung
+     * Partially updates an event with the fields provided in
+     * the DTO.
+     * Non-null values will be updated
+     *
+     * @param id of the event to update
+     * @param eventDto the DTO containing the updated data
+     * @return updated EventDTO
+     * @throws ResourceNotFoundException if no event with the given
+     * ID is found
+     *
+     * @author Simon Ljung
      */
     public EventDto partialUpdateEvent(Long id, EventDto eventDto){
         Event existingEvent = eventRepository.findById(id)

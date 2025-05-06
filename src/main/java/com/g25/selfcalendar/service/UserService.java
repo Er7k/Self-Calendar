@@ -9,18 +9,39 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+ /**
+  * UserService is responsible for handling businesslogic related
+  * to users, such as login, registration and authentification.
+  * @author Simon Ljung
+  */
+ @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+     /**
+      * Constructs a new UserService with dependencies injected
+      *
+      * @param userRepository repository for users
+      * @param passwordEncoder encoder for encrypting passwords
+      *
+      * @author Simon Ljung
+      */
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+     /**
+      * Registers a new user by encoding their password and saving
+      * them to the database
+      *
+      * @param user the user entity to register
+      *
+      * @author Simon Ljung
+      */
     public void registerUser(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         System.out.println("Encoded password " + encodedPassword);
@@ -28,6 +49,16 @@ public class UserService {
         userRepository.save(user);
     }
 
+     /**
+      * Authenticates a user by verifying the username and password
+      *
+      * @param username of the user
+      * @param password raw password to check
+      *
+      * @return true if authentification is successful otherwise false
+      *
+      * @author Simon Ljung
+      */
     public boolean authenticate(String username, String password){
         Optional<User> userOptional = userRepository.findByUsername(username);
 
@@ -39,6 +70,16 @@ public class UserService {
         return false;
     }
 
+     /**
+      * Logs in a user if credentials are valid
+      *
+      * @param username of the user
+      * @param password raw password
+      *
+      * @return user entity if successful, otherwise null.
+      *
+      * @author Simon Ljung
+      */
     public User login(String username, String password){
         if (authenticate(username, password)) {
             return userRepository.findByUsername(username).orElse(null);
@@ -46,6 +87,14 @@ public class UserService {
         return null;
     }
 
+     /**
+      * Reterives UserDto by the users ID's
+      *
+      * @param id of the user
+      * @return a dto containing id, username and email
+      *
+      * @author Simon Ljung
+      */
     public UserDto getUserDtoById(Long id){
         User user = userRepository.findFirstById(id);
 
