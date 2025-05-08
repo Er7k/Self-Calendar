@@ -7,9 +7,24 @@
   align-content: center;
   justify-content: center;
 }
+.logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-right: 15px;
+}
+
+#top-left-logo {
+  width: 4px;
+  height: auto;
+  margin-right: 10px;
+}
 
 .calendarViewTitle {
   align-content: center;
+
 }
 
 #changeViewButtonsContainer {

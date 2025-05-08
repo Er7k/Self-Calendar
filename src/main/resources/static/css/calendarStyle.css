@@ -19,16 +19,7 @@ body{
   min-height: 90vh;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 10vh;
-  width: 100%;
 
-  border-radius: 10px;
-  box-sizing: border-box;
-}
 
 #header-title {
   font-size: 1.8rem;
