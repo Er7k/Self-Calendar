@@ -1,0 +1,10 @@
+body{
+    margin:0;
+    height: 100vh;
+    background: linear-gradient(320deg, rgb(23, 33, 61), rgb(36, 44, 51));
+    font-family: "Nunito", sans-serif;
+    font-size: 26px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+}

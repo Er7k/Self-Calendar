@@ -1,6 +1,7 @@
 package com.g25.selfcalendar.controller;
 
 import com.g25.selfcalendar.dto.LoginDto;
+import com.g25.selfcalendar.dto.PasswordResetDto;
 import com.g25.selfcalendar.dto.UserDto;
 import com.g25.selfcalendar.entity.User;
 import com.g25.selfcalendar.service.UserService;
@@ -80,6 +81,27 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         UserDto userDto = userService.getUserDtoById(id);
         return ResponseEntity.ok(userDto);
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestBody UserDto userDto){
+        UserDto user = userService.verifyEmail(userDto.getEmail());
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetDto dto){
+        boolean success = userService.resetUserPassword(dto.getEmail(), dto.getNewPassword());
+        if (success){
+            return ResponseEntity.ok().build();
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reset password failed");
+        }
     }
 }
 
