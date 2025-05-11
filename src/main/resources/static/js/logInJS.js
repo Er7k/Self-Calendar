@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("title");
   const innerContainer = document.getElementById("inner-container");
+  const createAccountBtn = document.getElementById("createAccount");
+  const resetPWBtn = document.getElementById("resetPW");
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -22,6 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Incorrect username or password');
     }
   });
+
+  createAccountBtn.addEventListener("click", async (e) => {
+    window.location.href = "/register";
+  })
+
+  resetPWBtn.addEventListener("click", async (e) => {
+    window.location.href = "/verify-email";
+  })
 
   function displayWelcomeMessage() {
 

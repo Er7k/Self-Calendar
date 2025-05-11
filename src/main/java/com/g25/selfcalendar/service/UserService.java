@@ -104,6 +104,25 @@ public class UserService {
                 .email(user.getEmail()).
                 build();
     }
-}
+
+     public UserDto verifyEmail(String email){
+         return userRepository.findByEmail(email)
+                 .map(user -> new UserDto(user.getId(), user.getUsername(), user.getEmail()))
+                 .orElse(null);
+     }
+
+     public boolean resetUserPassword(String email, String newPassword) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        else {
+            return false;
+        }
+     }
+ }
 
 
