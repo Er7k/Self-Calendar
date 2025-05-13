@@ -1,13 +1,17 @@
 package com.g25.selfcalendar.controller;
 
+import com.g25.selfcalendar.dto.HolidayDto;
 import com.g25.selfcalendar.exception.ResourceNotFoundException;
 import com.g25.selfcalendar.dto.EventDto;
 import com.g25.selfcalendar.service.EventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +45,6 @@ public class EventController {
     public List<EventDto> getEventByDate(@RequestParam String date, @RequestParam Long userId){
         return eventService.getEventsByDate(Date.valueOf(date), userId);
     }
-
 
     /**
      * @PostMapping is used for sending data.
