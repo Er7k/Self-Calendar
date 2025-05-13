@@ -7,10 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const monthViewBtn = document.getElementById('month-view');
   const weekRangeDisplay = document.getElementById('week-range');
 
+
   let currentDate = new Date();
   let weekStartDate = new Date();
 
-  function renderMonthView(date) {
+
+
+  /*========THE MONTH VIEW========*/
+  window.renderMonthView = function(date) {
     const year = date.getFullYear();
     const month = date.getMonth();
 
@@ -24,10 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const startOffset = firstDay === 0 ? 6 : firstDay - 1;
     const prevMonthLastDate = new Date(year, month, 0).getDate();
 
-    // Clear previous dates
     calendarDates.innerHTML = "";
-
-    attachDayClickListeners();
 
     let dayCounter = 1;
     for (let i = 0; i < 42; i++) {
@@ -49,10 +50,76 @@ document.addEventListener('DOMContentLoaded', function() {
       const isToday = new Date().toDateString() === cellDate.toDateString();
       const extraClass = isToday ? "today" : "";
       const week = Math.floor(i / 7);
+      const dateStr = `${cellDate.getFullYear()}-${String(cellDate.getMonth() + 1).padStart(2, '0')}-${String(cellDate.getDate()).padStart(2, '0')}`;
 
-      calendarDates.innerHTML += `<div class="${className} ${extraClass}" data-week="${week}" style="transition: all 0.5s ease;">${dayNumber}</div>`;
+      const cellHTML = `
+            <div class="${className} ${extraClass}"
+             data-week="${week}"
+             data-date="${dateStr}"
+             style="transition: all 0.5s ease;"> 
+             <div class="day-number">${dayNumber}</div>
+            <div class="event-markers"></div>
+           </div>
+        `;
+
+      calendarDates.innerHTML += cellHTML;
+
+      const cellEl = calendarDates.lastElementChild;
+      const storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+      const eventsForThisDate = storedEvents.filter(ev => ev.date === dateStr);
+
+      eventsForThisDate.forEach(ev => {
+        displayEventOnCalendar(cellEl, ev);
+      });
     }
+  };
+
+  /*========FOR DISPLAYING THE EVENT IN THE CALENDAR========*/
+  function displayEventOnCalendar(cellEl, eventDetails) {
+    const markerContainer = cellEl.querySelector('.event-markers');
+
+    if (!markerContainer) return;
+
+    // Create the event marker
+    const marker = document.createElement('div');
+    marker.classList.add('event-marker');
+    marker.style.backgroundColor = eventDetails.color || '#000000';
+
+    // Add the event tooltip (this part was already done in your code)
+    const tooltip = document.createElement('div');
+    tooltip.classList.add('event-tooltip');
+    tooltip.innerHTML = `
+        <strong>Title:</strong> ${eventDetails.title}<br>
+        <strong>Time:</strong> ${eventDetails.startTime} - ${eventDetails.endTime}<br>
+        <strong>Category:</strong> ${eventDetails.category}<br>
+        <strong>Description:</strong> ${eventDetails.description || 'No description'}
+    `;
+
+    tooltip.style.backgroundColor = eventDetails.color || '#000000';
+    marker.appendChild(tooltip);
+
+
+    // Add the marker to the marker container
+    markerContainer.appendChild(marker);
+
+    // Handle tooltip visibility (hover behavior)
+    marker.addEventListener('mouseenter', function() {
+      tooltip.style.visibility = 'visible';
+      tooltip.style.opacity = 1;
+
+      const rect = marker.getBoundingClientRect();
+      tooltip.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
+      tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
+    });
+
+    marker.addEventListener('mouseleave', function() {
+      tooltip.style.visibility = 'hidden';
+      tooltip.style.opacity = 0;
+    });
   }
+
+
+
 
   function switchToWeekView() {
     const today = new Date();
@@ -124,28 +191,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function renderWeekHourView(weekStartDate) {
-    const weekHoursContainer = document.querySelector('.calendar-week-hours');
-    weekHoursContainer.innerHTML = "";
 
-    const hours = [];
-    for (let h = 0; h < 24; h++) {
-      const hourStr = h.toString().padStart(2, '0') + ":00";
-      hours.push(`<div class="hour-label">${hours.join('')}</div>`);
-    }
+  monthViewBtn.addEventListener('click', () => {
+    document.querySelector('.wrapper').classList.remove('day-view-active');
+    document.querySelector('.sidebar-front').classList.remove('day-view-mode');
+    document.querySelector('.sidebar').classList.remove('day-view-expanded');
+    document.getElementById('to-do-list').innerHTML = `<p>[to-do-list and other]</p>`
+    const calendarDates = document.querySelector('.calendar-dates');
+    calendarDates.classList.remove('day-view-active');
+    document.querySelector('.calendar-days').classList.remove('day-view-hidden');
 
-    const timeColumn = `<div class="time-column">${hours.join('')}</div>`;
 
-    const dayColumns = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(weekStartDate);
-      date.setDate(date.getDate() + i);
-      const columnHours = Array(24).fill(`<div class="hour-block"></div>`).join('');
-      dayColumns.push(`<div class="day-column">${columnHours}</div>`);
-    }
+    const allDays = document.querySelectorAll('#calendar-dates > div');
+    allDays.forEach(day => {
+      day.classList.remove('selected-day');
+      day.classList.remove('highlight-week');
+    });
 
-    weekHoursContainer.innerHTML = timeColumn + dayColumns.join('');
-  }
+    weekRangeDisplay.textContent = "";
+    renderMonthView(currentDate);
+
+  });
 
 
   prevBtn.addEventListener('click', () => {
@@ -178,23 +244,11 @@ document.addEventListener('DOMContentLoaded', function() {
   monthViewBtn.addEventListener('click', switchToMonthView);
 
 
+
 // Initial render
   renderMonthView(currentDate);
 
-  function attachDayClickListeners() {
-    const allDays = document.querySelectorAll('#calendar-dates > div');
 
-    allDays.forEach(day => {
-      day.addEventListener('click', () => {
-        // Clear previous selection
-        allDays.forEach(d => d.classList.remove('selected-day'));
 
-        day.classList.add('selected-day');
-        document.querySelector('.calendar-dates').classList.add('day-view-active');
-
-      });
-    });
-  }
 
 });
-

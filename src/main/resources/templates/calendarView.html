@@ -31,7 +31,7 @@
   <link rel="icon" href="/images/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/images/icon.png">
   <script defer src="/js/logInJS.js"></script>
-  <script defer src="/js/calendarJS.js"></script>
+
 </head>
 
 
@@ -50,7 +50,6 @@
           <button class="view-button" id="month-view">Month</button>
           <button class="view-button" id="year-view">Year</button>
 
-          <button id="exit-day-view" style="display: none;">Back to Month</button>
 
         </div>
       </div>
@@ -106,45 +105,136 @@
 
     <!--SIDEBAR-->
     <div class="sidebar">
-      <!--ADD EVENT BUTTON (WILL TRIGGER FLIP ANIMATION)-->
-      <button class="add-event-button" id="add-event-button">+</button>
 
-      <!--SIDEBAR CONTAINER FOR FLIP EFFECT-->
-      <div class="sidebar-container">
-
-        <!--FRONT SIDE OF THE SIDEBAR (DEFAULT)-->
+        <!--FRONT OF THE SIDEBAR (ADD EVENT FORM)-->
         <div class="sidebar-front">
 
-          <div id="to-do-list">
-            <p>[to do-list and other]</p>
-          </div>
-        </div>
-
-        <!--BACKSIDE OF THE SIDEBAR (ADD EVENT FORM)-->
-        <div class="sidebar-back">
-          <h3 id="add-event-title">Add Event</h3>
           <form id="event-form">
-            <label for="event-title">Event Title:</label>
-            <input type="text" id="event-title" name="event-title" required>
 
-            <label for="event-date">Event Date:</label>
-            <input type="date" id="event-date" name="event-date" required>
+            <div class="title-label-input">
+              <input type="text" id="title-input" required="">
+              <label for="title-input" class="title-label">Add Event Title</label>
+              <div class="underline"></div>
+            </div>
 
-            <label for="event-color">Event Color:</label>
-            <input type="color" id="event-color" name="event-color" value="#3f72af">
+            <!-- All Day & Recurring Checkboxes -->
+            <div class="form-row checkboxes">
+              <div class="checkbox-all-day">
+                <label>
+                  <input type="checkbox" id="all-day">
+                  All Day
+                </label>
+              </div>
 
-            <button type="submit">Add To Calendar</button>
+              <div class="checkbox-re-event">
+                <label>
+                  <input type="checkbox" id="re-event">
+                  Recurring Event
+                </label>
+              </div>
+            </div>
+
+
+
+            <!--Date + Time-->
+            <div class="form-row date-time-grid">
+
+              <div class="date-box">
+                <label>
+                  <input type="date" id="event-date" name="event-date" required>
+                </label>
+              </div>
+
+              <div class="time-box">
+                <label class="time-wrapper start">
+                  <input type="time" id="event-start" name="event-start" class="time-input start-time">
+                </label>
+              </div>
+
+              <div class="time-box">
+                <label class="time-wrapper end">
+                  <input type="time" id="event-end" name="event-end" class="time-input end-time">
+                </label>
+              </div>
+
+            </div>
+
+
+            <!--Category-->
+            <div class="form-row category-row">
+
+              <div class="category-options" id="category-options">
+                <div class="category-tag" id="cat-1" style="background-color: #F8F25DFF">Work</div>
+                <div class="category-tag" id="cat-2" style="background-color: #48cd48">School</div>
+                <div class="category-tag" id="cat-3" style="background-color: #00bbff">Personal</div>
+                <div class="category-tag" id="cat-4" style="background-color: #f84444">Important</div>
+
+                <div class="category-tag" id="add-new"> Edit categories...</div>
+
+              </div>
+            </div>
+
+            <div id="category-edit-modal" class="modal">
+              <div class="modal-content">
+                <h3>Edit Categories</h3>
+
+                <div id="category-list">
+
+                </div>
+
+              <div class="buttons-row">
+                <button id="save-categories">Save</button>
+                <button id="close-modal" class="close-btn">Close</button>
+              </div>
+
+
+
+
+
+
+              </div>
+            </div>
+
+
+
+              <div class="description-box">
+                <label for="event-description"></label>
+                  <textarea id="event-description" name="event-description" rows="3" placeholder="Event details..." maxlength="150"></textarea>
+                  <small id="char-count">0/150</small>
+              </div>
+
+
+            <div class="form-row color-row">
+
+
+              <div class="color-display">
+                <label for="event-color">Color:</label>
+                <div id="color-preview" class="color-preview-box"></div>
+                <input type="hidden" id="event-color" name="event-color" value="#e74c3c">
+              </div>
+            </div>
+
+
+              <div class="form-row button-row">
+                <div class="submit-wrapper">
+                  <button type="submit">Add To Calendar</button>
+                </div>
+
+              </div>
+
           </form>
         </div>
       </div>
-    </div>
-</div>
+
+  </div>
 
 
 
-  <script src="/js/addEventJS.js"></script>
+
+
+  <script src="/js/calendarJS.js"></script>
 <script src="/js/weekViewJS.js"></script>
-
+  <script src="/js/addEvent2JS.js"></script>
 
 
 </body>
