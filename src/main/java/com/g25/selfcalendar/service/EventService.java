@@ -208,4 +208,29 @@ public class EventService {
         eventRepository.save(existingEvent);
         return toDto(existingEvent);
     }
+
+    public List<EventDto> getEventsBetweenDates(Date startDate, Date endDate, Long userId){
+        List<Event> events = eventRepository.findAllByDateBetweenAndUserId(startDate, endDate, userId);
+        List<EventDto> eventDtos = new ArrayList<>();
+
+        for (Event event : events){
+            EventDto dto = new EventDto();
+            dto.setId(event.getId());
+            dto.setTitle(event.getTitle());
+            dto.setDate(event.getDate().toString());
+            dto.setStartTime(event.getStartTime().toString());
+            dto.setEndTime(event.getEndTime().toString());
+            dto.setRecurring(event.isRecurring());
+            dto.setAllDay(event.isAllDay());
+            dto.setDescription(event.getDescription());
+            dto.setUserId(event.getUser().getId());
+
+            if (event.getRecurringInterval() != null){
+                dto.setRecurringIntervalId(event.getRecurringInterval().getId());
+            }
+
+            eventDtos.add(dto);
+        }
+        return eventDtos;
+    }
 }

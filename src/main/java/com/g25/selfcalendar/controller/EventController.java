@@ -1,6 +1,7 @@
 package com.g25.selfcalendar.controller;
 
 import com.g25.selfcalendar.dto.HolidayDto;
+import com.g25.selfcalendar.entity.Event;
 import com.g25.selfcalendar.exception.ResourceNotFoundException;
 import com.g25.selfcalendar.dto.EventDto;
 import com.g25.selfcalendar.service.EventService;
@@ -44,6 +45,37 @@ public class EventController {
     @GetMapping("/by-date")
     public List<EventDto> getEventByDate(@RequestParam String date, @RequestParam Long userId){
         return eventService.getEventsByDate(Date.valueOf(date), userId);
+    }
+
+    @GetMapping("/by-week")
+    public ResponseEntity<List<EventDto>> getEventsByWeek(
+            @RequestParam String startDate,
+            @RequestParam Long userId) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = start.plusDays(6);
+        List<EventDto> events = eventService.getEventsBetweenDates(Date.valueOf(start), Date.valueOf(end), userId);
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/by-month")
+    public ResponseEntity<List<EventDto>> getEventsByMonth(
+            @RequestParam int year,
+            @RequestParam int month,
+            @RequestParam Long userId) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        List<EventDto> events = eventService.getEventsBetweenDates(Date.valueOf(start), Date.valueOf(end), userId);
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/by-year")
+    public ResponseEntity<List<EventDto>> getEventsByYear(
+            @RequestParam int year,
+            @RequestParam Long userId) {
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
+        List<EventDto> events = eventService.getEventsBetweenDates(Date.valueOf(start), Date.valueOf(end), userId);
+        return ResponseEntity.ok(events);
     }
 
     /**
