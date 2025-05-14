@@ -49,10 +49,10 @@
           <button class="view-button" id="week-view">Week</button>
           <button class="view-button" id="month-view">Month</button>
           <button class="view-button" id="year-view">Year</button>
-
-
         </div>
       </div>
+
+
     </div>
 
 
@@ -106,8 +106,13 @@
     <!--SIDEBAR-->
     <div class="sidebar">
 
+      <div class="sidebar-toggle-container">
+        <button class="sidebar-add-event-mode">&#43; Event</button>
+        <button class="sidebar-add-task-mode">&#43; Task</button>
+      </div>
+
         <!--FRONT OF THE SIDEBAR (ADD EVENT FORM)-->
-        <div class="sidebar-front">
+        <div class="sidebar-event-form">
 
           <form id="event-form">
 
@@ -224,6 +229,30 @@
 
           </form>
         </div>
+
+      <div class="sidebar-to-do-list">
+        <div class="to-do-list-container">
+          <div class="to-do-list">
+            <div class="to-do-list-header">
+              <h4>To Do-List</h4>
+              <div class="to-do-list-input">
+                <input type="text" id="input-task-box" placeholder="Add your task">
+                <button id="addTask">Add</button>
+              </div>
+            </div>
+            <div class="to-do-list-content">
+             <ul id="list-container">
+
+             </ul>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
       </div>
 
   </div>
@@ -235,6 +264,7 @@
   <script src="/js/calendarJS.js"></script>
 <script src="/js/weekViewJS.js"></script>
   <script src="/js/addEvent2JS.js"></script>
+<script src="/js/toDoListJS.js"></script>
 
 
 </body>

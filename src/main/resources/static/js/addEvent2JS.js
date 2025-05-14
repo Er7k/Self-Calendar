@@ -294,5 +294,25 @@ categoryTags.forEach(category => {
         }
     });
 
+    const eventModeButton = document.querySelector('.sidebar-add-event-mode');
+    const taskModeButton = document.querySelector('.sidebar-add-task-mode');
+    const eventForm = document.querySelector('.sidebar-event-form');
+    const todoList = document.querySelector('.sidebar-to-do-list');
 
+// Show event form content by default
+    eventForm.classList.add('active');
+    todoList.classList.remove('active'); // Make sure to-do list is hidden by default
+
+// Show event form when eventModeButton is clicked
+    eventModeButton.addEventListener('click', function() {
+        eventForm.classList.add('active'); // Show event form
+        todoList.classList.remove('active'); // Hide to-do list
+    });
+
+// Show to-do list content when taskModeButton is clicked
+    taskModeButton.addEventListener('click', function() {
+        todoList.classList.add('active'); // Show to-do list
+        eventForm.classList.remove('active'); // Hide event form
+    });
 });
+

@@ -1,10 +1,10 @@
 
 document.getElementById('addTask').addEventListener('click', function() {
-    const inputBox = document.getElementById('inputBox');
-    const taskText = inputBox.value.trim();
+    const inputTaskBox = document.getElementById('input-task-box');
+    const taskText = inputTaskBox.value.trim();
 
     if (taskText !== "") {
-        const listContainer = document.getElementById("listContainer");
+        const listContainer = document.getElementById("list-container");
         const addTask = document.createElement('li');
 
         const checkbox = document.createElement('input');
@@ -30,7 +30,7 @@ document.getElementById('addTask').addEventListener('click', function() {
 
         listContainer.appendChild(addTask);
 
-        inputBox.value = "";
+        inputTaskBox.value = "";
 
         saveData();
     } else {
@@ -40,7 +40,7 @@ document.getElementById('addTask').addEventListener('click', function() {
 });
 
 
- document.getElementById('listContainer').addEventListener("click", function(e) {
+ document.getElementById('list-container').addEventListener("click", function(e) {
     if(e.target.tagName === "LI"){
     e.target.classList.toggle("checked");
     saveData();
