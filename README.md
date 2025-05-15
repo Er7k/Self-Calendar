@@ -1,3 +1,7 @@
+
+https://github.com/Er7k/Self-Calendar
+
+
 Grupp 25 webbkalender
 
 1. Ladda ner programmet 
