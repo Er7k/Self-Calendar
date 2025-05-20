@@ -9,6 +9,7 @@ import com.g25.selfcalendar.repository.EventRepository;
 import com.g25.selfcalendar.repository.RecurringIntervalRepository;
 import com.g25.selfcalendar.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -99,6 +100,7 @@ public class EventService {
         dto.setRecurring(event.isRecurring());
         dto.setAllDay(event.isAllDay());
         dto.setDescription(event.getDescription());
+        dto.setColor(event.getColor());
 
         if (event.getUser() != null){
             dto.setUserId(event.getUser().getId());
@@ -128,11 +130,14 @@ public class EventService {
         event.setId(dto.getId() != null ? dto.getId() : 0);
         event.setTitle(dto.getTitle());
         event.setDate(Date.valueOf(dto.getDate()));
-        event.setStartTime(Time.valueOf(dto.getStartTime()));
-        event.setEndTime(Time.valueOf(dto.getEndTime()));
+        String startTime = dto.getStartTime().endsWith(":00") ? dto.getStartTime() : dto.getStartTime() + ":00";
+        String endTime = dto.getEndTime().endsWith(":00") ? dto.getEndTime() : dto.getEndTime() + ":00";
+        event.setStartTime(Time.valueOf(startTime));
+        event.setEndTime(Time.valueOf(endTime));
         event.setRecurring(dto.getRecurring());
         event.setAllDay(dto.getRecurring());
         event.setDescription(dto.getDescription());
+        event.setColor(dto.getColor());
 
         if (dto.getUserId() != null){
             Optional<User> userOptional = userRepository.findById(dto.getUserId());
@@ -204,6 +209,9 @@ public class EventService {
         if (eventDto.getAllDay() != null) {
             existingEvent.setAllDay(eventDto.getAllDay());
         }
+        if (eventDto.getColor() != null) {
+            existingEvent.setColor(eventDto.getColor());
+        }
 
         eventRepository.save(existingEvent);
         return toDto(existingEvent);
@@ -230,6 +238,16 @@ public class EventService {
             }
 
             eventDtos.add(dto);
+        }
+        return eventDtos;
+    }
+
+
+    public List<EventDto> getAllEventsByUser(@RequestParam Long userId) {
+        List<Event> events = eventRepository.findByUserId(userId);
+        List<EventDto> eventDtos = new ArrayList<>();
+        for (Event event : events){
+            eventDtos.add(toDto(event));
         }
         return eventDtos;
     }
