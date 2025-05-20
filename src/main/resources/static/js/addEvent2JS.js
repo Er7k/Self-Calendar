@@ -1,18 +1,71 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const textarea = document.getElementById('event-description');
     const counter = document.getElementById('char-count');
-    const maxLength = textarea.getAttribute('maxlength');
-
+    const maxLength = textarea?.getAttribute('maxlength');
     const dateInput = document.getElementById('event-date');
     const startTimeInput = document.getElementById('event-start');
     const endTimeInput = document.getElementById('event-end');
     const allDayCheckbox = document.getElementById('all-day');
-
     const addEventForm = document.getElementById('event-form');
     const eventTitleInput = document.getElementById('title-input');
     const eventColorInput = document.getElementById('event-color');
+    const categoryTags = document.querySelectorAll('.category-tag');
+    const addNewCategoryButton = document.getElementById('add-new');
+    const categoryEditModal = document.getElementById('category-edit-modal');
+    const categoryList = document.getElementById('category-list');
+    const saveCategoriesBtn = document.getElementById('save-categories');
+    const closeModalBtn = document.getElementById('close-modal');
+    const eventModeButton = document.querySelector('.sidebar-add-event-mode');
+    const taskModeButton = document.querySelector('.sidebar-add-task-mode');
+    const eventForm = document.querySelector('.sidebar-event-form');
+    const todoList = document.querySelector('.sidebar-to-do-list');
 
     let events = [];
+
+    const userId = localStorage.getItem('userId');
+    console.log('Retrieved userId from localstorage', userId)
+    if (!userId) {
+        console.error('User is not logged in');
+        alert('Please log in to view events');
+        window.location.href = '/login';
+        return;
+    }
+
+    function fetchEvents() {
+        console.log("Fetching events for userId" + userId);
+        fetch(`/api/events?userId=${userId}`)
+            .then(response => {
+                console.log('Fetch response:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    ok: response.ok
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetched events:', data);
+                events = data.map(event => ({...event, color: '#FF0000'}));
+                window.events = events;
+                console.log('Updated events array:', events);
+                window.renderMonthView(new Date());
+            })
+            .catch(error => {
+                console.error('Failed to fetch events:', error.message);
+                alert('Failed to load events. Please try again.');
+            });
+    }
+    fetchEvents();
+
+    if (textarea && counter) {
+        textarea.addEventListener('input', () => {
+            const currentLength = textarea.value.length;
+            counter.textContent = `${currentLength}/${maxLength}`;
+        });
+    }
 
     /* FOR: DATE AND TIME SET AS DEFAULT TODAY'S DATE AND CURRENT TIME */
     if (dateInput && startTimeInput && endTimeInput) {
@@ -29,13 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
         endTimeInput.value = formatTime(endHour);
     }
 
-    /* FOR: CHARACTER COUNT IN DESCRIPTION BOX */
-    textarea.addEventListener('input', () => {
-        const currentLength = textarea.value.length;
-        counter.textContent = `${currentLength}/${maxLength}`;
-    });
-
-
     /*==== FOR MAKING SURE THE END-TIME > THE START-TIME==== */
     function parseTime(timeStr) {
         const [hour, minute] = timeStr.split(':').map(Number);
@@ -50,10 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const [year, month, day] = dateStr.split('-').map(Number);
         return new Date(year, month - 1, day);
     }
-
-
-
-
 
     /*==========FOR START TIME-INPUT=========*/
     startTimeInput.addEventListener('change', () => {
@@ -99,8 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-
-
     /* TO DISABLE THE START- AND END-TIME INPUT WHEN ALL-DAY-CHECKBOX IS CLICKED */
     function getDefaultTimes() {
         const now = new Date();
@@ -136,52 +176,71 @@ document.addEventListener('DOMContentLoaded', function() {
     addEventForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
+
         const eventDate = dateInput.value;
-        const eventTitle = document.getElementById('title-input').value.trim();
+        const eventTitle = eventTitleInput.value.trim();
         const activeCategory = document.querySelector('.category-tag.active');
-        // Read color from the active category
-        const eventColor = activeCategory ? activeCategory.style.backgroundColor : '#000000';
-        const startTime = document.getElementById('event-start').value;
-        const endTime = document.getElementById('event-end').value;
-        const description = document.getElementById('event-description').value;
+        const eventColor = '#FF0000'; // Hardcoded for testing
+        const startTime = startTimeInput.value + ":00";
+        const endTime = endTimeInput.value + ":00";
+        const description = textarea.value;
+        const allDay = allDayCheckbox.checked;
 
         if (!eventTitle || !eventDate) {
             alert("Please fill in both the date and the event title!");
             return;
         }
 
-        // Clear form
-        eventTitleInput.value = '';
-        eventColorInput.value = '#000000'; // This should probably be handled elsewhere
-        const today = new Date();
-        dateInput.value = today.toISOString().split('T')[0];
-
-        let events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+        const categoryName = activeCategory ? activeCategory.textContent : 'None';
 
         const eventDetails = {
-            date: eventDate,
+            userId: parseInt(userId),
             title: eventTitle,
+            date: eventDate,
             startTime: startTime,
             endTime: endTime,
-            category: activeCategory ? activeCategory.textContent : 'Uncategorized',
-            color: eventColor,
             description: description,
+            color: eventColor,
+            recurring: false,
+            allDay: allDay,
+            category: categoryName
         };
 
-        events.push(eventDetails);
-
-        localStorage.setItem('calendarEvents', JSON.stringify(events));
-
-        renderMonthView(new Date());  // Re-render the calendar to include the new event
-
-        const activeCategoryTag = document.querySelector('.category-tag.active');
-        if (activeCategoryTag) {
-            activeCategoryTag.classList.remove('active');  // Remove active class after submission
-        }
+        console.log('Saving event:', eventDetails);
+        fetch('/api/events', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(eventDetails)
+        })
+            .then(response => {
+                console.log('POST response:', {status: response.status, ok: response.ok});
+                if (!response.ok) {
+                    throw new Error(`Failed to save event: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(savedEvent => {
+                console.log('Event saved:', savedEvent);
+                fetchEvents()
+                //savedEvent.color = eventColor;
+                //events.push(savedEvent);
+                //window.renderMonthView(new Date());
+                // Clear form
+                eventTitleInput.value = '';
+                eventColorInput.value = '#000000';
+                dateInput.value = new Date().toISOString().split('T')[0];
+                textarea.value = '';
+                if (activeCategory) {
+                    activeCategory.classList.remove('active');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving event:', error.message);
+                alert('Failed to save event to server');
+            });
     });
-
-
-
 
     const categories = [
         { id: 'cat-1', name: 'Work', color: '#F8F25DFF'},
@@ -190,27 +249,18 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 'cat-4', name: 'Important', color: '#f84444'},
     ];
 
-const addNewCategoryButton = document.getElementById('add-new');
-const categoryEditModal = document.getElementById('category-edit-modal');
-const categoryList = document.getElementById('category-list');
-const saveCategoriesBtn = document.getElementById('save-categories');
-const closeModalBtn = document.getElementById('close-modal');
-const categoryTags = document.querySelectorAll('.category-tag');
+    function renderCategories() {
+        categoryList.innerHTML = '';
+
+        categories.forEach((category, index) => {
+            const row = document.createElement('div');
+            row.classList.add('category-row');
+            row.dataset.index = index;
+
+            const color = category.color || '#000000';
 
 
-function renderCategories() {
-    categoryList.innerHTML = '';
-
-    categories.forEach((category, index) => {
-        const row = document.createElement('div');
-        row.classList.add('category-row');
-        row.dataset.index = index;
-
-        const color = category.color || '#000000';
-
-
-
-        row.innerHTML = `
+            row.innerHTML = `
             <div class="category-info">
                <button class="category-name-button" style="background-color: ${color};">
                    ${category.name}
@@ -226,43 +276,40 @@ function renderCategories() {
             </div>
         `;
 
-        row.querySelector('.edit-category-btn').addEventListener('click', function() {
-            const newName = prompt('Edit Category Name: ', category.name);
-            const newColor = prompt('Edit Category Color(Hex): ', category.color);
-            if (newName && newColor) {
-                categories[index] = { name: newName, color: newColor };
-                renderCategories();
-            }
+            row.querySelector('.edit-category-btn').addEventListener('click', function () {
+                const newName = prompt('Edit Category Name: ', category.name);
+                const newColor = prompt('Edit Category Color(Hex): ', category.color);
+                if (newName && newColor) {
+                    categories[index] = {name: newName, color: newColor};
+                    renderCategories();
+                }
+            });
+
+            row.querySelector('.delete-category-btn').addEventListener('click', function () {
+                if (confirm('Are you sure you want to delete the "${category.name}" category?')) {
+                    categories.splice(index, 1);
+                    renderCategories();
+                }
+            });
+            categoryList.appendChild(row);
         });
-
-        row.querySelector('.delete-category-btn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to delete the "${category.name}" category?')) {
-                categories.splice(index, 1);
-                renderCategories();
-            }
-        });
-
-
-        categoryList.appendChild(row);
-    });
-
 
     // Add "Add New Category" row
-    const addRow = document.createElement('div');
-    addRow.classList.add('category-row', 'add-new-category');
-    addRow.innerHTML = '<span>+</span> Add New Category';
+        const addRow = document.createElement('div');
+        addRow.classList.add('category-row', 'add-new-category');
+        addRow.innerHTML = '<span>+</span> Add New Category';
 
-    addRow.addEventListener('click', function() {
-        const newName = prompt('Enter new category name: ');
-        const newColor = prompt('Enter new category color(Hex): ');
-        if (newName && newColor) {
-            categories.push({ name: newName, color: newColor});
-            renderCategories();
-        }
-    });
+        addRow.addEventListener('click', function() {
+            const newName = prompt('Enter new category name: ');
+            const newColor = prompt('Enter new category color(Hex): ');
+            if (newName && newColor) {
+                categories.push({ name: newName, color: newColor});
+                renderCategories();
+            }
+        });
 
-    categoryList.appendChild(addRow);
-}
+        categoryList.appendChild(addRow);
+    }
 
     addNewCategoryButton.addEventListener('click', function() {
         categoryEditModal.style.display = 'flex';
@@ -275,16 +322,16 @@ function renderCategories() {
 
 
 
-categoryTags.forEach(category => {
-    category.addEventListener('click', function() {
-        categoryTags.forEach(cat => cat.classList.remove('active'));
+    categoryTags.forEach(category => {
+        category.addEventListener('click', function() {
+            categoryTags.forEach(cat => cat.classList.remove('active'));
 
-        category.classList.add('active');
+            category.classList.add('active');
 
-        const selectedColor = category.getAttribute('data-color');
-        console.log(selectedColor);
+            const selectedColor = category.getAttribute('data-color');
+            console.log(selectedColor);
+        });
     });
-});
 
 
 // Optionally close the modal if clicked outside the modal content area
@@ -294,14 +341,9 @@ categoryTags.forEach(category => {
         }
     });
 
-    const eventModeButton = document.querySelector('.sidebar-add-event-mode');
-    const taskModeButton = document.querySelector('.sidebar-add-task-mode');
-    const eventForm = document.querySelector('.sidebar-event-form');
-    const todoList = document.querySelector('.sidebar-to-do-list');
-
 // Show event form content by default
-    eventForm.classList.add('active');
-    todoList.classList.remove('active'); // Make sure to-do list is hidden by default
+eventForm.classList.add('active');
+todoList.classList.remove('active'); // Make sure to-do list is hidden by default
 
 // Show event form when eventModeButton is clicked
     eventModeButton.addEventListener('click', function() {
@@ -315,4 +357,8 @@ categoryTags.forEach(category => {
         eventForm.classList.remove('active'); // Hide event form
     });
 });
+
+
+
+
 

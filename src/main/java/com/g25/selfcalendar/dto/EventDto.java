@@ -25,5 +25,6 @@ public class EventDto {
     private Long userId;
     private Long recurringIntervalId;
     private String description;
+    private String color;
 
 }

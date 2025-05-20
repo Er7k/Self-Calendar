@@ -4,6 +4,7 @@ import com.g25.selfcalendar.dto.HolidayDto;
 import com.g25.selfcalendar.entity.Event;
 import com.g25.selfcalendar.exception.ResourceNotFoundException;
 import com.g25.selfcalendar.dto.EventDto;
+import com.g25.selfcalendar.repository.UserRepository;
 import com.g25.selfcalendar.service.EventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,18 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final UserRepository userRepository;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, UserRepository userRepository) {
         this.eventService = eventService;
+        this.userRepository = userRepository;
     }
 
+    private void validateUser(Long userId){
+        if (userId == null || !userRepository.existsById(userId)){
+            throw new ResourceNotFoundException("User with ID " + userId + " not found");
+        }
+    }
     /**
      * @GetMapping("/by-date") is used for finding events by the date
      * This is useful when a user clicks on a specific date like 2025-04-04,
@@ -45,6 +53,12 @@ public class EventController {
     @GetMapping("/by-date")
     public List<EventDto> getEventByDate(@RequestParam String date, @RequestParam Long userId){
         return eventService.getEventsByDate(Date.valueOf(date), userId);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EventDto>> getAllEvents(@RequestParam Long userId) {
+        List<EventDto> events = eventService.getAllEventsByUser(userId);
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/by-week")

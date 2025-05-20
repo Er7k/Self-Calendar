@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /*========THE MONTH VIEW========*/
   window.renderMonthView = function(date) {
+    console.log('renderMonthView called with date:', date, 'Events: ', window.events)
     const year = date.getFullYear();
     const month = date.getMonth();
 
@@ -65,8 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
       calendarDates.innerHTML += cellHTML;
 
       const cellEl = calendarDates.lastElementChild;
-      const storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-      const eventsForThisDate = storedEvents.filter(ev => ev.date === dateStr);
+      const eventsForThisDate = (window.events || []).filter(ev => {
+        const eventDate = new Date(ev.date).toISOString().split('T')[0];
+        return eventDate === dateStr;
+      });
 
       eventsForThisDate.forEach(ev => {
         displayEventOnCalendar(cellEl, ev);
@@ -172,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     weekRangeDisplay.textContent = "";
+    renderMonthView(currentDate);
   }
 
   function formatWeekRange(startDate) {

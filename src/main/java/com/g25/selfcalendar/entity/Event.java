@@ -48,6 +48,9 @@ public class Event {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "color")
+    private String color;
+
     // många till en relationship många event till en user
     @ManyToOne(fetch = FetchType.LAZY) // lazy = User object will be loaded lazily (only when needed)
     // kan bytas till .EAGER = load the User immediately when the Event is loaded

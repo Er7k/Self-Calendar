@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('userId', data.id);
       displayWelcomeMessage();
       alert('Logged in as ' + username)
     } else {
