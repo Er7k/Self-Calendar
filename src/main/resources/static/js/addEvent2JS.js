@@ -50,7 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Fetched events:', data);
                 events = data.map(event => ({...event, color: '#FF0000'}));
                 window.events = events;
-                console.log('Updated events array:', events);
+                console.log('Updated events array:', events)
+                //window.renderMonthView(new Date());
+                return fetchHolidays();
+            })
+            .then(holidays => {
+                events = [...events, ...holidays];
+                window.events = events;
+                console.log("Updated events array with holidays" , events);
                 window.renderMonthView(new Date());
             })
             .catch(error => {
@@ -58,7 +65,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Failed to load events. Please try again.');
             });
     }
-    fetchEvents();
+    //fetchEvents();
+
+    function fetchHolidays() {
+        const year = new Date().getFullYear();
+        const countryCode = 'SE'
+        console.log(`Fetching holidays for year=${year}, countryCode=${countryCode}`);
+        return fetch(`/api/holiday?year=${year}&countryCode=${countryCode}`)
+            .then (response => {
+                console.log('Fetch holiday response:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    ok: response.ok
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch holidays: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetched holidays:', data);
+                return data.map(holiday => ({
+                    date: holiday.date,
+                    title: holiday.localName,
+                    description: holiday.name,
+                    color: '#00FF00',
+                    isHoliday: true,
+                    startTime: '00:00:00',
+                    endTime: '23:59:59',
+                    allDay: true,
+                    category: 'Holiday',
+                    userId: null,
+                    recurring: false,
+                    recId: null
+                }));
+            })
+            .catch(error => {
+                console.error('Failed to fetch holidays:', error.message, error.stack);
+                return [];
+            });
+    }
+    fetchEvents()
+
 
     if (textarea && counter) {
         textarea.addEventListener('input', () => {
