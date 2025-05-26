@@ -294,10 +294,10 @@ categoryTags.forEach(category => {
         }
     });
 
-    const eventModeButton = document.querySelector('.sidebar-add-event-mode');
-    const taskModeButton = document.querySelector('.sidebar-add-task-mode');
-    const eventForm = document.querySelector('.sidebar-event-form');
-    const todoList = document.querySelector('.sidebar-to-do-list');
+    const eventModeButton = document.querySelector('#add-event-mode-button');
+    const taskModeButton = document.querySelector('#to-do-mode-button');
+    const eventForm = document.querySelector('#event-form');
+    const todoList = document.querySelector('#to-do-list');
 
 // Show event form content by default
     eventForm.classList.add('active');

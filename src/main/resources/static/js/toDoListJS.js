@@ -7,9 +7,8 @@ document.getElementById('addTask').addEventListener('click', function() {
         const listContainer = document.getElementById("list-container");
         const addTask = document.createElement('li');
 
-        const checkbox = document.createElement('input');
+        const checkbox = document.createElement('checkbox');
         checkbox.type = 'checkbox';
-        checkbox.classList.add('checkbox-icon');
 
         checkbox.addEventListener('change', function() {
             if (checkbox.checked) {

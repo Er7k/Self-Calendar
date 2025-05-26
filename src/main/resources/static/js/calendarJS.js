@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const weekViewBtn = document.getElementById('week-view');
   const monthViewBtn = document.getElementById('month-view');
   const weekRangeDisplay = document.getElementById('week-range');
+  const dayViewBtn = document.getElementById('day-view-button');
+  const dayView = document.getElementById('day-view');
 
 
   let currentDate = new Date();
@@ -72,7 +74,76 @@ document.addEventListener('DOMContentLoaded', function() {
         displayEventOnCalendar(cellEl, ev);
       });
     }
+    renderUpcomingEvents();
+  }
+
+
+
+  window.renderUpcomingEvents = function () {
+    const upcomingContainer = document.getElementById('upcoming-events');
+    if (!upcomingContainer) return;
+
+    upcomingContainer.innerHTML = '';
+    const allEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+
+    const upcoming = allEvents
+        .filter(e => new Date(e.date) >= new Date(todayStr))
+        .sort((a, b) => {
+          return new Date(`${a.date}T${a.startTime}`) - new Date(`${b.date}T${b.startTime}`);
+        });
+
+    const grouped = {};
+    upcoming.forEach(ev => {
+      if (!grouped[ev.date]) grouped[ev.date] = [];
+      grouped[ev.date].push(ev);
+    });
+
+    const max = 4;
+    let count = 0;
+
+    for (const date in grouped) {
+      if (count >= max) break;
+
+      const isToday = date === todayStr;
+      const dateFormatted = isToday
+          ? `Today, ${formatShortDate(date)}`
+          : `${formatWeekday(date)}, ${formatShortDate(date)}`;
+
+      const dateHeader = document.createElement('p');
+      dateHeader.innerHTML = `<strong>${dateFormatted}</strong>`;
+      upcomingContainer.appendChild(dateHeader);
+
+      for (const event of grouped[date]) {
+        if (count >= max) break;
+
+        const p = document.createElement('p');
+        p.textContent = `[${event.startTime} - ${event.endTime}] ${event.title}`;
+        upcomingContainer.appendChild(p);
+
+        count++;
+      }
+    }
+
+    if (count === 0) {
+      upcomingContainer.innerHTML = `No upcoming events`;
+    }
+
   };
+
+  function formatShortDate(dateStr) {
+    const d = new Date(dateStr);
+    return `${d.getDate()}/${d.getMonth() + 1}`;
+  }
+
+  function formatWeekday(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-GB', { weekday: 'long' });
+  }
+
+
+
 
   /*========FOR DISPLAYING THE EVENT IN THE CALENDAR========*/
   function displayEventOnCalendar(cellEl, eventDetails) {
@@ -80,42 +151,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!markerContainer) return;
 
-    // Create the event marker
     const marker = document.createElement('div');
     marker.classList.add('event-marker');
     marker.style.backgroundColor = eventDetails.color || '#000000';
 
-    // Add the event tooltip (this part was already done in your code)
-    const tooltip = document.createElement('div');
-    tooltip.classList.add('event-tooltip');
-    tooltip.innerHTML = `
-        <strong>Title:</strong> ${eventDetails.title}<br>
-        <strong>Time:</strong> ${eventDetails.startTime} - ${eventDetails.endTime}<br>
-        <strong>Category:</strong> ${eventDetails.category}<br>
-        <strong>Description:</strong> ${eventDetails.description || 'No description'}
-    `;
 
-    tooltip.style.backgroundColor = eventDetails.color || '#000000';
-    marker.appendChild(tooltip);
-
-
-    // Add the marker to the marker container
     markerContainer.appendChild(marker);
-
-    // Handle tooltip visibility (hover behavior)
-    marker.addEventListener('mouseenter', function() {
-      tooltip.style.visibility = 'visible';
-      tooltip.style.opacity = 1;
-
-      const rect = marker.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
-      tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
-    });
-
-    marker.addEventListener('mouseleave', function() {
-      tooltip.style.visibility = 'hidden';
-      tooltip.style.opacity = 0;
-    });
   }
 
 
@@ -126,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dayOfWeek = (today.getDay() + 6) % 7;
     weekStartDate = new Date(today);
     weekStartDate.setDate(today.getDate() - dayOfWeek);
+    document.querySelector('.calendar-dates').classList.remove('day-view-active');
     updateWeekView();
   }
 
@@ -159,11 +201,19 @@ document.addEventListener('DOMContentLoaded', function() {
     weekRangeDisplay.textContent = formatWeekRange(weekStartDate);
   }
 
+  function switchToDayView() {
+    const today = new Date();
+    document.querySelector('.calendar-dates').classList.remove('week-view-active');
+    document.querySelector('.calendar-dates').classList.add('day-view-active');
+    updateDayView(today);
+  }
+
 
   function switchToMonthView() {
     const calendarGrid = document.querySelector('.calendar-dates');
     for (let i = 0; i <= 5; i++) {
       calendarGrid.classList.remove(`week-focus-${i}`);
+      calendarGrid.classList.remove('day-view-active');
     }
 
     const allDays = document.querySelectorAll('#calendar-dates > div');
@@ -172,6 +222,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     weekRangeDisplay.textContent = "";
+
+    document.querySelector('.calendar-dates').classList.remove('day-view-active');
+
   }
 
   function formatWeekRange(startDate) {
@@ -242,6 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   weekViewBtn.addEventListener('click', switchToWeekView);
   monthViewBtn.addEventListener('click', switchToMonthView);
+  document.getElementById('day-view-button').addEventListener('click', switchToDayView);
 
 
 
