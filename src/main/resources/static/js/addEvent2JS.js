@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.getElementById('event-date');
     const startTimeInput = document.getElementById('event-start');
     const endTimeInput = document.getElementById('event-end');
-    const allDayCheckbox = document.getElementById('all-day');
 
     const addEventForm = document.getElementById('event-form');
     const eventTitleInput = document.getElementById('title-input');
@@ -41,17 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const [hour, minute] = timeStr.split(':').map(Number);
         return { hour, minute };
     }
-
     function formatTime(hour, minute = 0) {
         return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
     }
-
-    function parseLocalDate(dateStr) {
-        const [year, month, day] = dateStr.split('-').map(Number);
-        return new Date(year, month - 1, day);
-    }
-
-
 
 
 
@@ -132,6 +123,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    const toggleCategoryFormBtn = document.getElementById('toggle-category-form');
+    const categoryForm = document.getElementById('category-form');
+    const saveCategoryBtn = document.getElementById('save-category');
+    const categoryNameInput = document.getElementById('input-category-name');
+    const categoryColorInput = document.getElementById('input-category-color');
+    const categoryList = document.getElementById('category-list');
+
+// Show/hide form
+    toggleCategoryFormBtn.addEventListener('click', () => {
+        categoryForm.style.display = categoryForm.style.display === 'none' ? 'flex' : 'none';
+    });
+
+// Load categories
+    function loadCategories() {
+        const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+        categoryList.innerHTML = '';
+
+        categories.forEach(cat => {
+            const li = document.createElement('li');
+            li.className = 'category-tag';
+            li.style.backgroundColor = cat.color;
+            li.textContent = cat.name;
+
+            li.addEventListener('click', () => {
+                document.querySelectorAll('.category-tag').forEach(c => c.classList.remove('active'));
+                li.classList.add('active');
+            });
+
+            categoryList.appendChild(li);
+        });
+    }
+
+// Save new category
+    saveCategoryBtn.addEventListener('click', () => {
+        const name = categoryNameInput.value.trim();
+        const color = categoryColorInput.value;
+
+        if (!name) return;
+
+        const existing = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+        if (existing.some(c => c.name === name)) {
+            alert("Category already exists!");
+            return;
+        }
+
+        existing.push({ name, color });
+        localStorage.setItem('eventCategories', JSON.stringify(existing));
+
+        categoryNameInput.value = '';
+        categoryColorInput.value = '#000000';
+        categoryForm.style.display = 'none';
+        loadCategories();
+    });
+
+    loadCategories();
+
     /*========SAVE NEW EVENT TO CALENDAR AND RE-RENDER CALENDAR========*/
     addEventForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -164,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
             startTime: startTime,
             endTime: endTime,
             category: activeCategory ? activeCategory.textContent : 'Uncategorized',
-            color: eventColor,
+            color: activeCategory ? activeCategory.style.backgroundColor : '#000000',
             description: description,
         };
 
@@ -180,139 +227,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
-
-
-    const categories = [
-        { id: 'cat-1', name: 'Work', color: '#F8F25DFF'},
-        { id: 'cat-2', name: 'School', color: '#48cd48'},
-        { id: 'cat-3', name: 'Personal', color: '#00bbff'},
-        { id: 'cat-4', name: 'Important', color: '#f84444'},
-    ];
-
-const addNewCategoryButton = document.getElementById('add-new');
-const categoryEditModal = document.getElementById('category-edit-modal');
-const categoryList = document.getElementById('category-list');
-const saveCategoriesBtn = document.getElementById('save-categories');
-const closeModalBtn = document.getElementById('close-modal');
-const categoryTags = document.querySelectorAll('.category-tag');
-
-
-function renderCategories() {
-    categoryList.innerHTML = '';
-
-    categories.forEach((category, index) => {
-        const row = document.createElement('div');
-        row.classList.add('category-row');
-        row.dataset.index = index;
-
-        const color = category.color || '#000000';
-
-
-
-        row.innerHTML = `
-            <div class="category-info">
-               <button class="category-name-button" style="background-color: ${color};">
-                   ${category.name}
-               </button>
-            </div>
-            <div class="category-actions">
-                <button class="edit-category-btn">
-                    <i class="fa-solid fa-pen"></i>         
-                </button>
-                <button class="delete-category-btn">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-        `;
-
-        row.querySelector('.edit-category-btn').addEventListener('click', function() {
-            const newName = prompt('Edit Category Name: ', category.name);
-            const newColor = prompt('Edit Category Color(Hex): ', category.color);
-            if (newName && newColor) {
-                categories[index] = { name: newName, color: newColor };
-                renderCategories();
-            }
-        });
-
-        row.querySelector('.delete-category-btn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to delete the "${category.name}" category?')) {
-                categories.splice(index, 1);
-                renderCategories();
-            }
-        });
-
-
-        categoryList.appendChild(row);
-    });
-
-
-    // Add "Add New Category" row
-    const addRow = document.createElement('div');
-    addRow.classList.add('category-row', 'add-new-category');
-    addRow.innerHTML = '<span>+</span> Add New Category';
-
-    addRow.addEventListener('click', function() {
-        const newName = prompt('Enter new category name: ');
-        const newColor = prompt('Enter new category color(Hex): ');
-        if (newName && newColor) {
-            categories.push({ name: newName, color: newColor});
-            renderCategories();
-        }
-    });
-
-    categoryList.appendChild(addRow);
-}
-
-    addNewCategoryButton.addEventListener('click', function() {
-        categoryEditModal.style.display = 'flex';
-        renderCategories();
-    });
-
-    closeModalBtn.addEventListener('click', function() {
-        categoryEditModal.style.display = 'none';
-    });
-
-
-
-categoryTags.forEach(category => {
-    category.addEventListener('click', function() {
-        categoryTags.forEach(cat => cat.classList.remove('active'));
-
-        category.classList.add('active');
-
-        const selectedColor = category.getAttribute('data-color');
-        console.log(selectedColor);
-    });
-});
-
-
-// Optionally close the modal if clicked outside the modal content area
-    window.addEventListener('click', function(event) {
-        if (event.target === categoryEditModal) {
-            categoryEditModal.style.display = 'none'; // Hide the modal if clicked outside
-        }
-    });
-
-    const eventModeButton = document.querySelector('#add-event-mode-button');
-    const taskModeButton = document.querySelector('#to-do-mode-button');
-    const eventForm = document.querySelector('#event-form');
-    const todoList = document.querySelector('#to-do-list');
-
-// Show event form content by default
-    eventForm.classList.add('active');
-    todoList.classList.remove('active'); // Make sure to-do list is hidden by default
-
-// Show event form when eventModeButton is clicked
-    eventModeButton.addEventListener('click', function() {
-        eventForm.classList.add('active'); // Show event form
-        todoList.classList.remove('active'); // Hide to-do list
-    });
-
-// Show to-do list content when taskModeButton is clicked
-    taskModeButton.addEventListener('click', function() {
-        todoList.classList.add('active'); // Show to-do list
-        eventForm.classList.remove('active'); // Hide event form
-    });
 });
 

@@ -20,7 +20,7 @@ body, .wrapper, .calendar, .sidebar, .content {
   align-items: center;
   gap: 2rem;
   margin: auto;
-  padding: 4rem 2rem;
+  padding: 7rem;
   text-align: center;
   min-height: 100vh;
 }
@@ -35,6 +35,7 @@ body, .wrapper, .calendar, .sidebar, .content {
   font-style: italic;
   font-weight: 400;
   margin-top: 0;
+  border-bottom: 2px solid black;
 }
 .section {
   width: 100%;
@@ -42,6 +43,8 @@ body, .wrapper, .calendar, .sidebar, .content {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-bottom: 2px solid black;
+
 
 }
 
@@ -308,41 +311,60 @@ body, .wrapper, .calendar, .sidebar, .content {
 }
 
 
-/*==============================*/
-/*  THEME CHOICES WELCOME PAGE  */
-/*==============================*/
-.theme-card-container {
+/*===================================*/
+/*  BACKGROUND CHOICES WELCOME PAGE  */
+/*===================================*/
+.bg-color-card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bg-card {
+  border-radius: 8px;
+  cursor: pointer;
+}
+.bg-preview {
+  height: 100px;
+  width: 80px;
+  border: 1px solid black;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.bg-preview:hover {
+  transform: scale(1.2);
+  border: none;
+}
+
+/*===================================*/
+/* ACCENT COLOR CHOICES WELCOME PAGE */
+/*===================================*/
+.accent-color-card-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
 }
-.theme-card {
+
+.accent-color {
+  cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.3s;
 }
-.theme-preview {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, 1fr);
+
+.accent-color-preview {
   height: 100px;
   width: 80px;
-  border: 1px solid black;
   border-radius: 6px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.theme-preview:hover {
-  transform: scale(1.2);
-  border: none;
-}
-.theme-row {
-  width: 100%;
-  height: 100%;
+  border: 1px solid black;
+  transition: transform 0.2s;
 }
 
-
+.accent-color:hover .accent-color-preview {
+  transform: scale(1.15);
+}
 /*==============================*/
 /*            THEMES            */
 /*==============================*/
@@ -700,7 +722,6 @@ ul li span:hover {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  gap: 6px;
 }
 .description-box label{
   font-size: 0.8rem;
@@ -1254,57 +1275,56 @@ ul li span:hover {
 }
 
 
-.form-row.category-row {
+.category-row {
   display: flex;
   background-color: transparent;
-  margin: 8px;
+  gap: 1rem;
 }
 
-.category-options {
+.category-add {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#category-form input[type="text"] {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+#category-form input[type="color"] {
+  width: 40px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#category-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
 }
 
-.category-tag {
-  padding: 6px 12px;
-  border-radius: 5px;
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 20px;
   font-size: 0.9rem;
-  background-color: transparent;
+  color: white;
+}
+
+.category-delete {
+  background: transparent;
+  border: none;
+  color: white;
   cursor: pointer;
-  border: none;
-  transition: 0.3s;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-}
-#cat-1:hover {
-  background: #F8F25DFF;
-}
-#cat-2:hover {
-  background: #48cd48;
-}
-#cat-3:hover {
-  background: #00bbff;
-}
-#cat-4:hover {
-  background: #f84444;
-
-}
-
-.category-tag:hover {
-  transform: scale(1.05);
-  border: none;
-  outline: none;
-}
-
-.category-tag.active {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  border: 3px solid red;
-
-}
-
-.category-tag:focus {
-  outline: 2px solid blue;
+  font-weight: bold;
 }
 
 #add-new {
@@ -1364,6 +1384,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   height: auto;
   gap: 8px;
   width: 100%;
+  margin-bottom: 0;
 }
 
 .date-box {

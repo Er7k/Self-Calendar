@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('welcome-screen').style.display = 'block';
         document.getElementById('main-calendar').style.display = 'none';
     } else {
-        const { layout, style, theme, font } = JSON.parse(prefs);
+        const { layout, style, background, font } = JSON.parse(prefs);
 
         document.getElementById('main-calendar').classList.add(`layout-${layout}`);
         document.body.classList.add(`style-${style}`);
-        document.body.classList.add(`theme-${theme}`);
+        document.body.classList.add(`background-${background}`);
         document.body.classList.add(`font-${font}`);
     }
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //========================
 
     let selectedLayout = 'no1';
-    let selectedTheme = 'light';
+    let selectedBackground = 'red1';
     let selectedFont = 'default';
     let selectedStyle = 'classic';
 
@@ -62,14 +62,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // HANDLE THEME SELECTION
     //=======================
 
-    const themeCards = document.querySelectorAll('.theme-card');
-    themeCards.forEach(card => {
-        if (card.dataset.theme === selectedTheme) card.classList.add('selected');
+    const backgroundCards = document.querySelectorAll('.background-card');
+    backgroundCards.forEach(card => {
+        if (card.dataset.theme === selectedBackground) card.classList.add('selected');
 
         card.addEventListener('click', () => {
-            themeCards.forEach(c => c.classList.remove('selected'));
+            backgroundCards.forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-            selectedTheme = card.dataset.theme;
+            selectedBackground = card.dataset.background;
         });
 
     });
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const preferences = {
                 layout: selectedLayout,
                 style: selectedStyle,
-                theme: selectedTheme,
+                background: selectedBackground,
                 font: selectedFont
             };
 
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('main-calendar').classList.add(`layout-${selectedLayout}`);
             document.body.classList.add(`style-${selectedStyle}`);
-            document.body.classList.add(`theme-${selectedTheme}`);
+            document.body.classList.add(`background-${selectedBackground}`);
             document.body.classList.add(`font-${selectedFont}`);
 
             document.getElementById('welcome-screen').style.display = 'none';
