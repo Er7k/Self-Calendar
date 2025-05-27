@@ -48,6 +48,7 @@
     <h1>Welcome to Your Calendar</h1>
     <h4>Let's customize your experience!</h4>
 
+    <!--LAYOUT PREVIEW-->
     <div class="section">
         <h2>Choose a layout</h2>
         <div class="layout-options">
@@ -98,37 +99,36 @@
         </div>
     </div>
 
+    <!--STYLE PREVIEW-->
     <div class="section">
         <h2>Style</h2>
         <div class="style-card-container">
-            <div class="style-card" data-styling="classic">
+            <div class="style-card selected" data-styling="classic">
 
                     <div id="styling-classic">
-                        <p>Classic</p>
+                        <p class="style-no">1</p>
+                        <p class="style-name">Classic</p>
                     </div>
 
 
             </div>
-
             <div class="style-card" data-styling="minimal">
                     <div id="styling-minimal">
-                        <p>Minimalist</p>
+                        <p class="style-no">2</p>
+                        <p class="style-name">Minimalist</p>
                     </div>
             </div>
-
-            <div class="style-card" data-styling="bubbly">
-
-
-                    <div id="styling-bubbly">
-                        <p>Soft</p>
+            <div class="style-card" data-styling="soft">
+                    <div id="styling-soft">
+                        <p class="style-no">3</p>
+                        <p class="style-name">Soft</p>
                     </div>
-
             </div>
 
         </div>
     </div>
 
-
+    <!--BACKGROUND COLOR PREVIEW-->
     <div class="section">
         <h2>Background Color</h2>
 
@@ -136,55 +136,52 @@
         <div class="bg-color-card-container">
 
 
-        <div class="bg-card" data-theme="red1">
-            <div class="bg-preview" style="background-color: #C6011F;">
+
+        <div class="bg-card" data-bg="#A7D4FF">
+            <div class="bg-preview" style="background-color: #A7D4FF;">
             </div>
         </div>
-        <div class="bg-card" data-theme="red2">
-            <div class="bg-preview" style="background-color: #ED1C24;">
-            </div>
-        </div>
-        <div class="bg-card" data-theme="red3">
-            <div class="bg-preview" style="background-color: #990000;">
+        <div class="bg-card" data-bg="#FFFFFF">
+            <div class="bg-preview" style="background-color: #FFFFFF;">
             </div>
         </div>
 
-        <div class="bg-card" data-theme="blue1">
-            <div class="bg-preview" style="background-color: #87CEFA;">
+        <div class="bg-card selected" data-bg="#5E5E5E">
+            <div class="bg-preview" style="background-color: #5E5E5E;">
             </div>
         </div>
-        <div class="bg-card" data-theme="blue2">
-            <div class="bg-preview" style="background-color: #4682B4;">
+        <div class="bg-card" data-bg="#789066">
+            <div class="bg-preview" style="background-color: #789066;">
             </div>
         </div>
-        <div class="bg-card" data-theme="blue3">
-            <div class="bg-preview" style="background-color: #00356B;">
-            </div>
-        </div>
-
-        <div class="bg-card" data-theme="green1">
-            <div class="bg-preview" style="background-color: #90EE90;">
-            </div>
-        </div>
-        <div class="bg-card" data-theme="green2">
-            <div class="bg-preview" style="background-color: #008000;">
-            </div>
-        </div>
-        <div class="bg-card" data-theme="green3">
-            <div class="bg-preview" style="background-color: #556B2F;">
+        <div class="bg-card" data-bg="#D16E6C">
+            <div class="bg-preview" style="background-color: #D16E6C;">
             </div>
         </div>
 
-        <div class="bg-card" data-theme="pink1">
+        <div class="bg-card" data-bg="#607D8B">
+            <div class="bg-preview" style="background-color: #607D8B;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#F79B72">
+            <div class="bg-preview" style="background-color: #F79B72;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#314974">
+            <div class="bg-preview" style="background-color: #314974;">
+            </div>
+        </div>
+
+        <div class="bg-card" data-bg="#FFC0CB">
             <div class="bg-preview" style="background-color: #FFC0CB;">
             </div>
         </div>
-        <div class="bg-card" data-theme="pink2">
-            <div class="bg-preview" style="background-color: #F9629F;">
+        <div class="bg-card" data-bg="#A1C4A9">
+            <div class="bg-preview" style="background-color: #A1C4A9;">
             </div>
         </div>
-        <div class="bg-card" data-theme="pink3">
-            <div class="bg-preview" style="background-color: #DDA0DD;">
+        <div class="bg-card" data-bg="#F2E9E4">
+            <div class="bg-preview" style="background-color: #F2E9E4;">
             </div>
         </div>
 
@@ -192,32 +189,33 @@
 
     </div>
 
+    <!--ACCENT COLOR PREVIEW-->
     <div class="section">
         <h2>Accent Color</h2>
         <div class="accent-color-card-container">
-            <div class="accent-color" data-accent="white1">
+            <div class="accent-color selected" data-accent="#FFFFFF">
                 <div class="accent-color-preview" style="background-color: #FFFFFF;"></div>
             </div>
 
-            <div class="accent-color" data-accent="white2">
+            <div class="accent-color" data-accent="#F0F4F7">
                 <div class="accent-color-preview" style="background-color: #F0F4F7;"></div>
             </div>
 
-            <div class="accent-color" data-accent="white3">
+            <div class="accent-color" data-accent="#F9F6E7">
                 <div class="accent-color-preview" style="background-color: #F9F6E7;"></div>
             </div>
 
-            <div class="accent-color" data-accent="grey1">
+            <div class="accent-color" data-accent="#A9A9A9">
                 <div class="accent-color-preview" style="background-color: #A9A9A9;"></div>
             </div>
-            <div class="accent-color" data-accent="grey2">
+            <div class="accent-color" data-accent="#808080">
                 <div class="accent-color-preview" style="background-color: #808080;"></div>
             </div>
-            <div class="accent-color" data-accent="grey3">
+            <div class="accent-color" data-accent="#444444">
                 <div class="accent-color-preview" style="background-color: #444444;"></div>
             </div>
 
-            <div class="accent-color" data-accent="black">
+            <div class="accent-color" data-accent="#222222">
                 <div class="accent-color-preview" style="background-color: #222222;"></div>
             </div>
 
@@ -243,27 +241,51 @@
         </div>
     </div>
 
+    <!--TEXT COLOR PREVIEW-->
     <div class="section">
         <h2>Text Color</h2>
         <div class="text-color-card-container">
-            <div class="text-color" data-textcolor="white">
-                <div class="text-color-preview text-color-white-preview">
-                    <p>Choose a text color</p>
+            <div class="text-color" data-textcolor="#ffffff">
+                <div class="text-color-preview" style="background-color: #000000; color: #ffffff;">
+                    <p>White text</p>
                 </div>
             </div>
-            <div class="text-color" data-textcolor="black">
-                <div class="text-color-preview text-color-black-preview">
-                    <p>Choose a text color</p>
+            <div class="text-color selected" data-textcolor="#000000">
+                <div class="text-color-preview" style="background-color: #ffffff; color: #000000">
+                    <p>Black text</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!--BORDER COLOR PREVIEW-->
+    <div class="section">
+
+        <h2>Border Color</h2>
+        <div class="border-card-container">
+            <div class="border-color selected" data-border="#000000">
+                <div class="border-preview" style="background-color: #ffffff; border: 2px solid #000000;">
+                </div>
+            </div>
 
 
 
+            <div class="border-color" data-border="#ffffff">
+                <div class="border-preview" style="background-color: #000000; border: 2px solid #ffffff;">
+                </div>
+            </div>
 
-   <!-- <div class="section">
+
+
+            <div class="border-color" data-border="box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;">
+                <div class="border-preview" style="background-color: #ffffff;box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FONT PREVIEW-->
+   <div class="section">
         <h2>Font</h2>
         <div class="font-option-container">
 
@@ -292,7 +314,7 @@
             </div>
 
         </div>
-    </div> -->
+    </div>
 
     <button id="save-preferences">Start Using Calendar</button>
 </div>

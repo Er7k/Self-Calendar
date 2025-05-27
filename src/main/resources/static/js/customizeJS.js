@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    localStorage.removeItem('calendarPreferences');
+   localStorage.removeItem('calendarPreferences');
 
     const prefs= localStorage.getItem('calendarPreferences');
 
@@ -10,12 +10,26 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('welcome-screen').style.display = 'block';
         document.getElementById('main-calendar').style.display = 'none';
     } else {
-        const { layout, style, background, font } = JSON.parse(prefs);
+        const { layout, style, backgroundColor, accentColor, font, textColor, borderColor } = JSON.parse(prefs);
 
         document.getElementById('main-calendar').classList.add(`layout-${layout}`);
         document.body.classList.add(`style-${style}`);
-        document.body.classList.add(`background-${background}`);
         document.body.classList.add(`font-${font}`);
+
+        if (backgroundColor) {
+            document.body.style.setProperty('--bg-color', backgroundColor);
+        }
+        if (accentColor) {
+            document.body.style.setProperty('--accent-color', accentColor);
+        }
+        if (textColor) {
+            document.body.style.setProperty('--text-color', textColor);
+            selectedTextColor = textColor;
+        }
+        if (borderColor) {
+            document.body.style.setProperty('--border-color', borderColor);
+        }
+
     }
 
     //========================
@@ -23,9 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
     //========================
 
     let selectedLayout = 'no1';
-    let selectedBackground = 'red1';
     let selectedFont = 'default';
     let selectedStyle = 'classic';
+    let selectedBackgroundColor = '#87CEFA';
+    let selectedAccentColor = '#ffffff';
+    let selectedTextColor = '#000000';
+    let selectedBorderColor = '#000000';
 
 
     //========================
@@ -58,20 +75,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    //=======================
-    // HANDLE THEME SELECTION
-    //=======================
+    //==================================
+    // HANDLE BACKGROUND COLOR SELECTION
+    //==================================
 
-    const backgroundCards = document.querySelectorAll('.background-card');
+    const backgroundCards = document.querySelectorAll('.bg-card');
     backgroundCards.forEach(card => {
-        if (card.dataset.theme === selectedBackground) card.classList.add('selected');
+        const bgColor = card.querySelector('.bg-preview')?.style.backgroundColor;
+        if (bgColor === selectedBackgroundColor) card.classList.add('selected');
 
         card.addEventListener('click', () => {
             backgroundCards.forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-            selectedBackground = card.dataset.background;
+            selectedBackgroundColor = bgColor;
+            document.body.style.setProperty('--bg-color', selectedBackgroundColor);
         });
 
+    });
+
+    //==============================
+    // HANDLE ACCENT COLOR SELECTION
+    //==============================
+    const accentCards = document.querySelectorAll('.accent-color');
+    accentCards.forEach(card => {
+        const accent = card.querySelector('.accent-color-preview')?.style.backgroundColor;
+        if (accent === selectedAccentColor) card.classList.add('selected');
+
+        card.addEventListener('click', () => {
+            accentCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedAccentColor = accent;
+            document.body.style.setProperty('--accent-color', selectedAccentColor);
+        });
     });
 
     //======================
@@ -89,6 +124,40 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    //=============================
+    // HANDLE TEXT COLOR SELECTION
+    //=============================
+    const textColorCards = document.querySelectorAll('.text-color');
+    textColorCards.forEach(card => {
+        const textColor = card.dataset.textcolor;
+
+        if (textColor === selectedTextColor) card.classList.add('selected');
+
+        card.addEventListener('click', () => {
+            textColorCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedTextColor = textColor;
+            document.body.style.setProperty('--text-color', selectedTextColor);
+        });
+    });
+
+    //==============================
+    // HANDLE BORDER COLOR SELECTION
+    //==============================
+    const borderColorCards = document.querySelectorAll('.border-color');
+    borderColorCards.forEach(card => {
+        const borderColor = card.dataset.border;
+        if (borderColor === selectedBorderColor) card.classList.add('selected');
+
+        card.addEventListener('click', () => {
+            borderColorCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedBorderColor = borderColor;
+            document.body.style.setProperty('--border-color', selectedBorderColor);
+        });
+    });
+
+
 
     //=============================
     // HANDLE SAVE + APPLY SETTINGS
@@ -99,25 +168,27 @@ document.addEventListener('DOMContentLoaded', function () {
             const preferences = {
                 layout: selectedLayout,
                 style: selectedStyle,
-                background: selectedBackground,
-                font: selectedFont
+                font: selectedFont,
+                backgroundColor: selectedBackgroundColor,
+                accentColor: selectedAccentColor,
+                textColor: selectedTextColor,
+                borderColor: selectedBorderColor
             };
 
             localStorage.setItem('calendarPreferences', JSON.stringify(preferences));
 
             document.getElementById('main-calendar').classList.add(`layout-${selectedLayout}`);
             document.body.classList.add(`style-${selectedStyle}`);
-            document.body.classList.add(`background-${selectedBackground}`);
             document.body.classList.add(`font-${selectedFont}`);
+            document.body.style.setProperty('--bg-color', selectedBackgroundColor);
+            document.body.style.setProperty('--accent-color', selectedAccentColor);
+            document.body.style.setProperty('--text-color', selectedTextColor);
+            document.body.style.setProperty('--border-color', selectedBorderColor);
 
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('main-calendar').style.display = 'block';
 
     });
-
-
-
-
 
 });
 

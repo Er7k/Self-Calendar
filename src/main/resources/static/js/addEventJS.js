@@ -1,3 +1,5 @@
+
+
 /*document.addEventListener('DOMContentLoaded', function () {
     const addEventButton = document.getElementById('add-event-button');
     const sidebarContainer = document.querySelector('.sidebar-container');

@@ -1,3 +1,11 @@
+:root {
+  --bg-color: #ffffff;        /* fallback background */
+  --accent-color: #ffffff;    /* fallback accent */
+  --text-color: #000000;
+  --border-color: #000000;
+
+}
+
 
 html{
   font-family: "Nunito", sans-serif;
@@ -5,7 +13,7 @@ html{
   min-height: 100vh;
 }
 
-body, .wrapper, .calendar, .sidebar, .content {
+body, .wrapper, .calendar, .content {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
@@ -35,6 +43,7 @@ body, .wrapper, .calendar, .sidebar, .content {
   font-style: italic;
   font-weight: 400;
   margin-top: 0;
+  margin-bottom: 50px;
   border-bottom: 2px solid black;
 }
 .section {
@@ -52,11 +61,13 @@ body, .wrapper, .calendar, .sidebar, .content {
 /*      SELECTED CHOICES       */
 /*=============================*/
 .layout-card.selected,
-.theme-card.selected,
+.bg-card.selected,
+.accent-color.selected,
 .font-option.selected,
-.style-card.selected{
+.text-color.selected{
   border: 2px solid #007bff;
   background-color: #e6f0ff;
+
 }
 
 /*=============================*/
@@ -270,46 +281,67 @@ body, .wrapper, .calendar, .sidebar, .content {
   justify-content: center;
   gap: 2rem;
   flex-wrap: wrap;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 .style-card {
-  padding: 0.8rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  height: 125px;
+  width: 125px;
+  box-sizing: border-box;
+  display: flex;
+  justify-items: center;
+}
+.style-card .style-no {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 1rem;
+}
+.style-card .style-name {
+  justify-content: center;
 }
 #styling-classic {
-  border: 2px solid black;
-  padding: 0.8rem;
+  border: 1px solid black;
   border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
 
 }
 #styling-classic:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 #styling-minimal {
-  padding: 0.8rem;
   color: white;
   background-color: lightgrey;
   transition: all 0.7s ease;
+  width: 100%;
+  height: 100%;
 }
 #styling-minimal:hover {
   background-color: white;
   color: grey;
   border: 1px solid lightgrey;
 }
-#styling-bubbly {
-  padding: 0.8rem;
-  background-color: lightcoral;
+#styling-soft {
+  background-color: #B0C4DE;
   border-radius: 14px;
   transition: all 0.3s ease;
+  width: 100%;
+
 }
-#styling-bubbly:hover {
+#styling-soft:hover {
   border: 2px solid white;
   transform: scale(1.3);
   border-radius: 30px;
 }
-
+.style-card.selected {
+  border: 2px solid rgba(0, 0, 0, 0.9);
+  padding: 10px;
+}
 
 /*===================================*/
 /*  BACKGROUND CHOICES WELCOME PAGE  */
@@ -347,13 +379,11 @@ body, .wrapper, .calendar, .sidebar, .content {
   gap: 20px;
   flex-wrap: wrap;
 }
-
 .accent-color {
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s;
 }
-
 .accent-color-preview {
   height: 100px;
   width: 80px;
@@ -361,53 +391,9 @@ body, .wrapper, .calendar, .sidebar, .content {
   border: 1px solid black;
   transition: transform 0.2s;
 }
-
 .accent-color:hover .accent-color-preview {
   transform: scale(1.15);
 }
-/*==============================*/
-/*            THEMES            */
-/*==============================*/
-.theme-light {
-  --bg-color: #ADD8E6;
-  --text-color: #000;
-  --accent-color: rgb(255, 255, 255);
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-.theme-dark {
-  --bg-color: #474042;
-  --text-color: #eeeeee;
-  --accent-color: #302f33;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-.theme-spring {
-  --bg-color: #D97A8F;
-  --text-color: #2e2e2e;
-  --accent-color: #F7D9E3;
-  --accent-color-2: #F2B8C9;
-  --accent-color-3: #E699AC;
-}
-.theme-summer {
-  --bg-color: #DFD0B8;
-  --text-color: #003344;
-  --accent-color: white;
-}
-.theme-fall {
-  --bg-color: #EAC696;
-  --text-color: #332211;
-  --accent-color: #65451F;
-
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-.theme-winter {
-  --bg-color: #F1EFEC;
-  --text-color: #112233;
-  --accent-color: #123458;
-}
-
 
 /*==============================*/
 /*   FONT OPTIONS WELCOME PAGE  */
@@ -451,6 +437,65 @@ body, .wrapper, .calendar, .sidebar, .content {
   font-family: "EB Garamond", serif;
 }
 
+/*=================================*/
+/* TEXT COLOR OPTIONS WELCOME PAGE */
+/*=================================*/
+.text-color-card-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.text-color {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+.text-color-preview {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  height: 100px;
+  width: 150px;
+  border-radius: 6px;
+  border: 1px solid black;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.text-color-preview:hover {
+  transform: scale(1.1);
+}
+
+/*=================================*/
+/* BORDER COLOR OPTIONS WELCOME PAGE */
+/*=================================*/
+
+.border-card-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #A7D4FF;
+  padding: 2vw;
+}
+.border-color {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+.border-preview {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  height: 100px;
+  width: 100px;
+  border-radius: 6px;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /*=====================================*/
 /* SAVE AND START USING CALENDAR BUTTON*/
 /*=====================================*/
@@ -852,6 +897,8 @@ ul li span:hover {
   border: 1px solid black;
   font-family: 'Nunito', sans-serif;
   background-color: var(--accent-color);
+  color: var(--text-color);
+
 }
 .style-classic .view-button:hover {
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
@@ -962,27 +1009,28 @@ ul li span:hover {
 
 
 /*==============================*/
-/*        STYLE = BUBBLY        */
+/*        STYLE = SOFT        */
 /*==============================*/
-.style-bubbly #event-form {
-  display: none;
-}
-.style-bubbly .header,
-.style-bubbly .sidebar,
-.style-bubbly .calendar,
-.style-bubbly .view-button {
-  background: transparent;
+
+.style-soft .header,
+.style-soft .sidebar,
+.style-soft .calendar,
+.style-soft .calendar-dates,
+.style-soft .calendar-dates > div{
+  background-color: var(--accent-color);
   border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.style-bubbly .calendar-header,
-.style-bubbly .calendar-dates {
-  background: transparent;
+.style-soft .calendar-header,
+.style-soft .calendar-dates {
+  background-color: var(--accent-color);
+  border: none;
 }
+.style-soft .today {
+  border: 2px groove red;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
 
 
  .calendar-dates .highlight-day {
@@ -1050,10 +1098,7 @@ ul li span:hover {
   opacity: 0.6;
 }
 
-.today {
-  border: 2px groove red;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
+
 
 .calendar-dates .highlight-week {
   font-size: 1.10rem;
