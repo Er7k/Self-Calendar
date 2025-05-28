@@ -16,6 +16,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
   <meta name="description" content="">
 
   <meta property="og:title" content="">
@@ -31,21 +37,304 @@
   <link rel="icon" href="/images/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/images/icon.png">
   <script defer src="/js/logInJS.js"></script>
+    <script src="/js/customizeJS.js"></script>
 
 </head>
 
 
 <body>
+
+<div id="welcome-screen">
+    <h1>Welcome to Your Calendar</h1>
+    <h4>Let's customize your experience!</h4>
+
+    <!--LAYOUT PREVIEW-->
+    <div class="section">
+        <h2>Choose a layout</h2>
+        <div class="layout-options">
+
+            <div class="layout-card selected" data-layout="no1">
+                <p>1</p>
+                <div class="layout-preview layout-no1-preview">
+                    <div id="no1-mini-wrapper">
+                        <div id="no1-mini-header"></div>
+                        <div id="no1-mini-sidebar"></div>
+                        <div id="no1-mini-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout-card" data-layout="no2">
+                <p>2</p>
+                <div class="layout-preview layout-no2-preview">
+                    <div id="no2-mini-wrapper">
+                        <div id="no2-mini-header"></div>
+                        <div id="no2-mini-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout-card" data-layout="no3">
+                <p>3</p>
+                <div class="layout-preview layout-no3-preview">
+                    <div id="no3-mini-wrapper">
+                        <div id="no3-mini-header"></div>
+                        <div id="no3-mini-content"></div>
+                        <div id="no3-mini-sidebar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout-card" data-layout="no4">
+                <p>4</p>
+                <div class="layout-preview layout-no4-preview">
+                    <div id="no4-mini-wrapper">
+                        <div id="no4-mini-header"></div>
+                        <div id="no4-mini-content"></div>
+                        <div id="no4-mini-sidebar"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--STYLE PREVIEW-->
+    <div class="section">
+        <h2>Style</h2>
+        <div class="style-card-container">
+            <div class="style-card selected" data-styling="classic">
+
+                    <div id="styling-classic">
+                        <p class="style-no">1</p>
+                        <p class="style-name">Classic</p>
+                    </div>
+
+
+            </div>
+            <div class="style-card" data-styling="minimal">
+                    <div id="styling-minimal">
+                        <p class="style-no">2</p>
+                        <p class="style-name">Minimalist</p>
+                    </div>
+            </div>
+            <div class="style-card" data-styling="soft">
+                    <div id="styling-soft">
+                        <p class="style-no">3</p>
+                        <p class="style-name">Soft</p>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--BACKGROUND COLOR PREVIEW-->
+    <div class="section">
+        <h2>Background Color</h2>
+
+
+        <div class="bg-color-card-container">
+
+
+
+        <div class="bg-card" data-bg="#A7D4FF">
+            <div class="bg-preview" style="background-color: #A7D4FF;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#FFFFFF">
+            <div class="bg-preview" style="background-color: #FFFFFF;">
+            </div>
+        </div>
+
+        <div class="bg-card selected" data-bg="#5E5E5E">
+            <div class="bg-preview" style="background-color: #5E5E5E;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#789066">
+            <div class="bg-preview" style="background-color: #789066;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#D16E6C">
+            <div class="bg-preview" style="background-color: #D16E6C;">
+            </div>
+        </div>
+
+        <div class="bg-card" data-bg="#607D8B">
+            <div class="bg-preview" style="background-color: #607D8B;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#F79B72">
+            <div class="bg-preview" style="background-color: #F79B72;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#314974">
+            <div class="bg-preview" style="background-color: #314974;">
+            </div>
+        </div>
+
+        <div class="bg-card" data-bg="#FFC0CB">
+            <div class="bg-preview" style="background-color: #FFC0CB;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#A1C4A9">
+            <div class="bg-preview" style="background-color: #A1C4A9;">
+            </div>
+        </div>
+        <div class="bg-card" data-bg="#F2E9E4">
+            <div class="bg-preview" style="background-color: #F2E9E4;">
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+
+    <!--ACCENT COLOR PREVIEW-->
+    <div class="section">
+        <h2>Accent Color</h2>
+        <div class="accent-color-card-container">
+            <div class="accent-color selected" data-accent="#FFFFFF">
+                <div class="accent-color-preview" style="background-color: #FFFFFF;"></div>
+            </div>
+
+            <div class="accent-color" data-accent="#F0F4F7">
+                <div class="accent-color-preview" style="background-color: #F0F4F7;"></div>
+            </div>
+
+            <div class="accent-color" data-accent="#F9F6E7">
+                <div class="accent-color-preview" style="background-color: #F9F6E7;"></div>
+            </div>
+
+            <div class="accent-color" data-accent="#A9A9A9">
+                <div class="accent-color-preview" style="background-color: #A9A9A9;"></div>
+            </div>
+            <div class="accent-color" data-accent="#808080">
+                <div class="accent-color-preview" style="background-color: #808080;"></div>
+            </div>
+            <div class="accent-color" data-accent="#444444">
+                <div class="accent-color-preview" style="background-color: #444444;"></div>
+            </div>
+
+            <div class="accent-color" data-accent="#222222">
+                <div class="accent-color-preview" style="background-color: #222222;"></div>
+            </div>
+
+
+
+
+            <div class="accent-color" data-accent="blue1">
+                <div class="accent-color-preview" style="background-color: #A7D4FF;"></div>
+            </div>
+
+
+
+            <div class="accent-color" data-accent="green">
+                <div class="accent-color-preview" style="background-color: #A2D19A;"></div>
+            </div>
+
+
+            <div class="accent-color" data-accent="pink">
+                <div class="accent-color-preview" style="background-color: #E6B8B8;"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--TEXT COLOR PREVIEW-->
+    <div class="section">
+        <h2>Text Color</h2>
+        <div class="text-color-card-container">
+            <div class="text-color" data-textcolor="#ffffff">
+                <div class="text-color-preview" style="background-color: #000000; color: #ffffff;">
+                    <p>White text</p>
+                </div>
+            </div>
+            <div class="text-color selected" data-textcolor="#000000">
+                <div class="text-color-preview" style="background-color: #ffffff; color: #000000">
+                    <p>Black text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--BORDER COLOR PREVIEW-->
+    <div class="section">
+
+        <h2>Border Color</h2>
+        <div class="border-card-container">
+            <div class="border-color selected" data-border="#000000">
+                <div class="border-preview" style="background-color: #ffffff; border: 2px solid #000000;">
+                </div>
+            </div>
+
+
+
+            <div class="border-color" data-border="#ffffff">
+                <div class="border-preview" style="background-color: #000000; border: 2px solid #ffffff;">
+                </div>
+            </div>
+
+
+
+            <div class="border-color" data-border="box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;">
+                <div class="border-preview" style="background-color: #ffffff;box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FONT PREVIEW-->
+   <div class="section">
+        <h2>Font</h2>
+        <div class="font-option-container">
+
+            <div class="font-option selected" data-font="default">
+                <div class="font-preview font-1-preview">
+                    <p>Choose a font</p>
+                </div>
+            </div>
+
+            <div class="font-option" data-font="fira-sans">
+                <div class="font-preview font-2-preview">
+                    <p>Choose a font</p>
+                </div>
+            </div>
+
+            <div class="font-option" data-font="oswald">
+                <div class="font-preview font-3-preview">
+                    <p>Choose a font</p>
+                </div>
+            </div>
+
+            <div class="font-option" data-font="garamond">
+                <div class="font-preview font-4-preview">
+                    <p>Choose a font</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button id="save-preferences">Start Using Calendar</button>
+</div>
+
+
+
+
+
+<div id="main-calendar" style="display: none;">
+
+
   <div class="wrapper">
 
    <!--HEADER-->
-    <!--CONTAINS: TITLE, THEME, SETTINGS-->
     <div class="header">
 
         <h3 id="header-title">Self-Calendar</h3>
       <div class="change-view-container">
         <div class="change-view-buttons">
-          <button class="view-button" id="day-view">Day</button>
+          <button class="view-button" id="day-view-button">Day</button>
           <button class="view-button" id="week-view">Week</button>
           <button class="view-button" id="month-view">Month</button>
           <button class="view-button" id="year-view">Year</button>
@@ -53,13 +342,9 @@
       </div>
 
 
-    </div>
-
-
-
+    </div> <!--header-->
 
     <!--CONTENT-->
-
     <div class="content">
 
         <div class="calendar">
@@ -90,14 +375,24 @@
           </div>
 
 
+
             <div class="calendar-dates" id="calendar-dates"></div>
-          <div class="calendar-week-hours" style="display: none;"></div>
 
 
-
-
-
+            <div id="day-view-modal" class="modal">
+                <div class="day-modal-content">
+                    <div id="day-modal-header">
+                        <h3>Today</h3>
+                    </div>
+                    <div id="day-modal-container">
+                        <p>content day</p>
+                    </div>
+                </div>
+            </div>
          </div> <!--CALENDAR-->
+
+
+
 
     </div> <!--CONTENT-->
 
@@ -106,163 +401,132 @@
     <!--SIDEBAR-->
     <div class="sidebar">
 
-      <div class="sidebar-toggle-container">
-        <button class="sidebar-add-event-mode">&#43; Event</button>
-        <button class="sidebar-add-task-mode">&#43; Task</button>
-      </div>
+       <div class="sidebar-panel" data-panel="event">
+           <div class="panel-header">+ Add Event</div>
+           <div class="panel-content" id="event-panel">
+               <form id="event-form">
+                   <label for="title-input">
 
-        <!--FRONT OF THE SIDEBAR (ADD EVENT FORM)-->
-        <div class="sidebar-event-form">
-
-          <form id="event-form">
-
-            <div class="title-label-input">
-              <input type="text" id="title-input" required="">
-              <label for="title-input" class="title-label">Add Event Title</label>
-              <div class="underline"></div>
-            </div>
-
-            <!-- All Day & Recurring Checkboxes -->
-            <div class="form-row checkboxes">
-              <div class="checkbox-all-day">
-                <label>
-                  <input type="checkbox" id="all-day">
-                  All Day
-                </label>
-              </div>
-
-              <div class="checkbox-re-event">
-                <label>
-                  <input type="checkbox" id="re-event">
-                  Recurring Event
-                </label>
-              </div>
-            </div>
+                       <input id="title-input" name="title-input" placeholder="Add Event Title" maxlength="50">
+                   </label>
 
 
+                   <!-Date + Time->
+                   <div class="form-row date-time-grid">
 
-            <!--Date + Time-->
-            <div class="form-row date-time-grid">
+                       <div class="date-box">
+                           <label>
+                               <input type="date" id="event-date" name="event-date" required>
+                           </label>
+                       </div>
 
-              <div class="date-box">
-                <label>
-                  <input type="date" id="event-date" name="event-date" required>
-                </label>
-              </div>
+                       <div class="time-box">
+                           <label class="time-wrapper start">
+                               <input type="time" id="event-start" name="event-start" class="time-input start-time">
+                           </label>
+                       </div>
 
-              <div class="time-box">
-                <label class="time-wrapper start">
-                  <input type="time" id="event-start" name="event-start" class="time-input start-time">
-                </label>
-              </div>
+                       <div class="time-box">
+                           <label class="time-wrapper end">
+                               <input type="time" id="event-end" name="event-end" class="time-input end-time">
+                           </label>
+                       </div>
 
-              <div class="time-box">
-                <label class="time-wrapper end">
-                  <input type="time" id="event-end" name="event-end" class="time-input end-time">
-                </label>
-              </div>
-
-            </div>
+                   </div>
 
 
-            <!--Category-->
-            <div class="form-row category-row">
 
-              <div class="category-options" id="category-options">
-                <div class="category-tag" id="cat-1" style="background-color: #F8F25DFF">Work</div>
-                <div class="category-tag" id="cat-2" style="background-color: #48cd48">School</div>
-                <div class="category-tag" id="cat-3" style="background-color: #00bbff">Personal</div>
-                <div class="category-tag" id="cat-4" style="background-color: #f84444">Important</div>
+                   <div class="form-row category-row">
 
-                <div class="category-tag" id="add-new"> Edit categories...</div>
+                       <div class="category-add">
+                           <button type="button" id="toggle-category-form">+Add Category</button>
 
-              </div>
-            </div>
+                           <div id="category-form" style="display: none;">
+                               <input type="text" id="input-category-name" placeholder="Category name"/>
+                               <input type="color" id="input-category-color"/>
+                               <button type="button" id="save-category">Save</button>
+                           </div>
+                       </div>
+                       <div class="added-categories">
+                           <ul id="category-list">
 
-            <div id="category-edit-modal" class="modal">
-              <div class="modal-content">
-                <h3>Edit Categories</h3>
+                           </ul>
+                       </div>
 
-                <div id="category-list">
+                   </div>
+
+
+
+                   <div class="description-box">
+                       <label for="event-description"></label>
+                       <textarea id="event-description" name="event-description" rows="3" placeholder="Event details..." maxlength="150"></textarea>
+                       <small id="char-count">0/150</small>
+                   </div>
+                   <div class="form-row button-row">
+                       <div class="submit-wrapper">
+                           <button type="button" id="add-to-calendar">Add To Calendar</button>
+                       </div>
+
+                   </div>
+               </form>
+           </div>
+       </div>
+
+        <div class="sidebar-panel" data-panel="task">
+            <div class="panel-header">+ Add Task</div>
+            <div class="panel-content" id="task-panel">
+
+                <div class="to-do-list-container">
+                        <div class="to-do-list-row">
+
+                                <input type="text" id="input-task-box" placeholder="Enter task...">
+                                <button id="addTask">Add</button>
+                        </div>
+                        <div class="to-do-list-content">
+                            <ul id="list-container">
+
+                            </ul>
+                        </div>
 
                 </div>
-
-              <div class="buttons-row">
-                <button id="save-categories">Save</button>
-                <button id="close-modal" class="close-btn">Close</button>
-              </div>
-
-
-
-
-
-
-              </div>
             </div>
-
-
-
-              <div class="description-box">
-                <label for="event-description"></label>
-                  <textarea id="event-description" name="event-description" rows="3" placeholder="Event details..." maxlength="150"></textarea>
-                  <small id="char-count">0/150</small>
-              </div>
-
-
-            <div class="form-row color-row">
-
-
-              <div class="color-display">
-                <label for="event-color">Color:</label>
-                <div id="color-preview" class="color-preview-box"></div>
-                <input type="hidden" id="event-color" name="event-color" value="#e74c3c">
-              </div>
-            </div>
-
-
-              <div class="form-row button-row">
-                <div class="submit-wrapper">
-                  <button type="submit">Add To Calendar</button>
-                </div>
-
-              </div>
-
-          </form>
         </div>
 
-      <div class="sidebar-to-do-list">
-        <div class="to-do-list-container">
-          <div class="to-do-list">
-            <div class="to-do-list-header">
-              <h4>To Do-List</h4>
-              <div class="to-do-list-input">
-                <input type="text" id="input-task-box" placeholder="Add your task">
-                <button id="addTask">Add</button>
-              </div>
+        <div class="sidebar-panel active" data-panel="upcoming">
+            <div class="panel-header">Upcoming Events</div>
+            <div class="panel-content" id="upcoming-events">
+
             </div>
-            <div class="to-do-list-content">
-             <ul id="list-container">
-
-             </ul>
-            </div>
-
-          </div>
-
-
         </div>
 
 
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
 
   </div>
+
+</div>
 
 
 
 
 
   <script src="/js/calendarJS.js"></script>
+<script src="/js/sidebarJS.js"></script>
 <script src="/js/weekViewJS.js"></script>
+  <script src="/js/dayViewJS.js"></script>
   <script src="/js/addEvent2JS.js"></script>
 <script src="/js/toDoListJS.js"></script>
 

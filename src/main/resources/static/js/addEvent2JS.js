@@ -1,119 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-
     const textarea = document.getElementById('event-description');
     const counter = document.getElementById('char-count');
-    const maxLength = textarea?.getAttribute('maxlength');
+    const maxLength = textarea.getAttribute('maxlength');
+
     const dateInput = document.getElementById('event-date');
     const startTimeInput = document.getElementById('event-start');
     const endTimeInput = document.getElementById('event-end');
     const allDayCheckbox = document.getElementById('all-day');
+
     const addEventForm = document.getElementById('event-form');
     const eventTitleInput = document.getElementById('title-input');
     const eventColorInput = document.getElementById('event-color');
-    const categoryTags = document.querySelectorAll('.category-tag');
-    const addNewCategoryButton = document.getElementById('add-new');
-    const categoryEditModal = document.getElementById('category-edit-modal');
-    const categoryList = document.getElementById('category-list');
-    const saveCategoriesBtn = document.getElementById('save-categories');
-    const closeModalBtn = document.getElementById('close-modal');
-    const eventModeButton = document.querySelector('.sidebar-add-event-mode');
-    const taskModeButton = document.querySelector('.sidebar-add-task-mode');
-    const eventForm = document.querySelector('.sidebar-event-form');
-    const todoList = document.querySelector('.sidebar-to-do-list');
 
     let events = [];
-
-    const userId = localStorage.getItem('userId');
-    console.log('Retrieved userId from localstorage', userId)
-    if (!userId) {
-        console.error('User is not logged in');
-        alert('Please log in to view events');
-        window.location.href = '/login';
-        return;
-    }
-
-    function fetchEvents() {
-        console.log("Fetching events for userId" + userId);
-        fetch(`/api/events?userId=${userId}`)
-            .then(response => {
-                console.log('Fetch response:', {
-                    status: response.status,
-                    statusText: response.statusText,
-                    ok: response.ok
-                });
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Fetched events:', data);
-                events = data.map(event => ({...event, color: '#FF0000'}));
-                window.events = events;
-                console.log('Updated events array:', events)
-                //window.renderMonthView(new Date());
-                return fetchHolidays();
-            })
-            .then(holidays => {
-                events = [...events, ...holidays];
-                window.events = events;
-                console.log("Updated events array with holidays" , events);
-                window.renderMonthView(new Date());
-            })
-            .catch(error => {
-                console.error('Failed to fetch events:', error.message);
-                alert('Failed to load events. Please try again.');
-            });
-    }
-    //fetchEvents();
-
-    function fetchHolidays() {
-        const year = new Date().getFullYear();
-        const countryCode = 'SE'
-        console.log(`Fetching holidays for year=${year}, countryCode=${countryCode}`);
-        return fetch(`/api/holiday?year=${year}&countryCode=${countryCode}`)
-            .then (response => {
-                console.log('Fetch holiday response:', {
-                    status: response.status,
-                    statusText: response.statusText,
-                    ok: response.ok
-                });
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch holidays: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Fetched holidays:', data);
-                return data.map(holiday => ({
-                    date: holiday.date,
-                    title: holiday.localName,
-                    description: holiday.name,
-                    color: '#00FF00',
-                    isHoliday: true,
-                    startTime: '00:00:00',
-                    endTime: '23:59:59',
-                    allDay: true,
-                    category: 'Holiday',
-                    userId: null,
-                    recurring: false,
-                    recId: null
-                }));
-            })
-            .catch(error => {
-                console.error('Failed to fetch holidays:', error.message, error.stack);
-                return [];
-            });
-    }
-    fetchEvents()
-
-
-    if (textarea && counter) {
-        textarea.addEventListener('input', () => {
-            const currentLength = textarea.value.length;
-            counter.textContent = `${currentLength}/${maxLength}`;
-        });
-    }
 
     /* FOR: DATE AND TIME SET AS DEFAULT TODAY'S DATE AND CURRENT TIME */
     if (dateInput && startTimeInput && endTimeInput) {
@@ -129,6 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
         startTimeInput.value = formatTime(startHour);
         endTimeInput.value = formatTime(endHour);
     }
+
+    /* FOR: CHARACTER COUNT IN DESCRIPTION BOX */
+    textarea.addEventListener('input', () => {
+        const currentLength = textarea.value.length;
+        counter.textContent = `${currentLength}/${maxLength}`;
+    });
+
 
     /*==== FOR MAKING SURE THE END-TIME > THE START-TIME==== */
     function parseTime(timeStr) {
@@ -189,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
+
+
     /* TO DISABLE THE START- AND END-TIME INPUT WHEN ALL-DAY-CHECKBOX IS CLICKED */
     function getDefaultTimes() {
         const now = new Date();
@@ -224,70 +132,50 @@ document.addEventListener('DOMContentLoaded', function() {
     addEventForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-
         const eventDate = dateInput.value;
-        const eventTitle = eventTitleInput.value.trim();
+        const eventTitle = document.getElementById('title-input').value.trim();
         const activeCategory = document.querySelector('.category-tag.active');
-        const eventColor = '#FF0000'; // Hardcoded for testing
-        const startTime = startTimeInput.value + ":00";
-        const endTime = endTimeInput.value + ":00";
-        const description = textarea.value;
-        const allDay = allDayCheckbox.checked;
+        // Read color from the active category
+        const eventColor = activeCategory ? activeCategory.style.backgroundColor : '#000000';
+        const startTime = document.getElementById('event-start').value;
+        const endTime = document.getElementById('event-end').value;
+        const description = document.getElementById('event-description').value;
 
         if (!eventTitle || !eventDate) {
             alert("Please fill in both the date and the event title!");
             return;
         }
 
-        const categoryName = activeCategory ? activeCategory.textContent : 'None';
+        // Clear form
+        eventTitleInput.value = '';
+        eventColorInput.value = '#000000'; // This should probably be handled elsewhere
+        const today = new Date();
+        dateInput.value = today.toISOString().split('T')[0];
+
+        let events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
 
         const eventDetails = {
-            userId: parseInt(userId),
-            title: eventTitle,
             date: eventDate,
+            title: eventTitle,
             startTime: startTime,
             endTime: endTime,
+            category: activeCategory ? activeCategory.textContent : 'Uncategorized',
+            color: activeCategory ? activeCategory.style.backgroundColor : '#000000',
             description: description,
-            color: eventColor,
             recurring: false,
             allDay: allDay,
-            category: categoryName
         };
 
-        console.log('Saving event:', eventDetails);
-        fetch('/api/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(eventDetails)
-        })
-            .then(response => {
-                console.log('POST response:', {status: response.status, ok: response.ok});
-                if (!response.ok) {
-                    throw new Error(`Failed to save event: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(savedEvent => {
-                console.log('Event saved:', savedEvent);
-                fetchEvents()
-                //savedEvent.color = eventColor;
-                //events.push(savedEvent);
-                //window.renderMonthView(new Date());
-                // Clear form
-                eventTitleInput.value = '';
-                eventColorInput.value = '#000000';
-                dateInput.value = new Date().toISOString().split('T')[0];
-                textarea.value = '';
-                if (activeCategory) {
-                    activeCategory.classList.remove('active');
-                }
-            })
-            .catch(error => {
-                console.error('Error saving event:', error.message);
-                alert('Failed to save event to server');
-            });
+        events.push(eventDetails);
+
+        localStorage.setItem('calendarEvents', JSON.stringify(events));
+
+        renderMonthView(new Date());  // Re-render the calendar to include the new event
+
+        const activeCategoryTag = document.querySelector('.category-tag.active');
+        if (activeCategoryTag) {
+            activeCategoryTag.classList.remove('active');  // Remove active class after submission
+        }
     });
 
     const categories = [
@@ -405,8 +293,4 @@ todoList.classList.remove('active'); // Make sure to-do list is hidden by defaul
         eventForm.classList.remove('active'); // Hide event form
     });
 });
-
-
-
-
 

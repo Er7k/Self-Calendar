@@ -66,10 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
       calendarDates.innerHTML += cellHTML;
 
       const cellEl = calendarDates.lastElementChild;
-      const eventsForThisDate = (window.events || []).filter(ev => {
-        const eventDate = new Date(ev.date).toISOString().split('T')[0];
-        return eventDate === dateStr;
-      });
+      const storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+      const eventsForThisDate = storedEvents.filter(ev => ev.date === dateStr);
 
       eventsForThisDate.forEach(ev => {
         displayEventOnCalendar(cellEl, ev);
