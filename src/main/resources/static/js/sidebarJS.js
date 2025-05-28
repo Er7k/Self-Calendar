@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
     // Handle panel open/close
     document.querySelectorAll('.panel-header').forEach(header => {

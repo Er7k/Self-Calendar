@@ -2,7 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-   localStorage.removeItem('calendarPreferences');
+    /* Remove this line to save changes and not disappear when refreshing the page*/
+  localStorage.removeItem('calendarPreferences');
 
     const prefs= localStorage.getItem('calendarPreferences');
 
