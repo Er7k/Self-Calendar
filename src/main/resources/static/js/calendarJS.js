@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     renderUpcomingEvents();
   }
+
   function switchToMonthView() {
     const calendarGrid = document.querySelector('.calendar-dates');
 
@@ -147,9 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderWeekView(startOfWeek, endOfWeek);
   }
+
   function updateWeekView() {
     const start = new Date(weekStartDate);
     currentDate = new Date(start);
+  }
 
     function getStartOfWeek(date) {
       const startOfWeek = new Date(date);
@@ -476,6 +479,5 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initial render
     renderMonthView(currentDate);
 
-  }
 
   });
