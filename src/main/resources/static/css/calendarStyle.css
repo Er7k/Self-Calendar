@@ -1100,12 +1100,14 @@ ul li span:hover {
 }
 .event-marker {
   width: 9px;
-  background-color: rgba(76, 73, 73, 0.82);
   height: 9px;
+  border-radius: 2px;
   cursor: pointer;
+  color: black;
   transition: all 0.3s ease-in-out;
   position: relative;
-  border-radius: 2px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .event-marker:hover {
   transform: scale(2);
@@ -1444,12 +1446,29 @@ ul li span:hover {
   padding: 0;
 }
 
-#category-list {
+.category-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   list-style: none;
   padding: 0;
+  margin-top: 6px;
+}
+
+.category-tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+.category-tag:hover {
+  transform: scale(1.05);
+}
+.category-tag.active {
+  border: 2px solid #333;
+  opacity: 1;
 }
 
 .category-item {

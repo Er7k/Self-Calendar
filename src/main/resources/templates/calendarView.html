@@ -405,13 +405,9 @@
            <div class="panel-header">+ Add Event</div>
            <div class="panel-content" id="event-panel">
                <form id="event-form">
-                   <label for="title-input">
+                   <input type="text" id="event-title" placeholder="Title" required maxlength="30">
 
-                       <input id="title-input" name="title-input" placeholder="Add Event Title" maxlength="50">
-                   </label>
-
-
-                   <!-Date + Time->
+                   <!--Date + Time-->
                    <div class="form-row date-time-grid">
 
                        <div class="date-box">
@@ -433,41 +429,34 @@
                        </div>
 
                    </div>
-
-
-
-                   <div class="form-row category-row">
+                  <div class="form-row category-row">
 
                        <div class="category-add">
                            <button type="button" id="toggle-category-form">+Add Category</button>
 
                            <div id="category-form" style="display: none;">
-                               <input type="text" id="input-category-name" placeholder="Category name"/>
-                               <input type="color" id="input-category-color"/>
+                               <input type="text" id="input-category-name" placeholder="Category name">
+                               <input type="color" id="input-category-color" value="#000000">
                                <button type="button" id="save-category">Save</button>
                            </div>
                        </div>
                        <div class="added-categories">
-                           <ul id="category-list">
+                           <ul id="category-list" class="category-list">
 
                            </ul>
                        </div>
 
                    </div>
-
-
-
                    <div class="description-box">
                        <label for="event-description"></label>
                        <textarea id="event-description" name="event-description" rows="3" placeholder="Event details..." maxlength="150"></textarea>
                        <small id="char-count">0/150</small>
                    </div>
-                   <div class="form-row button-row">
-                       <div class="submit-wrapper">
-                           <button type="button" id="add-to-calendar">Add To Calendar</button>
-                       </div>
 
-                   </div>
+                   <button type="submit" id="add-to-calendar">Add To Calendar</button>
+
+
+
                </form>
            </div>
        </div>
@@ -525,9 +514,9 @@
 
   <script src="/js/calendarJS.js"></script>
 <script src="/js/sidebarJS.js"></script>
+<script src="/js/addEvent2JS.js"></script>
 <script src="/js/weekViewJS.js"></script>
   <script src="/js/dayViewJS.js"></script>
-  <script src="/js/addEvent2JS.js"></script>
 <script src="/js/toDoListJS.js"></script>
 
 

@@ -8,6 +8,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const weekRangeDisplay = document.getElementById('week-range');
   const dayViewBtn = document.getElementById('day-view-button');
   const dayView = document.getElementById('day-view');
+  const categoryList = document.getElementById('category-list');
+  const categoryNameInput = document.getElementById('input-category-name');
+  const categoryColorInput = document.getElementById('input-category-color');
+  const saveCategoryBtn = document.getElementById('save-category');
+  const toggleCategoryFormBtn = document.getElementById('toggle-category-form');
+
+  const defaultCategories = [
+    { name: 'Work', color: '#f1c40f' },
+    { name: 'School', color: '#3498db' },
+    { name: 'Personal', color: '#2ecc71' },
+    { name: 'Important', color: '#e74c3c' }
+  ];
+
+  if (!localStorage.getItem('eventCategories')) {
+    localStorage.setItem('eventCategories', JSON.stringify(defaultCategories));
+  }
 
 
   let currentDate = new Date();
@@ -15,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  /*==========================*/
-  /*      THE MONTH VIEW      */
-  /*==========================*/
+  /*==========================================================================*/
+  /*      THE MONTH VIEW                                                      */
+  /*==========================================================================*/
   window.renderMonthView = function(date) {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -73,7 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const eventsForThisDate = storedEvents.filter(ev => ev.date === dateStr);
 
       eventsForThisDate.forEach(ev => {
-        displayEventOnCalendar(cellEl, ev);
+        const marker = document.createElement('div');
+        marker.className = 'event-marker';
+        marker.style.backgroundColor = ev.color || '#787676';
+        cellEl.querySelector('.event-markers').appendChild(marker);
       });
       cellEl.addEventListener('click', () => {
         const clickedDate = new Date(dateStr);
@@ -134,9 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
     return `${weekday}, the ${dayOfMonth}${getDaySuffix(dayOfMonth)} of ${month}`;
   }
 
-  /*==========================*/
-  /*      THE WEEK VIEW       */
-  /*==========================*/
+  /*==========================================================================*/
+  /*      THE WEEK VIEW                                                       */
+  /*==========================================================================*/
   function switchToWeekView() {
     const today = new Date();
     const dayOfWeek = (today.getDay() + 6) % 7;
@@ -247,10 +266,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  /*==========================*/
-  /*       THE DAY VIEW       */
-  /*==========================*/
-
+  /*==========================================================================*/
+  /*       THE DAY VIEW                                                       */
+  /*==========================================================================*/
   function renderExpandedDayContent(cell, dateStr) {
     const date = new Date(dateStr);
     const weekday = date.toLocaleDateString('en-GB', { weekday: 'short'});
@@ -281,7 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cell.appendChild(hoursContainer);
   }
-
   function formatWeekday(dateStr) {
     const d = new Date(dateStr);
     return d.toLocaleDateString('en-GB', { weekday: 'long' });
@@ -305,7 +322,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.calendar-days').classList.add('hide-weekdays');
     document.querySelector('.wrapper').classList.add('day-view-active');
   }
-
   function switchToDayView(dateStr) {
     const calendar = document.querySelector('.calendar-dates');
     if (calendar.classList.contains('day-view-active')) return; // already in day view
@@ -335,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.calendar-days').classList.add('hide-weekdays');
     document.querySelector('.wrapper').classList.add('day-view-active');
   }
-
   function getDaySuffix(day) {
     if (day >= 11 && day <= 13) {
       return 'th';
@@ -347,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
       default: return 'th';
     }
   }
-
   function exitDayView() {
     isInDayView = false;
     const allDays = document.querySelectorAll('#calendar-dates > div');
@@ -365,23 +379,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 
-
-
   /*==========================*/
   /* FOR DISPLAY IN CALENDAR  */
   /*==========================*/
-  function displayEventOnCalendar(cellEl, eventDetails) {
-    const markerContainer = cellEl.querySelector('.event-markers');
 
-    if (!markerContainer) return;
-
-    const marker = document.createElement('div');
-    marker.classList.add('event-marker');
-    marker.style.backgroundColor = eventDetails.color || '#000000';
-
-
-    markerContainer.appendChild(marker);
-  }
   function smoothTransition(callback) {
     const calendarGrid = document.querySelector('.calendar-dates');
     calendarGrid.classList.add('week-transitioning');
@@ -412,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
       grouped[ev.date].push(ev);
     });
 
-    const max = 4;
+    const max = 6;
     let count = 0;
 
     for (const date in grouped) {
@@ -443,6 +444,207 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   };
+
+     const eventForm = document.getElementById('event-form');
+     const textarea = document.getElementById('event-description');
+     const counter = document.getElementById('char-count');
+     const maxLength = textarea.getAttribute('maxlength');
+     const startTimeInput = document.getElementById('event-start');
+     const endTimeInput = document.getElementById('event-end');
+     const dateInput = document.getElementById('event-date');
+
+
+    /* FOR: DATE AND TIME SET AS DEFAULT TODAY'S DATE AND CURRENT TIME */
+     if (dateInput && startTimeInput && endTimeInput) {
+        const now = new Date();
+        dateInput.value = now.toISOString().split('T')[0];
+
+        const roundedHour = now.getMinutes() > 0 ? now.getHours() + 1 : now.getHours();
+        const startHour = Math.min(roundedHour, 22);
+        const endHour = Math.min(startHour + 2, 23);
+
+        const formatTime = hour => `${hour.toString().padStart(2, '0')}:00`;
+
+        startTimeInput.value = formatTime(startHour);
+        endTimeInput.value = formatTime(endHour);
+    }
+    /* FOR: CHARACTER COUNT IN DESCRIPTION BOX */
+      textarea.addEventListener('input', () => {
+        const currentLength = textarea.value.length;
+        counter.textContent = `${currentLength}/${maxLength}`;
+      });
+    /*==== FOR MAKING SURE THE END-TIME > THE START-TIME==== */
+     function parseTime(timeStr) {
+         const [hour, minute] = timeStr.split(':').map(Number);
+         return { hour, minute };
+     }
+     function formatTime(hour, minute = 0) {
+         return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+     }
+    /*==========FOR START TIME-INPUT=========*/
+     startTimeInput.addEventListener('change', () => {
+         const { hour: startHour, minute: startMin } = parseTime(startTimeInput.value);
+
+         let newEndHour = startHour + 2;
+         let newEndMin = startMin;
+
+         if (newEndHour >= 24) {
+             newEndHour = 23;
+             newEndMin = 59;
+         }
+
+         endTimeInput.value = formatTime(newEndHour, newEndMin);
+     });
+
+    /*========FOR END TIME-INPUT========*/
+      endTimeInput.addEventListener('change', () => {
+          const start = parseTime(startTimeInput.value);
+          const end = parseTime(endTimeInput.value);
+
+          const startTotal = start.hour * 60 + start.minute;
+          const endTotal = end.hour * 60 + end.minute;
+
+          if(endTotal <= startTotal) {
+              let correctedHour = start.hour;
+              let correctedMinute = start.minute + 1;
+
+              if(correctedMinute >= 60) {
+                  correctedMinute = 0;
+                  correctedHour += 1;
+              }
+              if(correctedHour >= 24) {
+                  correctedHour = 23;
+                  correctedMinute = 59;
+              }
+
+              endTimeInput.value = formatTime(correctedHour, correctedMinute);
+          }
+
+      });
+    /* TO DISABLE THE START- AND END-TIME INPUT WHEN ALL-DAY-CHECKBOX IS CLICKED */
+     function getDefaultTimes() {
+         const now = new Date();
+         const roundedHour = now.getMinutes() > 0 ? now.getHours() + 1 : now.getHours();
+         const startHour = Math.min(roundedHour, 22);
+         const endHour = Math.min(startHour + 2, 23);
+
+         const formatTime = (hour, minute = 0) =>
+             `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+
+         return {
+             start: formatTime(startHour),
+             end: formatTime(endHour)
+         };
+     }
+
+
+
+
+
+    /*========SAVE NEW EVENT TO CALENDAR AND RE-RENDER CALENDAR========*/
+
+  if (!localStorage.getItem('eventCategories')) {
+    localStorage.setItem('eventCategories', JSON.stringify(defaultCategories));
+  }
+
+// === LOAD AND RENDER CATEGORIES ===
+  function loadCategories() {
+    const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+    categoryList.innerHTML = '';
+
+    categories.forEach((cat, index) => {
+      const li = document.createElement('li');
+      li.className = 'category-tag';
+      li.textContent = cat.name;
+      li.style.backgroundColor = cat.color;
+      li.dataset.index = index;
+
+      li.addEventListener('click', () => {
+        document.querySelectorAll('.category-tag').forEach(tag => tag.classList.remove('active'));
+        li.classList.add('active');
+      });
+
+      categoryList.appendChild(li);
+    });
+  }
+
+  loadCategories();
+
+// === TOGGLE CATEGORY FORM ===
+  toggleCategoryFormBtn.addEventListener('click', () => {
+    const form = document.getElementById('category-form');
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  });
+
+// === SAVE OR EDIT CATEGORY ===
+  saveCategoryBtn.addEventListener('click', () => {
+    const name = categoryNameInput.value.trim();
+    const color = categoryColorInput.value;
+    if (!name) return;
+
+    const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+    const activeIndex = document.querySelector('.category-tag.active')?.dataset.index;
+
+    if (activeIndex !== undefined) {
+      categories[activeIndex] = { name, color };
+    } else {
+      categories.push({ name, color });
+    }
+
+    localStorage.setItem('eventCategories', JSON.stringify(categories));
+    categoryNameInput.value = '';
+    categoryColorInput.value = '#000000';
+    loadCategories();
+  });
+
+  eventForm.addEventListener('submit', e => {
+      e.preventDefault();
+      console.log("Form submitted");
+
+      const titleInput = document.getElementById('event-title');
+      const title = titleInput ? titleInput.value.trim() : '';
+
+      const dateInput = document.getElementById('event-date');
+      const date = dateInput?.value || '';
+
+      const activeCategory = document.querySelector('.category-tag.active');
+      const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+      const categoryIndex = activeCategory ? activeCategory.dataset.index : 0;
+      const category = categories[categoryIndex] || categories[0];
+      const categoryName = activeCategory ? activeCategory.textContent : 'Uncategorized';
+      const categoryColor = activeCategory ? activeCategory.style.backgroundColor : '#787676';
+
+      const startInput = document.getElementById('event-start');
+      const endInput = document.getElementById('event-end');
+      const startTime = startInput?.value || '';
+      const endTime = endInput?.value || '';
+
+      const descEl = document.getElementById('event-description');
+      const description = descEl ? descEl.value : '';
+
+      const events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+
+      events.push({
+        title,
+        date,
+        startTime,
+        endTime,
+        description,
+        category: category.name,
+        color: category.color
+      });
+
+      localStorage.setItem('calendarEvents', JSON.stringify(events));
+      eventForm.reset();
+
+      const [year, month, day] = date.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      renderMonthView(selectedDate); // ✅ pass valid Date
+
+
+    });
+
+
 
 
   /*==========================*/
