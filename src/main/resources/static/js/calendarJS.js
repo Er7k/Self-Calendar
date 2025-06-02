@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const weekViewBtn = document.getElementById('week-view');
   const monthViewBtn = document.getElementById('month-view');
   const weekRangeDisplay = document.getElementById('week-range');
+  const dayViewBtn = document.getElementById('day-view-button');
+  const dayView = document.getElementById('day-view');
 
 
   let currentDate = new Date();
@@ -13,16 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let isWeekView = false;
 
 
-<<<<<<< Updated upstream
-  /*========THE MONTH VIEW========*/
-  window.renderMonthView = function(date) {
-    console.log('renderMonthView called with date:', date, 'Events: ', window.events)
-=======
   /*==========================*/
   /*      THE MONTH VIEW      */
   /*==========================*/
-  window.renderMonthView = function (date) {
->>>>>>> Stashed changes
+  window.renderMonthView = function(date) {
     const year = date.getFullYear();
     const month = date.getMonth();
 
@@ -79,142 +75,38 @@ document.addEventListener('DOMContentLoaded', function() {
       eventsForThisDate.forEach(ev => {
         displayEventOnCalendar(cellEl, ev);
       });
+      cellEl.addEventListener('click', () => {
+        const clickedDate = new Date(dateStr);
+        updateDayView(clickedDate);
+      });
     }
-  };
-
-  /*========FOR DISPLAYING THE EVENT IN THE CALENDAR========*/
-  function displayEventOnCalendar(cellEl, eventDetails) {
-    const markerContainer = cellEl.querySelector('.event-markers');
-
-    if (!markerContainer) return;
-
-    // Create the event marker
-    const marker = document.createElement('div');
-    marker.classList.add('event-marker');
-    marker.style.backgroundColor = eventDetails.color || '#000000';
-
-    // Add the event tooltip (this part was already done in your code)
-    const tooltip = document.createElement('div');
-    tooltip.classList.add('event-tooltip');
-    tooltip.innerHTML = `
-        <strong>Title:</strong> ${eventDetails.title}<br>
-        <strong>Time:</strong> ${eventDetails.startTime} - ${eventDetails.endTime}<br>
-        <strong>Category:</strong> ${eventDetails.category}<br>
-        <strong>Description:</strong> ${eventDetails.description || 'No description'}
-    `;
-
-    tooltip.style.backgroundColor = eventDetails.color || '#000000';
-    marker.appendChild(tooltip);
-
-
-    // Add the marker to the marker container
-    markerContainer.appendChild(marker);
-
-    // Handle tooltip visibility (hover behavior)
-    marker.addEventListener('mouseenter', function() {
-      tooltip.style.visibility = 'visible';
-      tooltip.style.opacity = 1;
-
-      const rect = marker.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
-      tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
-    });
-
-    marker.addEventListener('mouseleave', function() {
-      tooltip.style.visibility = 'hidden';
-      tooltip.style.opacity = 0;
-    });
+    renderUpcomingEvents();
   }
-
-<<<<<<< Updated upstream
-
-
-
-  function switchToWeekView() {
-    const today = new Date();
-    const dayOfWeek = (today.getDay() + 6) % 7;
-    weekStartDate = new Date(today);
-    weekStartDate.setDate(today.getDate() - dayOfWeek);
-    updateWeekView();
-  }
-
-  function updateWeekView() {
-    const start = new Date(weekStartDate);
-    currentDate = new Date (start);
-    renderMonthView(start);
-
-    const firstOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const offset = (firstOfMonth.getDay() + 6) % 7;
-    const weekNumber = Math.floor((offset + weekStartDate.getDate() - 1) / 7);
-
-    const calendarGrid = document.querySelector('.calendar-dates');
-    for (let i = 0; i <= 5; i++) {
-      calendarGrid.classList.remove(`week-focus-${i}`);
-    }
-    calendarGrid.classList.add(`week-focus-${weekNumber}`);
-
-    const allDays = document.querySelectorAll('#calendar-dates > div');
-    allDays.forEach(day => {
-      const week = parseInt(day.dataset.week);
-      const isHighlight = week === weekNumber;
-      day.classList.toggle("highlight-week", isHighlight);
-
-      if (isHighlight && day.classList.contains("grey")) {
-        day.classList.remove("grey");
-        day.classList.add("dayInMonth"); // optional: for consistent styling
-      }
-    });
-
-    weekRangeDisplay.textContent = formatWeekRange(weekStartDate);
-  }
-
-
-=======
->>>>>>> Stashed changes
   function switchToMonthView() {
     const calendarGrid = document.querySelector('.calendar-dates');
+
     for (let i = 0; i <= 5; i++) {
       calendarGrid.classList.remove(`week-focus-${i}`);
     }
 
     const allDays = document.querySelectorAll('#calendar-dates > div');
     allDays.forEach(day => {
-      day.classList.remove("highlight-week");
+      day.classList.remove("highlight-week", "collapsed", "blurred", "expanded-day");
+
+      const hourBlocks = day.querySelectorAll('.hour-block');
+      hourBlocks.forEach(block => block.remove());
     });
 
     weekRangeDisplay.textContent = "";
-<<<<<<< Updated upstream
-=======
     renderMonthView(currentDate);
 
     // Re-render month view cleanly
->>>>>>> Stashed changes
     renderMonthView(currentDate);
+
   }
-
-<<<<<<< Updated upstream
-  function formatWeekRange(startDate) {
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-
-    const optionsStart = { month: 'short', day: 'numeric'};
-    const optionsEnd = { month: 'short', day: 'numeric'};
-
-    const startStr = startDate.toLocaleDateString(undefined, optionsStart);
-    const endStr = endDate.toLocaleDateString(undefined, optionsEnd);
-
-    if (startDate.getMonth() === endDate.getMonth()) {
-      return `${startStr} - ${endDate.getDate()}`;
-    } else {
-      return `${startStr} - ${endStr}`;
-    }
-  }
-
-
-=======
->>>>>>> Stashed changes
   monthViewBtn.addEventListener('click', () => {
     document.querySelector('.wrapper').classList.remove('day-view-active');
+    document.querySelector('.sidebar-front').classList.remove('day-view-mode');
     document.querySelector('.sidebar').classList.remove('day-view-expanded');
     document.getElementById('to-do-list').innerHTML = `<p>[to-do-list and other]</p>`
     const calendarDates = document.querySelector('.calendar-dates');
@@ -232,20 +124,14 @@ document.addEventListener('DOMContentLoaded', function() {
     renderMonthView(currentDate);
 
   });
-<<<<<<< Updated upstream
-=======
-
   function formatDateForHeader(date) {
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
->>>>>>> Stashed changes
 
+    const weekday = weekdays[date.getDay()];
+    const dayOfMonth = date.getDate();
+    const month = months[date.getMonth()];
 
-<<<<<<< Updated upstream
-  prevBtn.addEventListener('click', () => {
-    const calendarGrid = document.querySelector('.calendar-dates');
-    const isWeekView = [...calendarGrid.classList].some(cls => cls.startsWith("week-focus-"));
-=======
     return `${weekday}, the ${dayOfMonth}${getDaySuffix(dayOfMonth)} of ${month}`;
   }
 
@@ -261,41 +147,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderWeekView(startOfWeek, endOfWeek);
   }
+  function updateWeekView() {
+    const start = new Date(weekStartDate);
+    currentDate = new Date(start);
 
-  function getStartOfWeek(date) {
-    const startOfWeek = new Date(date);
-    const dayOfWeek = startOfWeek.getDay();
-    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-    startOfWeek.setDate(date.getDate() - daysToSubtract);
-    startOfWeek.setHours(0, 0, 0, 0);
-    return startOfWeek;
-  }
+    function getStartOfWeek(date) {
+      const startOfWeek = new Date(date);
+      const dayOfWeek = startOfWeek.getDay();
+      const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      startOfWeek.setDate(date.getDate() - daysToSubtract);
+      startOfWeek.setHours(0, 0, 0, 0);
+      return startOfWeek;
+    }
 
-  function getEndOfWeek(startOfWeek) {
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-    return endOfWeek;
-  }
+    function getEndOfWeek(startOfWeek) {
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      endOfWeek.setHours(23, 59, 59, 999);
+      return endOfWeek;
+    }
 
-  function renderWeekView(weekStartDate) {
-    const calendarDates = document.getElementById('calendar-dates');
-    calendarDates.innerHTML = ""; // ✅ Clear before rendering
+    function renderWeekView(weekStartDate) {
+      const calendarDates = document.getElementById('calendar-dates');
+      calendarDates.innerHTML = ""; // ✅ Clear before rendering
 
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(weekStartDate);
-      date.setDate(date.getDate() + i);
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(weekStartDate);
+        date.setDate(date.getDate() + i);
 
-      const isoDate = date.toISOString().split("T")[0];
-      const dayName = date.toLocaleDateString('en-GB', { weekday: 'short' });
-      const monthName = date.toLocaleDateString('en-GB', { month: 'short' });
+        const isoDate = date.toISOString().split("T")[0];
+        const dayName = date.toLocaleDateString('en-GB', {weekday: 'short'});
+        const monthName = date.toLocaleDateString('en-GB', {month: 'short'});
 
-      const hoursHTML = Array.from({ length: 24 }, (_, h) => {
-        const hourStr = `${h.toString().padStart(2, '0')}:00`;
-        return `<div class="hour-block">${hourStr}</div>`;
-      }).join('');
+        const hoursHTML = Array.from({length: 24}, (_, h) => {
+          const hourStr = `${h.toString().padStart(2, '0')}:00`;
+          return `<div class="hour-block">${hourStr}</div>`;
+        }).join('');
 
-      calendarDates.innerHTML += `
+        calendarDates.innerHTML += `
       <div class="dayInMonth" data-date="${isoDate}">
         <div class="day-header">${dayName} ${date.getDate()} ${monthName}</div>
         <div class="hours-container">
@@ -303,39 +192,37 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
     `;
-    }
-  }
-
-
-  function renderDayHeaderAndHours(dayEl, date) {
-    const dayHeader = document.createElement('div');
-    dayHeader.className = 'day-header';
-    const weekday = date.toLocaleDateString('en-GB', { weekday: 'short'});
-    const day = date.getDate();
-    const month = date.toLocaleDateString('en-GB', { month: 'short' });
-    dayHeader.innerHTML = `${weekday} ${day} ${month}`;
-    dayEl.appendChild(dayHeader);
-
-    const hoursContainer = document.createElement('div');
-    hoursContainer.className = 'hours-container';
-
-    for (let hour = 0; hour < 24; hour++) {
-      const hourBlock = document.createElement('div');
-      hourBlock.className = 'hour-block';
-      hourBlock.textContent = `${String(hour).padStart(2, '0')}:00`;
-
-      const todayStr = new Date().toISOString().split('T')[0];
-      if (date.toISOString().split('T')[0] === todayStr && hour === new Date().getHours()) {
-        hourBlock.classList.add('current-hour');
       }
-      hoursContainer.appendChild(hourBlock);
     }
-    dayEl.appendChild(hoursContainer);
-  }
-
-  switchToWeekView();
 
 
+    function renderDayHeaderAndHours(dayEl, date) {
+      const dayHeader = document.createElement('div');
+      dayHeader.className = 'day-header';
+      const weekday = date.toLocaleDateString('en-GB', {weekday: 'short'});
+      const day = date.getDate();
+      const month = date.toLocaleDateString('en-GB', {month: 'short'});
+      dayHeader.innerHTML = `${weekday} ${day} ${month}`;
+      dayEl.appendChild(dayHeader);
+
+      const hoursContainer = document.createElement('div');
+      hoursContainer.className = 'hours-container';
+
+      for (let hour = 0; hour < 24; hour++) {
+        const hourBlock = document.createElement('div');
+        hourBlock.className = 'hour-block';
+        hourBlock.textContent = `${String(hour).padStart(2, '0')}:00`;
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        if (date.toISOString().split('T')[0] === todayStr && hour === new Date().getHours()) {
+          hourBlock.classList.add('current-hour');
+        }
+        hoursContainer.appendChild(hourBlock);
+      }
+      dayEl.appendChild(hoursContainer);
+    }
+
+    switchToWeekView();
 
 
     /*==========================*/
@@ -551,7 +438,6 @@ document.addEventListener('DOMContentLoaded', function() {
     prevBtn.addEventListener('click', () => {
       if (isWeekView) {
         weekStartDate.setDate(weekStartDate.getDate() - 7);
->>>>>>> Stashed changes
 
         switchToWeekView();
       } else {
@@ -564,11 +450,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (isWeekView) {
 
-<<<<<<< Updated upstream
-  weekViewBtn.addEventListener('click', switchToWeekView);
-  monthViewBtn.addEventListener('click', switchToMonthView);
-
-=======
         weekStartDate.setDate(weekStartDate.getDate() + 7);
         switchToWeekView();
       } else {
@@ -584,16 +465,17 @@ document.addEventListener('DOMContentLoaded', function() {
     monthViewBtn.addEventListener('click', () => {
       isWeekView = false;
       switchToMonthView();
+
     });
     dayViewBtn.addEventListener('click', () => {
       const today = new Date().toISOString().split('T')[0];
       switchToDayView(today); // Use today's date
     });
->>>>>>> Stashed changes
 
 
 // Initial render
     renderMonthView(currentDate);
 
+  }
 
   });

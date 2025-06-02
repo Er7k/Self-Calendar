@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const [hour, minute] = timeStr.split(':').map(Number);
         return { hour, minute };
     }
-
     function formatTime(hour, minute = 0) {
         return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
     }
@@ -128,6 +127,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    const toggleCategoryFormBtn = document.getElementById('toggle-category-form');
+    const categoryForm = document.getElementById('category-form');
+    const saveCategoryBtn = document.getElementById('save-category');
+    const categoryNameInput = document.getElementById('input-category-name');
+    const categoryColorInput = document.getElementById('input-category-color');
+    const categoryList = document.getElementById('category-list');
+
+// Show/hide form
+    toggleCategoryFormBtn.addEventListener('click', () => {
+        categoryForm.style.display = categoryForm.style.display === 'none' ? 'flex' : 'none';
+    });
+
+// Load categories
+    function loadCategories() {
+        const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+        categoryList.innerHTML = '';
+
+        categories.forEach(cat => {
+            const li = document.createElement('li');
+            li.className = 'category-tag';
+            li.style.backgroundColor = cat.color;
+            li.textContent = cat.name;
+
+            li.addEventListener('click', () => {
+                document.querySelectorAll('.category-tag').forEach(c => c.classList.remove('active'));
+                li.classList.add('active');
+            });
+
+            categoryList.appendChild(li);
+        });
+    }
+
+// Save new category
+    saveCategoryBtn.addEventListener('click', () => {
+        const name = categoryNameInput.value.trim();
+        const color = categoryColorInput.value;
+
+        if (!name) return;
+
+        const existing = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+        if (existing.some(c => c.name === name)) {
+            alert("Category already exists!");
+            return;
+        }
+
+        existing.push({ name, color });
+        localStorage.setItem('eventCategories', JSON.stringify(existing));
+
+        categoryNameInput.value = '';
+        categoryColorInput.value = '#000000';
+        categoryForm.style.display = 'none';
+        loadCategories();
+    });
+
+    loadCategories();
+
     /*========SAVE NEW EVENT TO CALENDAR AND RE-RENDER CALENDAR========*/
     addEventForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -155,26 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
         let events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
         events.push({
             title: eventTitle,
-<<<<<<< Updated upstream
-            startTime: startTime,
-            endTime: endTime,
-            category: activeCategory ? activeCategory.textContent : 'Uncategorized',
-            color: activeCategory ? activeCategory.style.backgroundColor : '#000000',
-            description: description,
-            recurring: false,
-            allDay: allDay,
-        };
-
-        events.push(eventDetails);
-
-=======
             date: eventDate,
             startTime: document.getElementById('event-start').value,
             endTime: document.getElementById('event-end').value,
             description: document.getElementById('event-description').value,
             color: getActiveCategoryColor(), // You can define this helper
         });
->>>>>>> Stashed changes
         localStorage.setItem('calendarEvents', JSON.stringify(events));
 
         addEventForm.reset();
