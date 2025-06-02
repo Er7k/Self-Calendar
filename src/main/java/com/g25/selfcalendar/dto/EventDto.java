@@ -1,6 +1,5 @@
 package com.g25.selfcalendar.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 /**
@@ -8,7 +7,6 @@ import lombok.*;
  * frontend and backend. This class encapsulates only the necessary
  * fields for the client interactions.
  */
-
 
 @Getter
 @Setter
