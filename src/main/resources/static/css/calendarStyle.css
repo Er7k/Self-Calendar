@@ -573,9 +573,9 @@ body, .wrapper, .calendar, .content {
   display: grid;
   position: relative;
   grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
-  grid-template-rows: repeat(6, 1fr); /* Makes rows grow/shrink equally */
+  grid-template-rows: auto; /* Makes rows grow/shrink equally */
   width: 100%;
-  height: auto;
+  height: 80%;
   border: 1px solid black;
   padding: 1vw;
   box-sizing: border-box;
@@ -602,6 +602,8 @@ body, .wrapper, .calendar, .content {
   overflow: hidden;
   transition:
           opacity 0.6s ease,
+          transform 0.6s ease,
+          font-size 0.6s ease,
           height 0.6s ease,
           margin 0.6s ease,
           padding 0.6s ease;
@@ -1132,23 +1134,23 @@ ul li span:hover {
   opacity: 0.6;
 }
 
-
-
 .calendar-dates .highlight-week {
-  font-size: 1.10rem;
+  font-size: 1.1rem;
   z-index: 1;
   background-color: var(--accent-color);
   color: var(--text-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  transform: scale(1.01);
   transition: all 0.6s ease-in-out;
+  opacity: 1;
 }
 
 
 .calendar-dates.week-focus-0 {
-  grid-template-rows: 320px 10px 10px 10px 10px 10px;
+  grid-template-rows: 100%;
 }
 .calendar-dates.week-focus-1 {
-  grid-template-rows: 10px 320px 10px 10px 10px 10px;
+  grid-template-rows: 100%;
 }
 .calendar-dates.week-focus-2 {
   grid-template-rows: 10px 10px 320px 10px 10px 10px;
@@ -1192,13 +1194,10 @@ ul li span:hover {
 .expanded-day .day-header .date {
   font-size: 1.25rem;
 }
-.calendar-dates > div.collapsed {
-  transform: scale(0.6);
-  filter: blur(2px);
-  opacity: 0.3;
-  font-size: 0.8rem;
-  transition: all 0.5s ease;
-  pointer-events: none;
+
+
+.calendar-dates > div.highlight-week {
+ background-color: var(--accent-color);
 }
 
 
@@ -1251,13 +1250,15 @@ ul li span:hover {
 .hours-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .hour-block {
-  padding: 8px 12px;
+  padding: 4px;
   border-bottom: 1px solid #ddd;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  width: 100%;
 }
 
 .hour-block.current-hour {
@@ -1856,7 +1857,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   }
 
   .calendar-dates > div {
-    height: auto;
+    height: 100%;
   }
 
   .calendar-container {
