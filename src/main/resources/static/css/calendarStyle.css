@@ -548,7 +548,7 @@ body, .wrapper, .calendar, .content {
 }
 .calendar {
   padding: 1vw;
-  grid-template-rows: 80px 25px auto;
+  grid-template-rows: auto;
   align-items: flex-start;
   box-sizing: border-box;
   width: 100%;
@@ -557,9 +557,9 @@ body, .wrapper, .calendar, .content {
 .calendar-dates {
   display: grid;
   grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
-  grid-template-rows: repeat(6, 1fr); /* Makes rows grow/shrink equally */
+  grid-template-rows: auto; /* Makes rows grow/shrink equally */
   width: 100%;
-  height: auto;
+  height: 80%;
   border: 1px solid black;
   padding: 1vw;
   box-sizing: border-box;
@@ -585,6 +585,8 @@ body, .wrapper, .calendar, .content {
   overflow: hidden;
   transition:
           opacity 0.6s ease,
+          transform 0.6s ease,
+          font-size 0.6s ease,
           height 0.6s ease,
           margin 0.6s ease,
           padding 0.6s ease;
@@ -1098,21 +1100,21 @@ ul li span:hover {
   opacity: 0.6;
 }
 
-
-
 .calendar-dates .highlight-week {
-  font-size: 1.10rem;
+  font-size: 1.1rem;
   z-index: 1;
   background-color: var(--bg-color);
   color: var(--text-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  transform: scale(1.01);
   transition: all 0.6s ease-in-out;
+  opacity: 1;
 }
 .calendar-dates.week-focus-0 {
-  grid-template-rows: 320px 10px 10px 10px 10px 10px;
+  grid-template-rows: 100%;
 }
 .calendar-dates.week-focus-1 {
-  grid-template-rows: 10px 320px 10px 10px 10px 10px;
+  grid-template-rows: 100%;
 }
 .calendar-dates.week-focus-2 {
   grid-template-rows: 10px 10px 320px 10px 10px 10px;
@@ -1133,12 +1135,19 @@ ul li span:hover {
 .calendar-dates.week-focus-3 div:not(.highlight-week),
 .calendar-dates.week-focus-4 div:not(.highlight-week),
 .calendar-dates.week-focus-5 div:not(.highlight-week) {
+<<<<<<< Updated upstream
   transform: scale(0.9);
   filter: blur(1px) brightness(0.7);
   opacity: 0.5;
   transition: all 0.8s ease-in-out;
   font-size: 1px;
   border: none;
+=======
+  transform: scale(0.95);
+  filter: blur(1px) brightness(0.7);
+  opacity: 0.7;
+  transition: all 0.5s ease;
+>>>>>>> Stashed changes
 }
 
 .calendar-dates > div.expanded-day {
@@ -1177,12 +1186,86 @@ ul li span:hover {
 .expanded-day .day-header .date {
   font-size: 1.25rem;
 }
+<<<<<<< Updated upstream
 .calendar-dates > div.collapsed {
   transform: scale(0.6);
   filter: blur(1px);
   opacity: 0.5;
   font-size: 0.8rem;
   transition: all 0.5s ease;
+=======
+
+
+.calendar-dates > div.highlight-week {
+ background-color: var(--accent-color);
+}
+
+
+.calendar-dates > div.expanded-day {
+  font-size: 1rem;
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-view-active .calendar-dates > div {
+  transition: all 0.3s ease-in-out;
+  opacity: 0.2;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.day-view-active .calendar-dates > div.expanded-day {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 2 !important;
+  filter: none !important;
+  grid-column: span 7;
+  z-index: 5;
+  color: black;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow-y: auto;
+
+
+}
+
+.day-view-active .calendar-days {
+  display: none;
+}
+
+.wrapper.day-view-active .calendar-dates > div {
+  transition: all 0.4s ease-in-out;
+}
+.hours-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.hour-block {
+  padding: 4px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.hour-block.current-hour {
+  background-color: #eef;
+  font-weight: bold;
+  border-left: 4px solid #3399ff;
+>>>>>>> Stashed changes
 }
 .calendar-days.hide-weekdays {
   display: none;
@@ -1747,7 +1830,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   }
 
   .calendar-dates > div {
-    height: auto;
+    height: 100%;
   }
 
   .calendar-container {

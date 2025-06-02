@@ -153,10 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
         dateInput.value = today.toISOString().split('T')[0];
 
         let events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-
-        const eventDetails = {
-            date: eventDate,
+        events.push({
             title: eventTitle,
+<<<<<<< Updated upstream
             startTime: startTime,
             endTime: endTime,
             category: activeCategory ? activeCategory.textContent : 'Uncategorized',
@@ -168,8 +167,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         events.push(eventDetails);
 
+=======
+            date: eventDate,
+            startTime: document.getElementById('event-start').value,
+            endTime: document.getElementById('event-end').value,
+            description: document.getElementById('event-description').value,
+            color: getActiveCategoryColor(), // You can define this helper
+        });
+>>>>>>> Stashed changes
         localStorage.setItem('calendarEvents', JSON.stringify(events));
 
+        addEventForm.reset();
         renderMonthView(new Date());  // Re-render the calendar to include the new event
 
         const activeCategoryTag = document.querySelector('.category-tag.active');
