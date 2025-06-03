@@ -114,14 +114,27 @@ document.addEventListener('DOMContentLoaded', function () {
     // HANDLE FONT SELECTION
     //======================
 
-    const fontOptions = document.querySelectorAll('.font-option');
-    fontOptions.forEach(option => {
-        if (option.dataset.font === selectedFont) option.classList.add('selected');
-
+    document.querySelectorAll('.font-option').forEach(option => {
         option.addEventListener('click', () => {
-            fontOptions.forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('.font-option').forEach(opt => opt.classList.remove('selected'));
+
             option.classList.add('selected');
-            selectedFont = option.dataset.font;
+
+            const selectedFont = option.getAttribute('data-font');
+
+            switch (selectedFont) {
+                case 'fira-sans':
+                    document.documentElement.style.setProperty('--font-family', '"Fira Sans", sans-serif');
+                    break;
+                case 'oswald':
+                    document.documentElement.style.setProperty('--font-family', '"Oswald", sans-serif');
+                    break;
+                case 'garamond':
+                    document.documentElement.style.setProperty('--font-family', '"Garamond", serif');
+                    break;
+                default:
+                    document.documentElement.style.setProperty('--font-family', '"Nunito", sans-serif');
+            }
         });
     });
 
@@ -157,6 +170,44 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.setProperty('--border-color', selectedBorderColor);
         });
     });
+
+    document.getElementById('start-button').addEventListener('click', () => {
+        document.getElementById('layout-section').style.display = 'block';
+        document.getElementById('start-button').style.display = 'none';
+    });
+
+    document.getElementById('next-layout').addEventListener('click', () => {
+        document.getElementById('layout-section').style.display = 'none';
+        document.getElementById('style-section').style.display = 'block';
+    });
+
+    document.getElementById('next-style').addEventListener('click', () => {
+        document.getElementById('style-section').style.display = 'none';
+        document.getElementById('bg-color-section').style.display = 'block';
+    });
+
+    document.getElementById('next-bg-color').addEventListener('click', () => {
+        document.getElementById('bg-color-section').style.display = 'none';
+        document.getElementById('accent-color-section').style.display = 'block';
+    });
+
+    document.getElementById('next-accent-color').addEventListener('click', () => {
+        document.getElementById('accent-color-section').style.display = 'none';
+        document.getElementById('text-color-section').style.display = 'block';
+    });
+
+    document.getElementById('next-text-color').addEventListener('click', () => {
+        document.getElementById('text-color-section').style.display = 'none';
+        document.getElementById('border-color-section').style.display = 'block';
+    });
+
+    document.getElementById('next-border-color').addEventListener('click', () => {
+        document.getElementById('border-color-section').style.display = 'none';
+        document.getElementById('font-section').style.display = 'block';
+    });
+
+
+
 
 
 

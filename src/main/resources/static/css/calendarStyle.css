@@ -3,12 +3,12 @@
   --accent-color: #ffffff;    /* fallback accent */
   --text-color: #000000;
   --border-color: #000000;
+  --font-family: 'Nunito', sans-serif;
 
 }
 
 
 html{
-  font-family: "Nunito", sans-serif;
   font-size: 1rem;
   min-height: 100vh;
 }
@@ -16,6 +16,8 @@ html{
 body, .wrapper, .calendar, .content {
   background-color: var(--bg-color);
   color: var(--text-color);
+  font-family: var(--font-family), sans-serif;
+
 }
 
 /*=========================================================*/
@@ -23,49 +25,91 @@ body, .wrapper, .calendar, .content {
 /*=========================================================*/
 #welcome-screen {
   display: flex;
+  background-color: var(--accent-color);
+  font-family: var(--font-family), sans-serif;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-  margin: auto;
-  padding: 4rem 7rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  border: 4px solid var(--border-color, #000000);
+  margin: 8rem;
   text-align: center;
   min-height: 100vh;
 }
 #welcome-screen h1 {
   font-size: 4rem;
-  line-height: 1;
-  font-weight: 300;
-  background-color: lightskyblue;
-  padding: 15px;
+  line-height: 1.5;
+  font-weight: 400;
+  padding: 100px 20px 20px 20px;
   margin-bottom: 0;
-  border-bottom: 1px solid black;
-  border-radius: 10px 10px 0 0;
+  margin-top: 100px;
 }
 
 #welcome-screen h2 {
   font-size: 2rem;
 }
 #welcome-screen h4 {
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-style: italic;
   font-weight: 400;
   margin-top: 0;
   margin-bottom: 50px;
-  border-bottom: 2px solid black;
-  background-color: lightskyblue;
   padding: 10px;
 }
-.section {
-  width: 100%;
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 2px solid black;
+
+#start-button {
+  margin: 50px 10px;
+  width: 300px;
+  height: 50px;
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  cursor: pointer;
+  border: 2px solid var(--border-color, #000000);
+  border-radius: 5px;
+  font-size: 18px;
+  font-family: var(--font-family), sans-serif;
+  transition: all 0.3s ease;
+}
+button:hover {
+  transform: scale(1.2);
+}
+
+.next-button {
+  width: 300px;
+  height: 50px;
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  border: 1px solid var(--border-color, #000000);
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  margin: 50px 0 50px 0;
+  transition: all 0.3s ease;
+  font-family: var(--font-family), sans-serif;
 
 
 }
+
+.section {
+  display: none;
+  padding: 20px;
+}
+.section {
+  transition: opacity 0.3s ease;
+}
+
+#bg-color-section,
+#accent-color-section,
+#text-color-section,
+#layout-section,
+#style-section,
+#font-section {
+  display: block;
+}
+
 
 /*=============================*/
 /*      SELECTED CHOICES       */
@@ -73,6 +117,7 @@ body, .wrapper, .calendar, .content {
 .layout-card.selected,
 .bg-card.selected,
 .accent-color.selected,
+.border-color.selected,
 .font-option.selected,
 .text-color.selected{
   border: 2px solid #007bff;
@@ -491,7 +536,6 @@ body, .wrapper, .calendar, .content {
   gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: #A7D4FF;
   padding: 2vw;
 }
 .border-color {
@@ -509,7 +553,25 @@ body, .wrapper, .calendar, .content {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
+
+.border-preview:hover {
+  transform: scale(1.1);
+}
+
+#border-black {
+  color: black;
+}
+
+#border-white {
+  color: white;
+}
+
+#border-none {
+  color: black;
+}
+
 /*=====================================*/
 /* SAVE AND START USING CALENDAR BUTTON*/
 /*=====================================*/
@@ -517,12 +579,14 @@ body, .wrapper, .calendar, .content {
   padding: 0.75rem 2rem;
   font-size: 1.2rem;
   border-radius: 10px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
+  border: 1px solid var(--border-color, #000000);
+  background-color: var(--accent-color);
+  color: var(--text-color);
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 40px;
+  font-family: var(--font-family), sans-serif;
+
 }
 
 
@@ -537,6 +601,8 @@ body, .wrapper, .calendar, .content {
 /*==========================================================*/
 .wrapper {
   min-height: 90vh;
+  font-family: var(--font-family), sans-serif;
+
 }
 .header {
   grid-area: header;
@@ -576,7 +642,7 @@ body, .wrapper, .calendar, .content {
   grid-template-rows: repeat(6, 1fr); /* Makes rows grow/shrink equally */
   width: 100%;
   height: auto;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   padding: 1vw;
   box-sizing: border-box;
   align-items: center;
@@ -618,12 +684,15 @@ body, .wrapper, .calendar, .content {
   padding: 1rem;
   box-sizing: border-box;
   justify-content: flex-start;
+  font-family: var(--font-family), sans-serif;
+
 }
 .sidebar-panel {
   overflow: hidden;
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
+  font-family: var(--font-family), sans-serif;
 }
 .panel-header {
   padding: 0.8rem;
@@ -667,9 +736,11 @@ button {
   cursor: pointer;
   border: none;
   background-color: var(--accent-color);
+  font-family: var(--font-family), sans-serif;
+
 }
 button:hover {
-  border: 1px solid black
+  border: 1px solid var(--border-color, #000000);
 }
 ul li {
   list-style: none;
@@ -774,7 +845,7 @@ ul li span:hover {
   width: 100%;
 }
 #title-input:active {
-  border: 2px solid black;
+  border: 2px solid var(--border-color, #000000);
 }
 #event-form label {
   width: 100%;
@@ -785,6 +856,8 @@ ul li span:hover {
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  font-family: var(--font-family), sans-serif;
+
 }
 .description-box label{
   font-size: 0.8rem;
@@ -797,7 +870,7 @@ ul li span:hover {
   font-size: 0.9rem;
   background-color: var(--accent-color);
   color: var(--text-color);
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   border-radius: 4px;
   resize: vertical;
   min-height: 70px;
@@ -807,10 +880,10 @@ ul li span:hover {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .description-box textarea:focus {
-  border-color: black;
+  border-color: var(--border-color);
   box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.3);
   outline: none;
-  background-color: #fff;
+  background-color: var(--accent-color);
 }
 .description-box textarea::placeholder {
   color: #aaa;
@@ -822,7 +895,7 @@ ul li span:hover {
   display: block;
   margin-top: 2px;
   font-size: 0.8rem;
-  color: #333;
+  color: var(--text-color);
   text-align: right;
 }
 
@@ -898,7 +971,7 @@ ul li span:hover {
 .style-classic .calendar-dates{
   background-color: var(--accent-color);
   color: var(--text-color);
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   border-radius: 6px;
   font-family: 'Nunito', sans-serif;
 }
@@ -906,13 +979,13 @@ ul li span:hover {
 .style-classic .calendar-dates > div {
   border-radius: 4px;
   padding: 0.5rem;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   font-family: 'Nunito', sans-serif;
 }
 
 .style-classic .view-button {
   border-radius: 4px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   font-family: 'Nunito', sans-serif;
   background-color: var(--accent-color);
   color: var(--text-color);
@@ -920,13 +993,13 @@ ul li span:hover {
 }
 .style-classic .view-button:hover {
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
 
 }
 
 .style-classic .sidebar-panel {
   border-radius: 4px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
 }
 .style-classic .panel-header {
   border-radius: 4px;
@@ -938,6 +1011,10 @@ ul li span:hover {
   border-right: 1px solid black;
   border-radius: 4px;
   width: 100%;
+}
+.style-classic .today {
+  border: 2px groove red !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .style-classic .title-label {
@@ -955,7 +1032,7 @@ ul li span:hover {
 .style-minimal .calendar {
   background-color: var(--accent-color);
   box-shadow: none;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 
 }
@@ -964,23 +1041,23 @@ ul li span:hover {
   border: none;
 }
 .style-minimal .calendar-dates > div {
-  border: 1px solid rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border-color, #000000);
   background-color: var(--accent-color);
   padding: 0.4rem;
   font-size: 0.9rem;
   border-radius: 0;
   box-shadow: none;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 }
 .style-minimal button {
   background: none;
-  border: 1px solid rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border-color, #000000);
   color: var(--text-color);
   font-size: 0.9rem;
   border-radius: 0;
   box-shadow: none;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 
 
@@ -992,12 +1069,12 @@ ul li span:hover {
 }
 
 .style-minimal .sidebar-panel {
-  border: 1px solid rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border-color, #000000);
   background-color: var(--accent-color);
 }
 
 .style-minimal .panel-header {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
   font-size: 0.9rem;
   background-color: var(--accent-color);
@@ -1005,16 +1082,20 @@ ul li span:hover {
 }
 
 .style-minimal .panel-content {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 }
 
 
 .style-minimal #input-task-box {
-  border: 1px solid rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border-color, #000000);
   border-radius: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   width: 100%;
+}
+.style-minimal .today {
+  border: 2px groove red !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .style-minimal .content {
@@ -1031,12 +1112,12 @@ ul li span:hover {
 }
 
 .style-minimal #upcoming-events {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 }
 
 .style-minimal #event-form {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family), sans-serif;
   font-weight: 200;
 }
 
@@ -1058,10 +1139,11 @@ ul li span:hover {
 .style-soft .calendar-header,
 .style-soft .calendar-dates {
   background-color: var(--accent-color);
-  border: none;
+  border: 1px solid var(--border-color, #000000);
+  border-radius: 16px;
 }
 .style-soft .today {
-  border: 2px groove red;
+  border: 2px groove red !important;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
@@ -1103,7 +1185,7 @@ ul li span:hover {
   height: 9px;
   border-radius: 2px;
   cursor: pointer;
-  color: black;
+  color: var(--text-color);
   transition: all 0.3s ease-in-out;
   position: relative;
   text-overflow: ellipsis;
@@ -1143,6 +1225,8 @@ ul li span:hover {
   color: var(--text-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   transition: all 0.6s ease-in-out;
+  font-family: var(--font-family), sans-serif;
+
 }
 
 
@@ -1173,7 +1257,7 @@ ul li span:hover {
 .expanded-day .day-header {
   font-size: 1.5rem;
   margin-bottom: 15px;
-  color: #333;
+  color: var(--text-color);
   position: relative;
 }
 .expanded-day .day-header .weekday {
@@ -1200,8 +1284,8 @@ ul li span:hover {
   padding: 1rem;
   box-sizing: border-box;
   border-radius: 10px;
-  background-color: white;
-  color: black;
+  background-color: var(--accent-color);
+  color: var(--text-color);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1224,7 +1308,7 @@ ul li span:hover {
   filter: none !important;
   grid-column: span 7;
   z-index: 5;
-  color: black;
+  color: var(--text-color);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow-y: auto;
@@ -1266,7 +1350,8 @@ ul li span:hover {
   align-items: center;
   justify-content: center;
   max-width: 100%;
-  color: var(--text-color);  padding: 0;
+  color: var(--text-color);
+  padding: 0;
   margin-bottom: 20px;
   margin-top: 20px;
   user-select: none;
@@ -1412,7 +1497,7 @@ ul li span:hover {
 
 #event-form button{
   padding: 10px 18px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   border-radius: 4px;
   background-color: var(--accent-color);
   color: var(--text-color);
@@ -1422,7 +1507,7 @@ ul li span:hover {
 
 .category-row {
   display: flex;
-  background-color: transparent;
+  background-color: var(--accent-color);
   gap: 1rem;
 }
 
@@ -1434,7 +1519,7 @@ ul li span:hover {
 #category-form input[type="text"] {
   padding: 0.4rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color, #000000);
   width: 100%;
 }
 
@@ -1467,7 +1552,7 @@ ul li span:hover {
   transform: scale(1.05);
 }
 .category-tag.active {
-  border: 2px solid #333;
+  border: 1px solid var(--border-color, #000000);
   opacity: 1;
 }
 
@@ -1478,20 +1563,21 @@ ul li span:hover {
   padding: 0.4rem 0.6rem;
   border-radius: 20px;
   font-size: 0.9rem;
-  color: white;
+  color: var(--text-color);
 }
 
 .category-delete {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--text-color);
   cursor: pointer;
   font-weight: bold;
 }
 
 #add-new {
   color: #555;
-  background: white;
+  background: var(--accent-color);
+  border: var(--border-color);
   font-size: 0.8rem;
   align-items: center;
 }
@@ -1502,15 +1588,15 @@ input[type="time"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-color: white;
-  border: 1px solid black;
+  background-color: var(--accent-color);
+  border: 1px solid var(--border-color, #000000);
   padding: 10px 12px;
   font-size: 0.8rem;
   border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
   font-family: "Nunito", sans-serif;
-  color: #333;
+  color: var(--text-color);
   transition: border 0.3s ease;
 }
 
@@ -1529,7 +1615,7 @@ input[type="date"]:focus,
 input[type="time"]:focus {
   border-color: var(--bg-color);
   outline: none;
-  background-color: #fff;
+  background-color: var(--accent-color);
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -1556,7 +1642,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
   height: 100%;
   gap: 6px;
-  background: white;
+  background: var(--accent-color);
   border-radius: 8px;
   width: 100%;
   min-width: 0;
@@ -1580,7 +1666,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .date-box label {
   height: 100%;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
 }
 
 
@@ -1615,10 +1701,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   position: relative;
   border-radius: 8px;
   height: 100%;
-  border: 1px solid black;
+  border: 1px solid var(--border-color, #000000);
   font-size: 1rem;
   font-family: inherit;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -1631,7 +1717,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   padding: 0;
   border-radius: 8px;
-  background-color: white;
+  background-color: var(--accent-color);
   transition: box-shadow 0.2s ease;
 }
 
@@ -1664,9 +1750,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   margin: 10px 0;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color, #000000);
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: var(--accent-color);
 }
 
 #category-options button {
@@ -1674,8 +1760,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   border: none;
   border-radius: 5px;
   font-size: 0.9rem;
-  background-color: #4682B4;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--text-color);
   cursor: pointer;
   margin-top: 10px;
 }
@@ -1686,7 +1772,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 
 #add-new {
-  color: #555;
+  color: var(--text-color);
   background: white;
   font-size: 0.8rem;
   align-items: center;
@@ -1734,7 +1820,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color, #000000);
   cursor: pointer;
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -1744,7 +1830,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   padding: 8px 15px;
   border-radius: 5px;
   font-size: 1rem;
-  color: white;
+  color: var(--text-color);
   background-color: transparent;
   border: none;
   cursor: pointer;
