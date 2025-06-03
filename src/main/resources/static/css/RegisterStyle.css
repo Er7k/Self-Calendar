@@ -6,7 +6,7 @@
     background: linear-gradient(120deg, rgba(33, 33, 33, 0.82), rgba(11, 18, 28, 0.59));
     border: 2px solid rgba(82, 82, 94, 0.67); border-radius: 30px;
     width: 360px;
-    height: 360px;
+    height: 460px;
     box-shadow: 20px 20px 40px 0 rgba(0, 0, 0, 0.2);
     padding: 30px 40px;
     text-align: center;
@@ -56,8 +56,8 @@
     margin-bottom: 15px;
 }
 .form-group label {
-    flex: 0 0 100px;
-    min-width: 100px;
+    flex: 0 0 110px;
+    min-width: 110px;
     text-align: right;
     margin-right: 10px;
     font-size: 0.7em;
@@ -65,7 +65,7 @@
 .form-group .required {
     color: white;
     font-size: 0.9em;
-    margin-left: 3px;
+    margin-left: 4px;
 }
 .form-group .error {
     flex: 0 0 150px;
