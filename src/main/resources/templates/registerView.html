@@ -43,9 +43,21 @@
         <div class="register-container">
             <!--      <h2 id="welcome">Welcome!</h2>-->
             <form id="register-form">
-                <input type="text" id="username" name="username" placeholder="Username" autocomplete="off">
-                <input type="email" id="email" name="email" placeholder="example@gmail.com" autocomplete="off">
-                <input type="password" id="password" name="password" placeholder="Password">
+                <div class="form-group">
+                    <label for="username">Username:<span class="required">*</span></label>
+                    <div id="username-error" class="error">Please fill in username</div>
+                    <input type="text" id="username" name="username" placeholder="Username" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:<span class="required">*</span></label>
+                    <div id="email-error" class="error">Please fill in email</div>
+                    <input type="email" id="email" name="email" placeholder="example@gmail.com" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:<span class="required">*</span></label>
+                    <div id="password-error" class="error">Please fill in password</div>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
                 <button type="submit">Create Account</button>
             </form>
         </div>
