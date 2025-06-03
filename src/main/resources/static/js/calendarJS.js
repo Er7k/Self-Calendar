@@ -13,6 +13,30 @@ document.addEventListener('DOMContentLoaded', function() {
   const categoryColorInput = document.getElementById('input-category-color');
   const saveCategoryBtn = document.getElementById('save-category');
   const toggleCategoryFormBtn = document.getElementById('toggle-category-form');
+  const eventForm = document.getElementById('event-form');
+  const textarea = document.getElementById('event-description');
+  const counter = document.getElementById('char-count');
+  const maxLength = textarea?.getAttribute('maxlength') || 500;
+  const startTimeInput = document.getElementById('event-start');
+  const endTimeInput = document.getElementById('event-end');
+  const dateInput = document.getElementById('event-date');
+  const titleInput = document.getElementById('title-input');
+  const allDayCheckbox = document.getElementById('all-day');
+
+  console.log('Calendar DOM:', {
+    calendarDates,
+    monthYear,
+    eventForm,
+    titleInput,
+    dateInput,
+    startTimeInput,
+    endTimeInput,
+    textarea,
+    categoryList
+  });
+  if (!titleInput) console.error('titleInput is null, check #event-title in HTML');
+
+  console.log('Calendar DOM:', { calendarDates, monthYear, categoryList });
 
   const defaultCategories = [
     { name: 'Work', color: '#f1c40f' },
@@ -25,9 +49,59 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('eventCategories', JSON.stringify(defaultCategories));
   }
 
+  const userId = localStorage.getItem('userId');
+  console.log('Retrieved userId:', userId);
+  if (!userId) {
+    console.error('User not logged in');
+    alert('Please log in to view events');
+    window.location.href = '/login';
+    return;
+  }
+
+  let events = [];
 
   let currentDate = new Date();
   let weekStartDate = new Date();
+
+  window.initCalendar = function() {
+    loadCategories();
+    fetchEvents();
+  };
+
+  function fetchEvents() {
+    console.log('Fetching events for userId:', userId);
+    fetch(`/api/events?userId=${userId}`)
+        .then(response => {
+          console.log('Fetch response:', { status: response.status, ok: response.ok });
+          if (!response.ok) {
+            throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+          events = data.map(event => {
+            const color = event.color || (categories.find(c => c.name.toLowerCase() === (event.category || '').toLowerCase())?.color || '#787676');
+            console.log('Event mapped:', { event, category: event.category, color });
+            return { ...event, color };
+          });
+          window.events = events;
+          console.log('Fetched events:', events);
+          renderMonthView(currentDate);
+        })
+        .catch(error => {
+          console.error('Failed to fetch events:', error.message);
+          alert('Failed to load events. Using local fallback.');
+          const storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]').filter(ev => ev.userId === parseInt(userId));
+          const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+          events = storedEvents.map(event => ({
+            ...event,
+            color: categories.find(c => c.name.toLowerCase() === (event.category || '').toLowerCase())?.color || '#787676'
+          }));
+          window.events = events;
+          renderMonthView(currentDate);
+        });
+  }
 
 
 
@@ -35,6 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
   /*      THE MONTH VIEW                                                      */
   /*==========================================================================*/
   window.renderMonthView = function(date) {
+    if (!calendarDates || !monthYear) { // CHANGE 6: Null check
+      console.error('Missing DOM elements:', { calendarDates, monthYear });
+      return;
+    }
+    console.log('Rendering month view for:', date);
     const year = date.getFullYear();
     const month = date.getMonth();
 
@@ -85,13 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
       calendarDates.innerHTML += cellHTML;
 
       const cellEl = calendarDates.lastElementChild;
-      const storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
-      const eventsForThisDate = storedEvents.filter(ev => ev.date === dateStr);
+      const eventsForThisDate = events.filter(ev => ev.date === dateStr);
 
       eventsForThisDate.forEach(ev => {
         const marker = document.createElement('div');
         marker.className = 'event-marker';
-        marker.style.backgroundColor = ev.color || '#787676';
+        marker.style.backgroundColor = ev.color;
         cellEl.querySelector('.event-markers').appendChild(marker);
       });
       cellEl.addEventListener('click', () => {
@@ -397,15 +475,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!upcomingContainer) return;
 
     upcomingContainer.innerHTML = '';
-    const allEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
 
-    const upcoming = allEvents
+    const upcoming = events
         .filter(e => new Date(e.date) >= new Date(todayStr))
-        .sort((a, b) => {
-          return new Date(`${a.date}T${a.startTime}`) - new Date(`${b.date}T${b.startTime}`);
-        });
+        .sort((a, b) => new Date(`${a.date}T${a.startTime}`) - new Date(`${b.date}T${b.startTime}`));
 
     const grouped = {};
     upcoming.forEach(ev => {
@@ -433,6 +508,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const p = document.createElement('p');
         p.textContent = `[${event.startTime} - ${event.endTime}] ${event.title}`;
+        p.style.color = event.color || '#787676';
+        console.log('Upcoming event:', { date: event.date, title: event.title, color: event.color });
         upcomingContainer.appendChild(p);
 
         count++;
@@ -445,14 +522,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   };
 
-     const eventForm = document.getElementById('event-form');
-     const textarea = document.getElementById('event-description');
-     const counter = document.getElementById('char-count');
-     const maxLength = textarea.getAttribute('maxlength');
-     const startTimeInput = document.getElementById('event-start');
-     const endTimeInput = document.getElementById('event-end');
-     const dateInput = document.getElementById('event-date');
-
+  if (textarea && counter) {
+    textarea.addEventListener('input', () => {
+      const currentLength = textarea.value.length;
+      counter.textContent = `${currentLength}/${maxLength}`;
+    });
+  }
 
     /* FOR: DATE AND TIME SET AS DEFAULT TODAY'S DATE AND CURRENT TIME */
      if (dateInput && startTimeInput && endTimeInput) {
@@ -468,11 +543,6 @@ document.addEventListener('DOMContentLoaded', function() {
         startTimeInput.value = formatTime(startHour);
         endTimeInput.value = formatTime(endHour);
     }
-    /* FOR: CHARACTER COUNT IN DESCRIPTION BOX */
-      textarea.addEventListener('input', () => {
-        const currentLength = textarea.value.length;
-        counter.textContent = `${currentLength}/${maxLength}`;
-      });
     /*==== FOR MAKING SURE THE END-TIME > THE START-TIME==== */
      function parseTime(timeStr) {
          const [hour, minute] = timeStr.split(':').map(Number);
@@ -550,6 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // === LOAD AND RENDER CATEGORIES ===
   function loadCategories() {
     const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+    if (!categoryList) return;
     categoryList.innerHTML = '';
 
     categories.forEach((cat, index) => {
@@ -562,6 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
       li.addEventListener('click', () => {
         document.querySelectorAll('.category-tag').forEach(tag => tag.classList.remove('active'));
         li.classList.add('active');
+        console.log('Category selected:', { name: cat.name, color: cat.color });
       });
 
       categoryList.appendChild(li);
@@ -592,12 +664,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     localStorage.setItem('eventCategories', JSON.stringify(categories));
-    categoryNameInput.value = '';
-    categoryColorInput.value = '#000000';
+    if (categoryNameInput) categoryNameInput.value = '';
+    if (categoryColorInput) categoryColorInput.value = '#000000';
     loadCategories();
   });
 
-  eventForm.addEventListener('submit', e => {
+  /*eventForm.addEventListener('submit', e => {
       e.preventDefault();
       console.log("Form submitted");
 
@@ -642,7 +714,86 @@ document.addEventListener('DOMContentLoaded', function() {
       renderMonthView(selectedDate); // ✅ pass valid Date
 
 
+    });*/
+
+  if (eventForm) {
+    eventForm.addEventListener('submit', e => {
+      e.preventDefault();
+      console.log('Form submitted');
+
+      const title = titleInput?.value.trim() || '';
+      const date = dateInput?.value || '';
+      const activeCategory = document.querySelector('.category-tag.active');
+      const categories = JSON.parse(localStorage.getItem('eventCategories') || '[]');
+      const categoryIndex = activeCategory ? parseInt(activeCategory.dataset.index) : 0;
+      const category = categories[categoryIndex] || categories[0];
+      const categoryName = category.name || 'Uncategorized';
+      const categoryColor = category.color || '#787676';
+      const startTime = allDayCheckbox?.checked ? '00:00:00' : (startTimeInput?.value + ':00') || '00:00:00';
+      const endTime = allDayCheckbox?.checked ? '23:59:59' : (endTimeInput?.value + ':00') || '23:59:59';
+      const description = textarea?.value || '';
+
+      console.log('Form inputs:', { title, date, categoryName, startTime, endTime });
+
+      if (!title || !date) {
+        alert('Please provide a title and date');
+        return;
+      }
+      if (!title || !date) {
+        titleInput.classList.toggle('error', !title);
+        dateInput.classList.toggle('error', !date);
+        alert('Please provide a title and date');
+        return;
+      }
+
+      const eventDetails = {
+        userId: parseInt(userId),
+        title,
+        date,
+        startTime,
+        endTime,
+        description,
+        category: categoryName,
+        color: categoryColor,
+        recurring: false
+      };
+
+      console.log('Sending POST request:', eventDetails);
+      fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventDetails)
+      })
+          .then(response => {
+            console.log('POST response:', { status: response.status, ok: response.ok });
+            if (!response.ok) {
+              return response.text().then(text => {
+                throw new Error(`Failed to save event: ${response.status} ${text}`);
+              });
+            }
+            return response.json();
+          })
+          .then(savedEvent => {
+            console.log('Event saved:', savedEvent);
+            fetchEvents(); // Refresh events
+            eventForm.reset();
+            const now = new Date();
+            dateInput.value = now.toISOString().split('T')[0];
+            const times = getDefaultTimes();
+            startTimeInput.value = times.start;
+            endTimeInput.value = times.end;
+            document.querySelectorAll('.category-tag').forEach(tag => tag.classList.remove('active'));
+          })
+          .catch(error => {
+            console.error('Error saving event:', error.message);
+            alert(`Failed to save event: ${error.message}`);
+            let storedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+            storedEvents.push({ ...eventDetails, color: category.color || '#787676' });
+            localStorage.setItem('calendarEvents', JSON.stringify(storedEvents));
+            fetchEvents();
+          });
     });
+  }
 
 
 
@@ -696,7 +847,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Initial render
-  renderMonthView(currentDate);
+  //renderMonthView(currentDate);
+  initCalendar();
 
 
 
